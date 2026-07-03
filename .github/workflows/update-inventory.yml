@@ -1,0 +1,49 @@
+name: 每日库存自动更新
+
+on:
+  # 手动触发（您点击按钮即可运行）
+  workflow_dispatch:
+  
+  # 每天凌晨 2:00 自动运行（可选，取消注释即可启用）
+  # schedule:
+  #   - cron: '0 2 * * *'
+
+jobs:
+  update-inventory:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+      
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: 安装依赖
+        run: pip install pandas openpyxl
+      
+      - name: 检查库存表是否存在
+        id: check
+        run: |
+          if [ -f "data/inventory.xlsx" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: 更新库存数据
+        if: steps.check.outputs.exists == 'true'
+        run: python scripts/update_inventory.py data/inventory.xlsx data/products.json
+      
+      - name: 提交并推送更新
+        if: steps.check.outputs.exists == 'true'
+        run: |
+          git config user.name "库存机器人"
+          git config user.email "bot@unicom.com"
+          git add data/products.json
+          git diff --cached --quiet || git commit -m "自动更新库存 $(date +%Y-%m-%d %H:%M)"
+          git push

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<meta name="theme-color" content="#E60012">
+<title>联通文创小管家</title>
+<link rel="icon" href="images/logo.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<header class="top-nav">
+  <div class="nav-brand" onclick="goHome()">
+    <img src="images/logo.png" alt="联通文创" class="nav-logo">
+    <span class="nav-title">联通文创小管家</span>
+  </div>
+  <div class="nav-search">
+    <input type="text" id="globalSearch" placeholder="搜索编码、名称、条码..." oninput="handleSearch(this.value)">
+    <button class="search-btn" onclick="doSearch()">🔍</button>
+  </div>
+</header>
+
+<!-- 页面容器 -->
+<div id="app">
+
+  <!-- 首页 -->
+  <div id="page-home" class="page active">
+    <div class="hero-banner">
+      <img src="images/logo.png" alt="联通文创" class="hero-logo">
+      <h1>联通文创产品信息库</h1>
+      <p>14大品类 · 890+ SKU · 实时库存 · 智能查询</p>
+    </div>
+
+    <!-- 新品专区 -->
+    <section class="section" id="new-products-section">
+      <div class="section-header">
+        <span class="section-badge new">NEW</span>
+        <h2>新品专区</h2>
+        <span class="section-count">21 款</span>
+      </div>
+      <div class="scroll-wrapper">
+        <button class="scroll-btn scroll-left" onclick="scrollNewProducts(-1)">‹</button>
+        <div class="horizontal-scroll" id="newProductsList"></div>
+        <button class="scroll-btn scroll-right" onclick="scrollNewProducts(1)">›</button>
+      </div>
+    </section>
+
+    <!-- 分类入口 -->
+    <section class="section">
+      <div class="section-header">
+        <h2>产品分类</h2>
+      </div>
+      <div class="category-grid">
+        <div class="category-card" onclick="goCategory('养生主题')">
+          <div class="category-icon">🌿</div>
+          <div class="category-name">养生主题</div>
+        </div>
+        <div class="category-card" onclick="goCategory('校园文创')">
+          <div class="category-icon">🎓</div>
+          <div class="category-name">校园文创</div>
+        </div>
+        <div class="category-card" onclick="goCategory('世界杯周边')">
+          <div class="category-icon">⚽</div>
+          <div class="category-name">世界杯周边</div>
+        </div>
+        <div class="category-card" onclick="goCategory('荣誉体系')">
+          <div class="category-icon">🏆</div>
+          <div class="category-name">荣誉体系</div>
+        </div>
+        <div class="category-card" onclick="goCategory('服装体系')">
+          <div class="category-icon">👔</div>
+          <div class="category-name">服装体系</div>
+        </div>
+        <div class="category-card" onclick="goCategory('eSIM文创')">
+          <div class="category-icon">📶</div>
+          <div class="category-name">eSIM文创</div>
+        </div>
+        <div class="category-card" onclick="goCategory('商务场景')">
+          <div class="category-icon">💼</div>
+          <div class="category-name">商务场景</div>
+        </div>
+        <div class="category-card" onclick="goCategory('办公场景')">
+          <div class="category-icon">📎</div>
+          <div class="category-name">办公场景</div>
+        </div>
+        <div class="category-card" onclick="goCategory('营销场景')">
+          <div class="category-icon">🎁</div>
+          <div class="category-name">营销场景</div>
+        </div>
+        <div class="category-card" onclick="goCategory('AI文创')">
+          <div class="category-icon">🤖</div>
+          <div class="category-name">AI文创</div>
+        </div>
+        <div class="category-card" onclick="goCategory('合作IP')">
+          <div class="category-icon">🤝</div>
+          <div class="category-name">合作IP</div>
+        </div>
+        <div class="category-card" onclick="goCategory('定制场景')">
+          <div class="category-icon">✏️</div>
+          <div class="category-name">定制场景</div>
+        </div>
+        <div class="category-card" onclick="goCategory('')">
+          <div class="category-icon">📦</div>
+          <div class="category-name">全部产品</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 快速入口 -->
+    <section class="section">
+      <div class="section-header">
+        <h2>快捷功能</h2>
+      </div>
+      <div class="quick-actions">
+        <div class="quick-btn" onclick="goInventory()">
+          <span class="quick-icon">📊</span>
+          <span>库存查询</span>
+        </div>
+        <div class="quick-btn" onclick="goCustom()">
+          <span class="quick-icon">✏️</span>
+          <span>定制服务</span>
+        </div>
+        <div class="quick-btn" onclick="goContact()">
+          <span class="quick-icon">📞</span>
+          <span>对接人</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 产品列表页 -->
+  <div id="page-list" class="page">
+    <div class="list-header">
+      <div class="list-filter-bar">
+        <select id="filterCategory" onchange="applyFilter()">
+          <option value="">全部分类</option>
+          <option value="养生主题">养生主题</option>
+          <option value="校园文创">校园文创</option>
+          <option value="世界杯周边">世界杯周边</option>
+          <option value="荣誉体系">荣誉体系</option>
+          <option value="服装体系">服装体系</option>
+          <option value="eSIM文创">eSIM文创</option>
+          <option value="商务场景">商务场景</option>
+          <option value="办公场景">办公场景</option>
+          <option value="营销场景">营销场景</option>
+          <option value="AI文创">AI文创</option>
+          <option value="定制场景">定制场景</option>
+          <option value="合作IP">合作IP</option>
+        </select>
+        <select id="filterPrice" onchange="applyFilter()">
+          <option value="">全部价格</option>
+          <option value="0-50">0-50元</option>
+          <option value="50-100">50-100元</option>
+          <option value="100-200">100-200元</option>
+          <option value="200-500">200-500元</option>
+          <option value="500+">500元以上</option>
+        </select>
+        <select id="filterStock" onchange="applyFilter()">
+          <option value="">全部库存</option>
+          <option value="in">有库存</option>
+          <option value="low">库存紧张</option>
+          <option value="out">无库存</option>
+        </select>
+        <select id="sortBy" onchange="applyFilter()">
+          <option value="code">按编码</option>
+          <option value="price-asc">价格升序</option>
+          <option value="price-desc">价格降序</option>
+          <option value="stock">库存最多</option>
+        </select>
+      </div>
+      <div class="list-count" id="listCount">加载中...</div>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+  </div>
+
+  <!-- 产品详情页 -->
+  <div id="page-detail" class="page">
+    <div class="detail-container" id="detailContainer">
+      <div class="detail-loading">加载中...</div>
+    </div>
+  </div>
+
+  <!-- 库存查询页 -->
+  <div id="page-inventory" class="page">
+    <div class="inventory-header">
+      <h2>库存分布查询</h2>
+      <div class="warehouse-tabs">
+        <button class="warehouse-tab active" onclick="switchWarehouse('all')">全部</button>
+        <button class="warehouse-tab" onclick="switchWarehouse('beijing')">北京总仓</button>
+        <button class="warehouse-tab" onclick="switchWarehouse('kunshan')">昆山总仓</button>
+        <button class="warehouse-tab" onclick="switchWarehouse('dongguan')">东莞总仓</button>
+        <button class="warehouse-tab" onclick="switchWarehouse('chengdu')">成都总仓</button>
+        <button class="warehouse-tab" onclick="switchWarehouse('xiaoku')">小库</button>
+      </div>
+    </div>
+    <div class="inventory-list" id="inventoryList"></div>
+  </div>
+
+  <!-- 定制服务页 -->
+  <div id="page-custom" class="page">
+    <div class="custom-page">
+      <h2>定制服务</h2>
+      <div class="custom-info-card">
+        <h3>🎨 可定制内容</h3>
+        <p>LOGO更换、图案定制、包装定制、外观纹路/花纹定制等</p>
+      </div>
+      <div class="custom-info-card">
+        <h3>💰 设计费</h3>
+        <p>已包含在定制报价中，不另收</p>
+      </div>
+      <div class="custom-info-card">
+        <h3>📁 客户提供素材</h3>
+        <p>AI格式LOGO源文件（或其他高清格式）</p>
+      </div>
+      <div class="custom-info-card">
+        <h3>📦 起订量</h3>
+        <p>500-1000件起订，工期视产品而定</p>
+      </div>
+      <div class="custom-product-section">
+        <h3>支持定制的产品</h3>
+        <div class="product-grid" id="customProductGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 对接人页 -->
+  <div id="page-contact" class="page">
+    <div class="contact-page">
+      <h2>各省对接人</h2>
+      <div class="contact-notice">客户咨询退换货、售后、采购等问题时的对接人</div>
+      <div class="contact-list" id="contactList"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 底部导航 -->
+<nav class="bottom-nav">
+  <button class="nav-item active" onclick="goHome()">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-label">首页</span>
+  </button>
+  <button class="nav-item" onclick="goCategory('')">
+    <span class="nav-icon">📦</span>
+    <span class="nav-label">产品库</span>
+  </button>
+  <button class="nav-item" onclick="goInventory()">
+    <span class="nav-icon">📊</span>
+    <span class="nav-label">库存</span>
+  </button>
+  <button class="nav-item" onclick="showPage('search')">
+    <span class="nav-icon">🔍</span>
+    <span class="nav-label">搜索</span>
+  </button>
+</nav>
+
+<!-- AI助手已隐藏，后续需要时再开启
+<div id="aiChat" class="ai-chat">
+  <div class="ai-chat-header">
+    <span>🤖 联通文创智能助手</span>
+    <button onclick="toggleAI()">✕</button>
+  </div>
+  <div class="ai-chat-body" id="aiChatBody">
+    <div class="ai-msg ai-welcome">
+      <p>你好！我是联通文创智能助手，可以帮你：</p>
+      <ul>
+        <li>查询产品信息和库存</li>
+        <li>了解定制服务流程</li>
+        <li>解答采购、售后问题</li>
+      </ul>
+      <p>请问有什么可以帮你的？</p>
+    </div>
+  </div>
+  <div class="ai-chat-input">
+    <input type="text" id="aiInput" placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')sendAI()">
+    <button onclick="sendAI()">发送</button>
+  </div>
+</div>
+-->
+
+<!-- 返回顶部 -->
+<button class="back-to-top" onclick="scrollToTop()">↑</button>
+
+<script src="js/app.js"></script>
+</body>
+</html>
