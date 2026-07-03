@@ -421,85 +421,36 @@ function renderInventory() {
 
 /* ========== 定制产品 ========== */
 function renderCustomProducts() {
-  const container = document.getElementById('customContainer');
-  if (!container) return;
+  const grid = document.getElementById('customProductGrid');
+  if (!grid) return;
   
-  container.innerHTML = `
-    <div class="detail-info">
-      <h3>定制服务</h3>
-      <p style="font-size:13px;color:#666;margin-bottom:12px;">联通文创产品支持以下定制服务，设计费已包含在定制报价中，不另收。</p>
-      
-      <div style="background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
-        <h4 style="color:#E60012;margin-top:0;margin-bottom:12px;font-size:15px;">一、产品定制流程</h4>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
-          <span style="background:#f5f5f5;padding:6px 10px;border-radius:6px;font-size:12px;">选品</span>
-          <span style="color:#999;font-size:12px;">→</span>
-          <span style="background:#f5f5f5;padding:6px 10px;border-radius:6px;font-size:12px;">需求确认<br><small style="color:#999">数量及价格</small></span>
-          <span style="color:#999;font-size:12px;">→</span>
-          <span style="background:#E60012;color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;">设计<br><small>7天</small></span>
-          <span style="color:#999;font-size:12px;">→</span>
-          <span style="background:#f5f5f5;padding:6px 10px;border-radius:6px;font-size:12px;">设计确认<br><small>1-3天</small></span>
-          <span style="color:#999;font-size:12px;">→</span>
-          <span style="background:#E60012;color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;">打样<br><small>7-30天</small></span>
-          <span style="color:#999;font-size:12px;">→</span>
-          <span style="background:#f5f5f5;padding:6px 10px;border-radius:6px;font-size:12px;">打样确认<br><small>1-3天</small></span>
-          <span style="color:#999;font-size:12px;">→</span>
-          <span style="background:#E60012;color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;">大货生产<br><small>15-35天</small></span>
-          <span style="color:#999;font-size:12px;">→</span>
-          <span style="background:#f5f5f5;padding:6px 10px;border-radius:6px;font-size:12px;">到货</span>
+  // 显示有库存的前12个产品作为定制示例
+  const customProducts = allProducts
+    .filter(p => p.inventory && p.inventory.total > 0)
+    .slice(0, 12);
+  
+  if (!customProducts.length) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><div class="empty-state-icon">📭</div><div class="empty-state-text">暂无可展示的产品</div></div>';
+    return;
+  }
+  
+  grid.innerHTML = customProducts.map(p => {
+    const stockClass = p.inventory.total > 50 ? 'stock-in' : p.inventory.total > 0 ? 'stock-low' : 'stock-out';
+    const stockText = p.inventory.total > 50 ? '库存充足' : p.inventory.total > 0 ? '库存紧张' : '暂无库存';
+    return `
+    <div class="product-card" onclick="goDetail('${p.product_code_74}')">
+      ${p.images[0] ? `<img src="images/${p.images[0]}" alt="${p.name}" class="product-card-img" onerror="this.onerror=null;this.outerHTML='<div class=\'no-img-placeholder\'>图片暂无</div>'">` : `<div class="no-img-placeholder">图片暂无</div>`}
+      <div class="product-card-body">
+        <div class="product-card-name">${p.name}</div>
+        <div class="product-card-meta">
+          <span class="product-card-price">¥${p.settlement_price.toFixed(2)}</span>
+          <span class="product-card-code">${p.product_code_74}</span>
         </div>
-        
-        <h4 style="color:#E60012;margin-top:16px;margin-bottom:12px;font-size:15px;">时间汇总</h4>
-        <table class="inventory-table" style="font-size:12px;margin-bottom:12px;">
-          <tr style="background:#E60012;color:#fff;"><th>链路类型</th><th>适用产品</th><th>各环节时间</th><th>总计</th></tr>
-          <tr><td><b>快速链路</b></td><td>帆布袋、杯子等简单产品</td><td>设计7天 + 确认1天 + 打样7天 + 确认1天 + 大货15天</td><td><b style="color:#E60012">约31天（约1个月）</b></td></tr>
-          <tr><td><b>标准链路</b></td><td>常规定制产品</td><td>设计7天 + 确认2天 + 打样15天 + 确认2天 + 大货25天</td><td><b style="color:#E60012">约51天（约7-8周）</b></td></tr>
-          <tr><td><b>复杂链路</b></td><td>玩具、玩偶、徽章类</td><td>设计7天 + 确认3天 + 打样30天 + 确认3天 + 大货35天</td><td><b style="color:#E60012">约78天（约2.5个月）</b></td></tr>
-        </table>
-        <p style="font-size:11px;color:#999;margin:0;">*注：以上生产周期不含物流运输时间（物流一般2-5天）。工期差异主要在"打样"和"大货生产"环节，设计环节固定7天。</p>
-      </div>
-      
-      <div style="background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
-        <h4 style="color:#E60012;margin-top:0;margin-bottom:12px;font-size:15px;">二、产品采购链路</h4>
-        <div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;font-size:13px;">
-          <span style="background:#f5f5f5;padding:8px 12px;border-radius:8px;">需求方（客户）</span>
-          <span style="color:#999;">→</span>
-          <span style="background:#E60012;color:#fff;padding:8px 12px;border-radius:8px;">联通公司<br><small style="opacity:0.9">智慧供应链/电商APP/微零售</small></span>
-          <span style="color:#999;">→</span>
-          <span style="background:#f5f5f5;padding:8px 12px;border-radius:8px;">联通华盛公司<br><small>（工厂）</small></span>
-        </div>
-      </div>
-      
-      <div style="background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
-        <h4 style="color:#E60012;margin-top:0;margin-bottom:12px;font-size:15px;">三、物流链路</h4>
-        <div style="font-size:13px;color:#333;">
-          <p style="margin:4px 0;"><span style="display:inline-block;width:20px;text-align:center;color:#E60012;font-weight:bold;">①</span> 直发到需求方（客户）处</p>
-          <p style="margin:4px 0;"><span style="display:inline-block;width:20px;text-align:center;color:#E60012;font-weight:bold;">②</span> 直发到联通公司处</p>
-        </div>
-      </div>
-      
-      <table class="inventory-table" style="font-size:12px;">
-        <tr><th>产品类别</th><th>起订量</th><th>工期</th><th>联系人</th></tr>
-        <tr><td>荣誉产品（奖杯/奖牌/证书/牌匾/奖章）</td><td>1件起</td><td>7-10天</td><td>梁明宇</td></tr>
-        <tr><td>服装产品（T恤/POLO/外套/冲锋衣等）</td><td>1件起</td><td>15天</td><td>贾翔榆</td></tr>
-        <tr><td>办公用品（笔记本/笔/胶带/鼠标垫等）</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
-        <tr><td>生活用品（保温杯/杯具/雨伞/香囊等）</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
-        <tr><td>包袋类（帆布袋/无纺布袋/背包/胸包等）</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
-        <tr><td>数码配件（充电宝/充电头/数据线/支架等）</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
-        <tr><td>徽章类</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
-        <tr><td>冰箱贴/贴纸/胶带类</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
-        <tr><td>高端商务系列</td><td>500件起</td><td>视产品而定</td><td>石书宇</td></tr>
-        <tr><td>摆件类/盲盒类/手办类</td><td>1000件以上（分摊开模费）</td><td>视产品而定</td><td>石书宇</td></tr>
-        <tr><td>毛绒玩具类</td><td>1000件以上（分摊开模费）</td><td>视产品而定</td><td>石书宇</td></tr>
-      </table>
-      
-      <div style="margin-top:16px;font-size:13px;color:#333;">
-        <p><b>可定制内容：</b>LOGO更换、图案定制、包装定制、外观纹路/花纹定制等</p>
-        <p><b>设计费：</b>已包含在定制报价中，不另收</p>
-        <p><b>客户提供素材：</b>AI格式LOGO源文件（或其他高清格式）</p>
+        <span class="product-card-stock ${stockClass}">${stockText}</span>
       </div>
     </div>
-  `;
+    `;
+  }).join('');
 }
 
 /* ========== 对接人 ========== */
