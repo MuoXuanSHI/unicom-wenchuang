@@ -16,6 +16,38 @@ async function loadData() {
 }
 
 /* ========== 页面路由 ========== */
+// 页面历史栈，用于返回上一步
+let pageHistory = [];
+
+function showPage(pageId) {
+  // 记录当前页面到历史栈（避免重复记录同一页面）
+  const currentActive = document.querySelector('.page.active');
+  if (currentActive) {
+    const currentId = currentActive.id.replace('page-', '');
+    if (currentId !== pageId && currentId !== 'detail') {
+      pageHistory.push(currentId);
+      // 最多保留10条历史记录
+      if (pageHistory.length > 10) pageHistory.shift();
+    }
+  }
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + pageId).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function goBack() {
+  if (pageHistory.length > 0) {
+    const prevPage = pageHistory.pop();
+    showPage(prevPage);
+    updateNav(prevPage);
+    if (prevPage === 'home') renderNewProducts();
+    if (prevPage === 'list') applyFilter();
+    if (prevPage === 'inventory') renderInventory();
+    if (prevPage === 'custom') renderCustomProducts();
+  } else {
+    goHome();
+  }
+}
 function showPage(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + pageId).classList.add('active');
@@ -107,6 +139,38 @@ function renderNewProducts() {
     }
   }, {passive: false});
   container.addEventListener('touchend', () => { isDown = false; });
+  
+  // 鼠标滚轮横向滑动（桌面端）
+  container.addEventListener('wheel', (e) => {
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+      // 已经是横向滚轮，不处理
+      return;
+    }
+    if (Math.abs(e.deltaY) > 0) {
+      e.preventDefault();
+      container.scrollLeft += e.deltaY;
+    }
+  }, {passive: false});
+  
+  // 鼠标拖拽滑动（桌面端）
+  let mouseDown = false, mouseStartX = 0, mouseScrollLeft = 0;
+  container.addEventListener('mousedown', (e) => {
+    mouseDown = true;
+    container.style.cursor = 'grabbing';
+    mouseStartX = e.pageX - container.offsetLeft;
+    mouseScrollLeft = container.scrollLeft;
+  });
+  container.addEventListener('mouseleave', () => { mouseDown = false; container.style.cursor = 'grab'; });
+  container.addEventListener('mouseup', () => { mouseDown = false; container.style.cursor = 'grab'; });
+  container.addEventListener('mousemove', (e) => {
+    if (!mouseDown) return;
+    e.preventDefault();
+    const x = e.pageX - container.offsetLeft;
+    const walk = (x - mouseStartX) * 1.5;
+    container.scrollLeft = mouseScrollLeft - walk;
+  });
+  container.style.cursor = 'grab';
+  container.style.userSelect = 'none';
 }
 
 
@@ -209,6 +273,13 @@ function goDetail(code) {
   updateNav('list');
   renderDetail();
 }
+function goDetail(code) {
+  currentProduct = allProducts.find(p => p.product_code_74 === code);
+  if (!currentProduct) return;
+  showPage('detail');
+  updateNav('list');
+  renderDetail();
+}
 
 function renderDetail() {
   const p = currentProduct;
@@ -232,7 +303,7 @@ function renderDetail() {
       `).join('');
       carouselHtml = `
           <div class="detail-carousel" id="detailCarousel">
-              <div class="detail-back" onclick="history.back();goCategory('')">‹</div>
+              <div class="detail-back" onclick="goBack()">‹</div>
               ${p.images.length > 1 ? `<div class="detail-carousel-arrow prev" onclick="prevSlide()">‹</div>` : ''}
               ${p.images.length > 1 ? `<div class="detail-carousel-arrow next" onclick="nextSlide()">›</div>` : ''}
               <div class="detail-carousel-track" id="carouselTrack">
@@ -244,7 +315,7 @@ function renderDetail() {
   } else {
       carouselHtml = `
           <div class="detail-carousel" style="min-height:300px;display:flex;align-items:center;justify-content:center;background:#f8f8f8;">
-              <div class="detail-back" onclick="history.back();goCategory('')">‹</div>
+              <div class="detail-back" onclick="goBack()">‹</div>
               <span style="color:#ccc;font-size:14px;">图片暂无</span>
           </div>
       `;

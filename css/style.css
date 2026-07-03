@@ -87,6 +87,7 @@ img { max-width: 100%; display: block; }
   display: flex; gap: 12px; overflow-x: auto;
   padding: 0 20px 8px; scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  cursor: grab; user-select: none; -webkit-user-select: none;
 }
 .horizontal-scroll::-webkit-scrollbar { display: none; }
 .new-card {
