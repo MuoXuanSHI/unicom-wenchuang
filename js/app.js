@@ -429,6 +429,11 @@ function renderCustomProducts() {
       <h3>定制服务</h3>
       <p style="font-size:13px;color:#666;margin-bottom:12px;">联通文创产品支持以下定制服务，设计费已包含在定制报价中，不另收。</p>
       
+      <div style="background: linear-gradient(135deg, #E60012, #ff1a35); color: #fff; border-radius: 12px; padding: 16px; margin-bottom: 16px; text-align: center;" onclick="window.open('https://q2nrm64t6zvzo.ok.kimi.link','_blank')">
+        <div style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">📋 定制需求汇总表</div>
+        <div style="font-size: 12px; opacity: 0.9;">点击查看联通文创定制产品详细清单 →</div>
+      </div>
+      
       <table class="inventory-table" style="font-size:12px;">
         <tr><th>产品类别</th><th>起订量</th><th>工期</th><th>联系人</th></tr>
         <tr><td>荣誉产品（奖杯/奖牌/证书/牌匾/奖章）</td><td>1件起</td><td>7-10天</td><td>梁明宇</td></tr>
