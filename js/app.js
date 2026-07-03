@@ -120,6 +120,14 @@ function renderNewProducts() {
       </div>
     </div>
   `).join('');
+}
+
+/* ========== 横向滑动支持（触摸+鼠标） ========== */
+(function initScroll() {
+  const container = document.getElementById('newProductsList');
+  if (!container) return;
+  
+  // 触摸滑动
   let startX = 0, startY = 0, isDown = false;
   container.addEventListener('touchstart', (e) => {
     startX = e.touches[0].clientX;
@@ -140,24 +148,20 @@ function renderNewProducts() {
   }, {passive: false});
   container.addEventListener('touchend', () => { isDown = false; });
   
-  // 鼠标滚轮横向滑动（桌面端）
+  // 鼠标滚轮横向滑动
   container.addEventListener('wheel', (e) => {
-    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-      // 已经是横向滚轮，不处理
-      return;
-    }
-    if (Math.abs(e.deltaY) > 0) {
+    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
       e.preventDefault();
       container.scrollLeft += e.deltaY;
     }
   }, {passive: false});
   
-  // 鼠标拖拽滑动（桌面端）
+  // 鼠标拖拽滑动
   let mouseDown = false, mouseStartX = 0, mouseScrollLeft = 0;
   container.addEventListener('mousedown', (e) => {
     mouseDown = true;
     container.style.cursor = 'grabbing';
-    mouseStartX = e.pageX - container.offsetLeft;
+    mouseStartX = e.pageX;
     mouseScrollLeft = container.scrollLeft;
   });
   container.addEventListener('mouseleave', () => { mouseDown = false; container.style.cursor = 'grab'; });
@@ -165,13 +169,12 @@ function renderNewProducts() {
   container.addEventListener('mousemove', (e) => {
     if (!mouseDown) return;
     e.preventDefault();
-    const x = e.pageX - container.offsetLeft;
-    const walk = (x - mouseStartX) * 1.5;
+    const walk = (e.pageX - mouseStartX) * 1.5;
     container.scrollLeft = mouseScrollLeft - walk;
   });
   container.style.cursor = 'grab';
   container.style.userSelect = 'none';
-}
+})();
 
 
 /* ========== 产品列表 ========== */
@@ -418,41 +421,80 @@ function renderInventory() {
 
 /* ========== 定制产品 ========== */
 function renderCustomProducts() {
-  const grid = document.getElementById('customProductGrid');
-  const customProducts = allProducts.filter(p => p.is_customizable);
-  grid.innerHTML = customProducts.slice(0, 50).map(p => `
-    <div class="product-card" onclick="goDetail('${p.product_code_74}')">
-      <img src="images/${p.images[0]}" alt="${p.name}" class="product-card-img" onerror="this.onerror=null;this.outerHTML='<div class=\'no-img-placeholder\'>图片暂无</div>'">
-      <div class="product-card-body">
-        <div class="product-card-name">${p.name}</div>
-        <div class="product-card-meta">
-          <span class="product-card-price">¥${p.settlement_price.toFixed(2)}</span>
-        </div>
+  const container = document.getElementById('customContainer');
+  if (!container) return;
+  
+  container.innerHTML = `
+    <div class="detail-info">
+      <h3>定制服务</h3>
+      <p style="font-size:13px;color:#666;margin-bottom:12px;">联通文创产品支持以下定制服务，设计费已包含在定制报价中，不另收。</p>
+      
+      <table class="inventory-table" style="font-size:12px;">
+        <tr><th>产品类别</th><th>起订量</th><th>工期</th><th>联系人</th></tr>
+        <tr><td>荣誉产品（奖杯/奖牌/证书/牌匾/奖章）</td><td>1件起</td><td>7-10天</td><td>梁明宇</td></tr>
+        <tr><td>服装产品（T恤/POLO/外套/冲锋衣等）</td><td>1件起</td><td>15天</td><td>贾翔榆</td></tr>
+        <tr><td>办公用品（笔记本/笔/胶带/鼠标垫等）</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
+        <tr><td>生活用品（保温杯/杯具/雨伞/香囊等）</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
+        <tr><td>包袋类（帆布袋/无纺布袋/背包/胸包等）</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
+        <tr><td>数码配件（充电宝/充电头/数据线/支架等）</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
+        <tr><td>徽章类</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
+        <tr><td>冰箱贴/贴纸/胶带类</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
+        <tr><td>高端商务系列</td><td>500件起</td><td>视产品而定</td><td>石书宇</td></tr>
+        <tr><td>摆件类/盲盒类/手办类</td><td>1000件以上（分摊开模费）</td><td>视产品而定</td><td>石书宇</td></tr>
+        <tr><td>毛绒玩具类</td><td>1000件以上（分摊开模费）</td><td>视产品而定</td><td>石书宇</td></tr>
+      </table>
+      
+      <div style="margin-top:16px;font-size:13px;color:#333;">
+        <p><b>可定制内容：</b>LOGO更换、图案定制、包装定制、外观纹路/花纹定制等</p>
+        <p><b>设计费：</b>已包含在定制报价中，不另收</p>
+        <p><b>客户提供素材：</b>AI格式LOGO源文件（或其他高清格式）</p>
       </div>
     </div>
-  `).join('');
+  `;
 }
-
 
 /* ========== 对接人 ========== */
 function renderContacts() {
   const list = document.getElementById('contactList');
-  // 基于知识库中的对接人信息（简化展示）
   list.innerHTML = `
     <div class="contact-item">
-      <h4>智慧供应链产品采购</h4>
-      <p>各省分采购对接人，请联系当地智慧供应链负责人</p>
-      <p>采购下单、批量询价、合同签署</p>
+      <h4>本部及渠道对接人</h4>
+      <p><b>联通文创产品经理</b>：石书宇 shisy60@chinaunicom.cn</p>
+      <p><b>电商/联通APP对接人</b>：于丹妮 15810907624（线上订单售后）</p>
+      <p><b>自有渠道客户经理</b>：杨杰 18601109179（智慧供应链采购）</p>
+      <p><b>政企渠道客户经理</b>：丛婉 18611263526（政企客户采购）</p>
+      <p><b>代理商渠道客户经理</b>：李月 18611206388（泛智联盟采购）</p>
     </div>
+    
     <div class="contact-item">
-      <h4>退换货/售后服务</h4>
-      <p>产品质量问题、退换货申请</p>
-      <p>请联系各省分文创产品对接人或华盛公司客服</p>
+      <h4>定制对接人</h4>
+      <p><b>荣誉产品定制</b>（奖杯/奖牌/证书/牌匾/奖章）：梁明宇</p>
+      <p><b>服装产品定制</b>（T恤/POLO/外套等）：贾翔榆</p>
+      <p><b>其他文创定制</b>（办公/生活用品/包袋/数码等）：石书宇 shisy60@chinaunicom.cn</p>
     </div>
+    
     <div class="contact-item">
-      <h4>定制服务咨询</h4>
-      <p>LOGO定制、图案设计、包装定制</p>
-      <p>起订量500-1000件，工期视产品而定</p>
+      <h4>售后政策</h4>
+      <p><b>质量问题处理</b>：支持退换货</p>
+      <p><b>退换货流程</b>：联系本省华盛对接人进行退换货处理；线上APP订单请联系电商负责人（于丹妮 15810907624）</p>
+      <p style="color:#999;font-size:12px;">不主动提及"运费""7天无理由"等概念，淡化此类概念</p>
+    </div>
+    
+    <div class="contact-item">
+      <h4>采购下单流程</h4>
+      <p><b>智慧供应链（自有渠道）</b>：产品选品→需求沟通→华盛确认→客户下单→华盛发货→客户签收，7-30天</p>
+      <p><b>云POS（自营厅）</b>：云POS下单→华盛省分审批→华盛发货→营业厅扫描签收→产品入库，1-5天</p>
+      <p><b>云光慧企/政企渠道</b>：方案确定→申请货源→客户下单付款→华盛发货，1-5天</p>
+      <p><b>泛智联盟（代理商）</b>：提报方案→申请货源→客户下单→华盛发货，2-7天</p>
+    </div>
+    
+    <div class="contact-item">
+      <h4>物流配送</h4>
+      <p><b>物流方式</b>：京东物流</p>
+      <p><b>发货仓库</b>：北京总仓/昆山总仓/东莞总仓/成都总仓（就近发货）</p>
+      <p><b>同城时效</b>：北京隔日达</p>
+      <p><b>跨省时效</b>：参照京东物流官方时效（如北京到上海2-3天）</p>
+      <p><b>运费</b>：按联通内部结算规则执行</p>
     </div>
   `;
 }

@@ -85,13 +85,17 @@ img { max-width: 100%; display: block; }
 /* 新品横向滚动 */
 .horizontal-scroll {
   display: flex; gap: 12px; overflow-x: auto;
-  padding: 0 20px 8px; scroll-snap-type: x mandatory;
+  padding: 0 20px 8px;
   -webkit-overflow-scrolling: touch;
-  cursor: grab; user-select: none; -webkit-user-select: none;
+  cursor: grab; 
+  user-select: none; -webkit-user-select: none;
+  scrollbar-width: none; -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  touch-action: pan-x;
 }
 .horizontal-scroll::-webkit-scrollbar { display: none; }
 .new-card {
-  flex: 0 0 160px; scroll-snap-align: start;
+  flex: 0 0 160px;
   background: #fff; border-radius: 12px;
   overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   position: relative;
