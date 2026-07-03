@@ -429,9 +429,53 @@ function renderCustomProducts() {
       <h3>定制服务</h3>
       <p style="font-size:13px;color:#666;margin-bottom:12px;">联通文创产品支持以下定制服务，设计费已包含在定制报价中，不另收。</p>
       
-      <div style="background: linear-gradient(135deg, #E60012, #ff1a35); color: #fff; border-radius: 12px; padding: 16px; margin-bottom: 16px; text-align: center;" onclick="window.open('https://q2nrm64t6zvzo.ok.kimi.link','_blank')">
-        <div style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">📋 定制需求汇总表</div>
-        <div style="font-size: 12px; opacity: 0.9;">点击查看联通文创定制产品详细清单 →</div>
+      <div style="background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+        <h4 style="color:#E60012;margin-top:0;margin-bottom:12px;font-size:15px;">一、产品定制流程</h4>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+          <span style="background:#f5f5f5;padding:6px 10px;border-radius:6px;font-size:12px;">选品</span>
+          <span style="color:#999;font-size:12px;">→</span>
+          <span style="background:#f5f5f5;padding:6px 10px;border-radius:6px;font-size:12px;">需求确认<br><small style="color:#999">数量及价格</small></span>
+          <span style="color:#999;font-size:12px;">→</span>
+          <span style="background:#E60012;color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;">设计<br><small>7天</small></span>
+          <span style="color:#999;font-size:12px;">→</span>
+          <span style="background:#f5f5f5;padding:6px 10px;border-radius:6px;font-size:12px;">设计确认<br><small>1-3天</small></span>
+          <span style="color:#999;font-size:12px;">→</span>
+          <span style="background:#E60012;color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;">打样<br><small>7-30天</small></span>
+          <span style="color:#999;font-size:12px;">→</span>
+          <span style="background:#f5f5f5;padding:6px 10px;border-radius:6px;font-size:12px;">打样确认<br><small>1-3天</small></span>
+          <span style="color:#999;font-size:12px;">→</span>
+          <span style="background:#E60012;color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;">大货生产<br><small>15-35天</small></span>
+          <span style="color:#999;font-size:12px;">→</span>
+          <span style="background:#f5f5f5;padding:6px 10px;border-radius:6px;font-size:12px;">到货</span>
+        </div>
+        
+        <h4 style="color:#E60012;margin-top:16px;margin-bottom:12px;font-size:15px;">时间汇总</h4>
+        <table class="inventory-table" style="font-size:12px;margin-bottom:12px;">
+          <tr style="background:#E60012;color:#fff;"><th>链路类型</th><th>适用产品</th><th>各环节时间</th><th>总计</th></tr>
+          <tr><td><b>快速链路</b></td><td>帆布袋、杯子等简单产品</td><td>设计7天 + 确认1天 + 打样7天 + 确认1天 + 大货15天</td><td><b style="color:#E60012">约31天（约1个月）</b></td></tr>
+          <tr><td><b>标准链路</b></td><td>常规定制产品</td><td>设计7天 + 确认2天 + 打样15天 + 确认2天 + 大货25天</td><td><b style="color:#E60012">约51天（约7-8周）</b></td></tr>
+          <tr><td><b>复杂链路</b></td><td>玩具、玩偶、徽章类</td><td>设计7天 + 确认3天 + 打样30天 + 确认3天 + 大货35天</td><td><b style="color:#E60012">约78天（约2.5个月）</b></td></tr>
+        </table>
+        <p style="font-size:11px;color:#999;margin:0;">*注：以上生产周期不含物流运输时间（物流一般2-5天）。工期差异主要在"打样"和"大货生产"环节，设计环节固定7天。</p>
+      </div>
+      
+      <div style="background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+        <h4 style="color:#E60012;margin-top:0;margin-bottom:12px;font-size:15px;">二、产品采购链路</h4>
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;font-size:13px;">
+          <span style="background:#f5f5f5;padding:8px 12px;border-radius:8px;">需求方（客户）</span>
+          <span style="color:#999;">→</span>
+          <span style="background:#E60012;color:#fff;padding:8px 12px;border-radius:8px;">联通公司<br><small style="opacity:0.9">智慧供应链/电商APP/微零售</small></span>
+          <span style="color:#999;">→</span>
+          <span style="background:#f5f5f5;padding:8px 12px;border-radius:8px;">联通华盛公司<br><small>（工厂）</small></span>
+        </div>
+      </div>
+      
+      <div style="background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+        <h4 style="color:#E60012;margin-top:0;margin-bottom:12px;font-size:15px;">三、物流链路</h4>
+        <div style="font-size:13px;color:#333;">
+          <p style="margin:4px 0;"><span style="display:inline-block;width:20px;text-align:center;color:#E60012;font-weight:bold;">①</span> 直发到需求方（客户）处</p>
+          <p style="margin:4px 0;"><span style="display:inline-block;width:20px;text-align:center;color:#E60012;font-weight:bold;">②</span> 直发到联通公司处</p>
+        </div>
       </div>
       
       <table class="inventory-table" style="font-size:12px;">
