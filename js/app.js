@@ -1,736 +1,519 @@
-/* 产品数据通过 fetch 加载，不内联在此文件中 */
+/* 全局数据 */
 let allProducts = [];
+let currentCategory = '全部';
+let currentFilters = { category: '全部', warehouse: '全部', stock: '全部' };
+let pageStack = [];
+
+/* ========== 初始化 ========== */
+document.addEventListener('DOMContentLoaded', () => {
+  loadData();
+  initBottomNav();
+  initLazyLoad();
+  initTouchFeedback();
+  initBackToTop();
+  initAIChat();
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('backToTop');
+    if (btn) btn.classList.toggle('visible', window.scrollY > 200);
+  });
+});
 
 /* ========== 数据加载 ========== */
 async function loadData() {
   try {
-    const response = await fetch("./data/products.json");
-    if (!response.ok) throw new Error("HTTP " + response.status);
-    allProducts = await response.json();
+    const res = await fetch('data/products.json');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    allProducts = await res.json();
     renderNewProducts();
-    console.log("数据加载完成:", allProducts.length, "个SKU");
+    renderCategories();
+    renderQuickActions();
   } catch (e) {
-    console.error("数据加载失败:", e);
-    document.getElementById("newProductsList").innerHTML = '<div class="empty-state"><div class="empty-state-text">数据加载失败，请刷新重试</div></div>';
+    console.error('加载数据失败:', e);
+    document.getElementById('newProducts').innerHTML =
+      '<p class="loading">加载失败，请刷新页面重试</p>';
   }
 }
 
-/* ========== 页面路由 ========== */
-// 页面历史栈，用于返回上一步
-let pageHistory = [];
-
-function showPage(pageId) {
-  // 记录当前页面到历史栈（避免重复记录同一页面）
-  const currentActive = document.querySelector('.page.active');
-  if (currentActive) {
-    const currentId = currentActive.id.replace('page-', '');
-    if (currentId !== pageId && currentId !== 'detail') {
-      pageHistory.push(currentId);
-      // 最多保留10条历史记录
-      if (pageHistory.length > 10) pageHistory.shift();
-    }
-  }
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + pageId).classList.add('active');
-  window.scrollTo(0, 0);
-}
-
-function goBack() {
-  if (pageHistory.length > 0) {
-    const prevPage = pageHistory.pop();
-    showPage(prevPage);
-    updateNav(prevPage);
-    if (prevPage === 'home') renderNewProducts();
-    if (prevPage === 'list') applyFilter();
-    if (prevPage === 'inventory') renderInventory();
-    if (prevPage === 'custom') renderCustomProducts();
-  } else {
-    goHome();
-  }
-}
-function showPage(pageId) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + pageId).classList.add('active');
-  window.scrollTo(0, 0);
-}
-
-function goHome() {
-  showPage('home');
-  updateNav('home');
-  renderNewProducts();
-}
-
-function goCategory(cat) {
-  showPage('list');
-  updateNav('list');
-  document.getElementById('filterCategory').value = cat;
-  applyFilter();
-}
-
-function goInventory() {
-  showPage('inventory');
-  updateNav('inventory');
-  renderInventory();
-}
-
-function goCustom() {
-  showPage('custom');
-  updateNav('custom');
-  renderCustomProducts();
-}
-
-function goContact() {
-  showPage('contact');
-  updateNav('contact');
-  renderContacts();
-}
-
-function updateNav(active) {
-  document.querySelectorAll('.bottom-nav .nav-item').forEach(item => item.classList.remove('active'));
-  const map = { home: 0, list: 1, inventory: 2, custom: 3, contact: 3 };
-  const idx = map[active];
-  if (idx !== undefined) {
-    document.querySelectorAll('.bottom-nav .nav-item')[idx]?.classList.add('active');
-  }
-}
-
-/* ========== 新品专区 ========== */
+/* ========== 新品专区 (transform滑动) ========== */
 function renderNewProducts() {
-  const container = document.getElementById('newProductsList');
-  let newProducts = allProducts.filter(p => p.is_new);
-  const score = p => {
-    const hasImg = p.images.length > 0 ? 2 : 0;
-    const hasStock = p.inventory.total > 50 ? 2 : p.inventory.total > 0 ? 1 : 0;
-    return hasImg * 10 + hasStock;
-  };
-  newProducts.sort((a, b) => score(b) - score(a));
-  newProducts = newProducts.slice(0, 21);
-  if (!newProducts.length) {
-    container.innerHTML = '<div class="empty-state"><div class="empty-state-text">暂无新品</div></div>';
-    return;
-  }
-  container.innerHTML = newProducts.map(p => `
-    <div class="new-card" onclick="goDetail('${p.product_code_74}')">
-      <span class="new-tag">NEW</span>
-      ${p.images[0] ? `<img src="images/${p.images[0]}" alt="${p.name}" class="new-card-img" onerror="this.onerror=null;this.outerHTML='<div class='no-img-placeholder'>图片暂无</div>'">` : `<div class="no-img-placeholder">图片暂无</div>`}
-      <div class="new-card-body">
-        <div class="new-card-name">${p.name}</div>
-        <div class="new-card-price">¥${p.settlement_price.toFixed(2)}</div>
-        <div class="new-card-code">${p.product_code_74}</div>
-      </div>
-    </div>
-  `).join('');
+  const container = document.getElementById('newProducts');
+  if (!container) return;
+  const newProducts = allProducts.filter(p => p.is_new || p.is_new_excel).slice(0, 20);
+  if (!newProducts.length) { container.innerHTML = '<p class="loading">暂无新品</p>'; return; }
+
+  const wrap = document.createElement('div');
+  wrap.className = 'new-scroll-wrap';
+  const track = document.createElement('div');
+  track.className = 'new-track';
+  track.innerHTML = newProducts.map(p => renderNewCard(p)).join('');
+  wrap.appendChild(track);
+  container.innerHTML = '';
+  container.appendChild(wrap);
+
+  initNewScroll(wrap, track);
 }
 
-/* ========== 横向滑动支持（触摸+鼠标） ========== */
-(function initScroll() {
-  const container = document.getElementById('newProductsList');
-  if (!container) return;
-  
-  let isDown = false, startX = 0, scrollStart = 0;
-  let velX = 0, lastX = 0, lastTime = 0, rafId = null;
-  
-  // 统一滚动函数（带惯性）
-  function momentumScroll() {
-    if (Math.abs(velX) < 0.5) { velX = 0; return; }
-    container.scrollLeft += velX;
-    velX *= 0.92; // 摩擦力
-    rafId = requestAnimationFrame(momentumScroll);
-  }
-  
-  // 触摸滑动
-  container.addEventListener('touchstart', (e) => {
-    cancelAnimationFrame(rafId); velX = 0;
-    startX = e.touches[0].clientX;
-    lastX = startX; lastTime = Date.now();
-    isDown = true;
-  }, {passive: true});
-  
-  container.addEventListener('touchmove', (e) => {
-    if (!isDown) return;
-    const x = e.touches[0].clientX;
-    const dx = lastX - x;
-    container.scrollLeft += dx;
-    // 记录速度用于惯性
-    const now = Date.now();
-    const dt = now - lastTime;
-    if (dt > 0) velX = dx / dt * 16;
-    lastX = x; lastTime = now;
-  }, {passive: true});
-  
-  container.addEventListener('touchend', () => {
-    isDown = false;
-    if (Math.abs(velX) > 2) momentumScroll();
-  });
-  
-  // 鼠标滚轮横向滑动（放大滚动量）
-  container.addEventListener('wheel', (e) => {
-    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-      e.preventDefault();
-      container.scrollLeft += e.deltaY * 2.5;
-    }
-  }, {passive: false});
-  
-  // 鼠标拖拽滑动
-  let mouseDown = false, mouseStartX = 0, mouseScrollLeft = 0;
-  container.addEventListener('mousedown', (e) => {
-    mouseDown = true;
-    container.style.cursor = 'grabbing';
-    mouseStartX = e.pageX;
-    mouseScrollLeft = container.scrollLeft;
-  });
-  container.addEventListener('mouseleave', () => { mouseDown = false; container.style.cursor = 'grab'; });
-  container.addEventListener('mouseup', () => { mouseDown = false; container.style.cursor = 'grab'; });
-  container.addEventListener('mousemove', (e) => {
-    if (!mouseDown) return;
-    e.preventDefault();
-    const walk = (e.pageX - mouseStartX) * 2;
-    container.scrollLeft = mouseScrollLeft - walk;
-  });
-  container.style.cursor = 'grab';
-  container.style.userSelect = 'none';
-})();
+function renderNewCard(p) {
+  const img = p.images?.length ? p.images[0] : 'placeholder.png';
+  const tag = p.is_new ? '<span class="new-tag">新品</span>' : '';
+  return `<div class="new-card" onclick="goDetail('${p.product_code_74}')" data-code="${p.product_code_74}">
+    <div class="new-card-img-wrap">
+      <div class="skeleton"></div>
+      <img class="lazy-img" data-src="images/${img}" alt="${p.name}" loading="lazy">
+      ${tag}
+    </div>
+    <div class="new-card-body">
+      <div class="new-card-name">${p.name}</div>
+      <div class="new-card-price">${p.price ? '¥'+p.price : '面议'}</div>
+      <div class="new-card-code">${p.product_code_74}</div>
+    </div>
+  </div>`;
+}
 
+/* Transform-based 滑动 */
+function initNewScroll(wrap, track) {
+  let isDown = false, startX = 0, startLeft = 0;
+  let velocity = 0, lastX = 0, lastTime = 0;
+  let rafId = null, autoSnapId = null;
+  const gap = 12, cardW = 170, padding = 16;
+  let maxTrans = 0;
+
+  function getMaxTrans() {
+    const cardCount = track.children.length;
+    const totalW = cardCount * cardW + (cardCount - 1) * gap;
+    const wrapW = wrap.clientWidth;
+    return Math.min(0, wrapW - totalW - padding * 2);
+  }
+
+  function setTrans(x) {
+    maxTrans = getMaxTrans();
+    x = Math.max(maxTrans, Math.min(0, x));
+    track.style.transform = `translateX(${x}px)`;
+  }
+
+  function onDown(x) {
+    isDown = true; startX = x; startLeft = getTrans();
+    velocity = 0; lastX = x; lastTime = Date.now();
+    track.style.transition = 'none';
+    if (rafId) cancelAnimationFrame(rafId);
+    if (autoSnapId) cancelAnimationFrame(autoSnapId);
+  }
+
+  function onMove(x) {
+    if (!isDown) return;
+    const now = Date.now(), dt = now - lastTime || 16;
+    velocity = (x - lastX) / dt * 16;
+    lastX = x; lastTime = now;
+    const dx = x - startX;
+    maxTrans = getMaxTrans();
+    let cur = startLeft + dx;
+    if (cur > 0) cur = dx * 0.4; /* 边缘弹性 */
+    else if (cur < maxTrans) cur = maxTrans + (dx - (maxTrans - startLeft)) * 0.4;
+    setTrans(cur);
+  }
+
+  function onUp() {
+    if (!isDown) return;
+    isDown = false;
+    const cur = getTrans();
+    maxTrans = getMaxTrans();
+    /* 边缘回弹 */
+    if (cur > 0 || cur < maxTrans) {
+      const target = cur > 0 ? 0 : maxTrans;
+      track.style.transition = 'transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94)';
+      setTrans(target);
+      return;
+    }
+    /* 惯性滚动 */
+    let pos = cur, v = velocity * 8;
+    function inertia() {
+      v *= 0.93; pos += v;
+      if (Math.abs(v) < 0.3) { snapToCard(); return; }
+      maxTrans = getMaxTrans();
+      if (pos > 0) { pos = 0; v = -v * 0.3; }
+      if (pos < maxTrans) { pos = maxTrans; v = -v * 0.3; }
+      setTrans(pos);
+      rafId = requestAnimationFrame(inertia);
+    }
+    inertia();
+  }
+
+  function snapToCard() {
+    const cur = getTrans();
+    maxTrans = getMaxTrans();
+    if (cur > 0) { setTrans(0); return; }
+    if (cur < maxTrans) { setTrans(maxTrans); return; }
+    const totalStep = cardW + gap;
+    const idx = Math.round(-cur / totalStep);
+    const target = -idx * totalStep;
+    track.style.transition = 'transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94)';
+    setTrans(Math.max(maxTrans, Math.min(0, target)));
+  }
+
+  function getTrans() {
+    const m = track.style.transform.match(/translateX\((-?[\d.]+)px\)/);
+    return m ? parseFloat(m[1]) : 0;
+  }
+
+  wrap.addEventListener('mousedown', e => { e.preventDefault(); onDown(e.clientX); });
+  window.addEventListener('mousemove', e => { if (isDown) onMove(e.clientX); });
+  window.addEventListener('mouseup', onUp);
+  wrap.addEventListener('touchstart', e => { onDown(e.touches[0].clientX); }, {passive:true});
+  wrap.addEventListener('touchmove', e => { if (isDown) onMove(e.touches[0].clientX); }, {passive:true});
+  wrap.addEventListener('touchend', onUp);
+  wrap.addEventListener('touchcancel', onUp);
+  window.addEventListener('resize', () => { setTrans(getTrans()); });
+}
+
+/* ========== 分类 ========== */
+function renderCategories() {
+  const container = document.getElementById('categoryGrid');
+  if (!container) return;
+  const counts = {};
+  allProducts.forEach(p => { counts[p.category] = (counts[p.category] || 0) + 1; });
+  const cats = ['新春吉祥物', '冬季奥运会', '荣誉体系', '党建系列', '合作IP', '万兆数字产品', '成都大运会', '杭州亚运会', '红色教育', '体育用品', '世界杯周边', '世界杯吉祥物'];
+  const icons = {'新春吉祥物':'🐲','冬季奥运会':'❄️','荣誉体系':'🏆','党建系列':'🚩','合作IP':'🤝','万兆数字产品':'📱','成都大运会':'🏃','杭州亚运会':'🏅','红色教育':'📚','体育用品':'🏋️','世界杯周边':'⚽','世界杯吉祥物':'🏆'};
+  container.innerHTML = cats.map(cat => `<div class="category-card" onclick="goCategory('${cat}')"><div class="category-icon">${icons[cat]||'📦'}</div><div class="category-name">${cat}</div><div class="category-count">${counts[cat]||0}款</div></div>`).join('');
+}
+
+/* ========== 快捷功能 ========== */
+function renderQuickActions() {
+  const container = document.getElementById('quickActions');
+  if (!container) return;
+  const actions = [
+    {icon:'🆕',text:'新品查询',fn:'scrollToNew()'},
+    {icon:'📋',text:'分类浏览',fn:'showPage("home")'}, /* 分类浏览滚动到分类区 */
+    {icon:'🔍',text:'库存查询',fn:'showPage("inventory")'},
+    {icon:'🤖',text:'AI小助手',fn:'toggleAI()'},
+    {icon:'📦',text:'产品总览',fn:'goCategory("全部")'},
+    {icon:'⚙️',text:'定制服务',fn:'showPage("custom")'}
+  ];
+  container.innerHTML = actions.map(a => `<div class="quick-btn" onclick="${a.fn}"><div class="quick-icon">${a.icon}</div><div>${a.text}</div></div>`).join('');
+}
 
 /* ========== 产品列表 ========== */
+function goCategory(category) {
+  pageStack.push({page:'home',filters:{...currentFilters}});
+  currentFilters.category = category;
+  showPage('productList');
+  applyFilter();
+  const header = document.querySelector('.page-back-title');
+  if (header) header.textContent = category === '全部' ? '全部产品' : category;
+}
+
 function applyFilter() {
-  const cat = document.getElementById('filterCategory').value;
-  const price = document.getElementById('filterPrice').value;
-  const stock = document.getElementById('filterStock').value;
-  const sort = document.getElementById('sortBy').value;
-  const search = (document.getElementById('globalSearch').value || '').trim().toLowerCase();
-
-  let results = [...allProducts];
-
-  // 分类筛选
-  if (cat) results = results.filter(p => p.category === cat);
-
-  // 价格筛选
-  if (price) {
-    if (price === '0-50') results = results.filter(p => p.settlement_price <= 50);
-    else if (price === '50-100') results = results.filter(p => p.settlement_price > 50 && p.settlement_price <= 100);
-    else if (price === '100-200') results = results.filter(p => p.settlement_price > 100 && p.settlement_price <= 200);
-    else if (price === '200-500') results = results.filter(p => p.settlement_price > 200 && p.settlement_price <= 500);
-    else if (price === '500+') results = results.filter(p => p.settlement_price > 500);
+  const { category, warehouse, stock } = currentFilters;
+  let filtered = [...allProducts];
+  if (category !== '全部') filtered = filtered.filter(p => p.category === category);
+  if (warehouse !== '全部') {
+    const wh = warehouse === '华北' ? 'wh_hb' : warehouse === '华东' ? 'wh_hd' : 'wh_gz';
+    filtered = filtered.filter(p => p[wh] > 0);
   }
+  if (stock === '现货') filtered = filtered.filter(p => p.total_stock > 0);
+  if (stock === '低库存') filtered = filtered.filter(p => p.total_stock > 0 && p.total_stock < 50);
 
-  // 库存筛选
-  if (stock) {
-    if (stock === 'in') results = results.filter(p => p.inventory.total > 50);
-    else if (stock === 'low') results = results.filter(p => p.inventory.total > 0 && p.inventory.total <= 50);
-    else if (stock === 'out') results = results.filter(p => p.inventory.total === 0);
-  }
+  const container = document.getElementById('productList');
+  if (!container) return;
+  const countEl = document.querySelector('.list-count');
+  if (countEl) countEl.textContent = `共 ${filtered.length} 款产品`;
+  if (!filtered.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-text">暂无相关产品</div></div>'; return; }
 
-  // 搜索
-  if (search) {
-    results = results.filter(p =>
-      p.name.toLowerCase().includes(search) ||
-      p.product_code_74.includes(search) ||
-      p.product_code_69.includes(search)
-    );
-  }
-
-  // 排序：有图+库存充足 > 有图+库存紧张 > 无图
-  const score = p => {
-    const hasImg = p.images.length > 0 ? 2 : 0;
-    const hasStock = p.inventory.total > 50 ? 2 : p.inventory.total > 0 ? 1 : 0;
-    return hasImg * 10 + hasStock;
-  };
-  if (sort === 'price-asc') results.sort((a, b) => a.settlement_price - b.settlement_price);
-  else if (sort === 'price-desc') results.sort((a, b) => b.settlement_price - a.settlement_price);
-  else if (sort === 'stock') results.sort((a, b) => b.inventory.total - a.inventory.total);
-  else results.sort((a, b) => score(b) - score(a) || a.product_code_74.localeCompare(b.product_code_74));
-
-  filteredProducts = results;
-  renderProductGrid(results);
-  document.getElementById('listCount').textContent = `共 ${results.length} 款产品`;
+  container.innerHTML = filtered.map(p => renderProductCard(p)).join('');
+  initTouchFeedback('.product-card');
+  initLazyImages(container);
 }
 
-function renderProductGrid(products) {
-  const grid = document.getElementById('productGrid');
-  if (!products.length) {
-    grid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><div class="empty-state-icon">📭</div><div class="empty-state-text">没有找到符合条件的产品</div></div>';
-    return;
-  }
-  grid.innerHTML = products.slice(0, 200).map(p => {
-    const stockClass = p.inventory.total > 50 ? 'stock-in' : p.inventory.total > 0 ? 'stock-low' : 'stock-out';
-    const stockText = p.inventory.total > 50 ? '库存充足' : p.inventory.total > 0 ? '库存紧张' : '暂无库存';
-    return `
-    <div class="product-card" onclick="goDetail('${p.product_code_74}')">
-      ${p.images[0] ? `<img src="images/${p.images[0]}" alt="${p.name}" class="product-card-img" onerror="this.onerror=null;this.outerHTML='<div class=\'no-img-placeholder\'>图片暂无</div>'">` : `<div class="no-img-placeholder">图片暂无</div>`}
-      <div class="product-card-body">
-        <div class="product-card-name">${p.name}</div>
-        <div class="product-card-meta">
-          <span class="product-card-price">¥${p.settlement_price.toFixed(2)}</span>
-          <span class="product-card-code">${p.product_code_74}</span>
-        </div>
-        <span class="product-card-stock ${stockClass}">${stockText}</span>
-      </div>
+function renderProductCard(p) {
+  const img = p.images?.length ? p.images[0] : 'placeholder.png';
+  const stockClass = p.total_stock > 20 ? 'stock-in' : p.total_stock > 0 ? 'stock-low' : 'stock-out';
+  const stockText = p.total_stock > 20 ? '现货充足' : p.total_stock > 0 ? '库存紧张' : '缺货';
+  return `<div class="product-card" onclick="goDetail('${p.product_code_74}')" data-code="${p.product_code_74}">
+    <div class="product-img-wrap">
+      <div class="skeleton"></div>
+      <img class="lazy-img" data-src="images/${img}" alt="${p.name}" loading="lazy">
     </div>
-    `;
-  }).join('');
-}
-
-function handleSearch(val) {
-  if (!val || val.length < 2) return;
-  goCategory('');
-  document.getElementById('globalSearch').value = val;
-  applyFilter();
-}
-
-function doSearch() {
-  applyFilter();
-  goCategory('');
+    <div class="product-card-body">
+      <div class="product-card-name">${p.name}</div>
+      <div class="product-card-meta">
+        <span class="product-card-price">${p.price ? '¥'+p.price : '面议'}</span>
+        <span class="product-card-code">${p.product_code_74}</span>
+      </div>
+      <span class="product-card-stock ${stockClass}">${stockText}</span>
+    </div>
+  </div>`;
 }
 
 /* ========== 产品详情 ========== */
 function goDetail(code) {
-  currentProduct = allProducts.find(p => p.product_code_74 === code);
-  if (!currentProduct) return;
-  showPage('detail');
-  updateNav('list');
-  renderDetail();
-}
-function goDetail(code) {
-  currentProduct = allProducts.find(p => p.product_code_74 === code);
-  if (!currentProduct) return;
-  showPage('detail');
-  updateNav('list');
-  renderDetail();
+  pageStack.push({page:document.querySelector('.page.active')?.id||'home',filters:{...currentFilters}});
+  const p = allProducts.find(x => x.product_code_74 === code);
+  if (!p) return;
+  const container = document.getElementById('productDetail');
+  if (!container) return;
+  container.innerHTML = renderDetail(p);
+  showPage('productDetail');
+  initDetailCarousel(container);
+  initTouchFeedback('.detail-action-btn');
+  window.scrollTo(0,0);
 }
 
-function renderDetail() {
-  const p = currentProduct;
-  const container = document.getElementById('detailContainer');
-
+function renderDetail(p) {
+  const imgs = (p.images||[]).map(img => `<img src="images/${img}" alt="${p.name}">`).join('');
   const tags = [];
   if (p.is_new) tags.push('<span class="detail-tag tag-new">新品</span>');
   if (p.category) tags.push(`<span class="detail-tag tag-category">${p.category}</span>`);
   if (p.is_customizable) tags.push('<span class="detail-tag tag-custom">可定制</span>');
-
-  // 生成轮播图HTML
-  let carouselHtml = '';
-  if (p.images.length > 0) {
-      const slides = p.images.map((img, i) => `
-          <div class="detail-carousel-slide" style="display:${i===0?'flex':'none'};">
-              <img src="images/${img}" alt="${p.name}" onerror="this.style.display='none'">
-          </div>
-      `).join('');
-      const dots = p.images.map((_, i) => `
-          <div class="detail-carousel-dot ${i===0?'active':''}" onclick="showSlide(${i})"></div>
-      `).join('');
-      carouselHtml = `
-          <div class="detail-carousel" id="detailCarousel">
-              <div class="detail-back" onclick="goBack()">‹</div>
-              ${p.images.length > 1 ? `<div class="detail-carousel-arrow prev" onclick="prevSlide()">‹</div>` : ''}
-              ${p.images.length > 1 ? `<div class="detail-carousel-arrow next" onclick="nextSlide()">›</div>` : ''}
-              <div class="detail-carousel-track" id="carouselTrack">
-                  ${slides}
-              </div>
-              ${p.images.length > 1 ? `<div class="detail-carousel-dots">${dots}</div>` : ''}
-          </div>
-      `;
-  } else {
-      carouselHtml = `
-          <div class="detail-carousel" style="min-height:300px;display:flex;align-items:center;justify-content:center;background:#f8f8f8;">
-              <div class="detail-back" onclick="goBack()">‹</div>
-              <span style="color:#ccc;font-size:14px;">图片暂无</span>
-          </div>
-      `;
-  }
-
-  container.innerHTML = `
-    <div class="detail-img-wrap">
-      ${carouselHtml}
+  const whMap = {'wh_hd':'华东','wh_hb':'华北','wh_gz':'广州'};
+  const invRows = ['wh_hd','wh_hb','wh_gz'].map(k => `<tr><th>${whMap[k]}</th><td>${p[k]||0}</td></tr>`).join('');
+  return `<div class="detail-container">
+    <div class="detail-carousel">
+      <div class="detail-carousel-track">${imgs}</div>
+      <div class="detail-carousel-dots"></div>
+      <div class="detail-back" onclick="goBack()">←</div>
+      ${p.images.length>1 ? '<div class="detail-carousel-arrow prev" onclick="prevSlide()">‹</div><div class="detail-carousel-arrow next" onclick="nextSlide()">›</div>' : ''}
     </div>
     <div class="detail-body">
       <div class="detail-name">${p.name}</div>
       <div class="detail-tags">${tags.join('')}</div>
-
       <div class="detail-price-row">
-        <div class="detail-price-item">
-          <div class="detail-price-label">结算价</div>
-          <div class="detail-price-value">¥${p.settlement_price.toFixed(2)}</div>
-        </div>
-        <div class="detail-price-item">
-          <div class="detail-price-label">零售价</div>
-          <div class="detail-price-value">¥${p.retail_price.toFixed(2)}</div>
-        </div>
+        <div class="detail-price-item"><div class="detail-price-label">批发价</div><div class="detail-price-value">${p.price ? '¥'+p.price : '面议'}</div></div>
+        <div class="detail-price-item"><div class="detail-price-label">零售价</div><div class="detail-price-value purchase">${p.purchase_price ? '¥'+p.purchase_price : '面议'}</div></div>
       </div>
-
       <div class="detail-info">
         <h3>产品信息</h3>
-        <div class="info-row"><span class="info-label">74编码</span><span class="info-value code">${p.product_code_74}</span></div>
-        <div class="info-row"><span class="info-label">69条码</span><span class="info-value code">${p.product_code_69 || '-'}</span></div>
-        <div class="info-row"><span class="info-label">分类</span><span class="info-value">${p.category || '-'} ${p.sub_category ? '/ ' + p.sub_category : ''}</span></div>
-        <div class="info-row"><span class="info-label">规格/材质</span><span class="info-value">${p.spec || '-'}</span></div>
-        ${p.is_customizable ? `<div class="info-row"><span class="info-label">起订量</span><span class="info-value">${p.moq || '500-1000件'}</span></div>` : ''}
+        <div class="info-row"><span class="info-label">74码</span><span class="info-value code">${p.product_code_74}</span></div>
+        <div class="info-row"><span class="info-label">产品编号</span><span class="info-value">${p.product_code || '-'}</span></div>
+        <div class="info-row"><span class="info-label">品类</span><span class="info-value">${p.category}</span></div>
+        <div class="info-row"><span class="info-label">材质</span><span class="info-value">${p.material||'详见说明'}</span></div>
+        <div class="info-row"><span class="info-label">规格</span><span class="info-value">${p.spec||'详见说明'}</span></div>
+        <div class="info-row"><span class="info-label">是否可定制</span><span class="info-value">${p.is_customizable?'是':'否'}</span></div>
+        <div class="info-row"><span class="info-label">库存总量</span><span class="info-value">${p.total_stock}</span></div>
+        <h3 style="margin-top:20px">分仓库存</h3>
+        <table class="inventory-table"><tbody>${invRows}</tbody></table>
       </div>
-
-      <div class="detail-info">
-        <h3>库存分布</h3>
-        <table class="inventory-table">
-          <tr><th>北京</th><th>昆山</th><th>东莞</th><th>成都</th><th>小库</th><th>总计</th></tr>
-          <tr><td>${p.inventory.beijing}</td><td>${p.inventory.kunshan}</td><td>${p.inventory.dongguan}</td><td>${p.inventory.chengdu}</td><td>${p.inventory.xiaoku}</td><td style="color:#E60012;font-weight:700;">${p.inventory.total}</td></tr>
-        </table>
-      </div>
-
-      ${p.description ? `
-      <div class="detail-desc">
-        <h3>产品描述</h3>
-        <p>${p.description}</p>
-      </div>
-      ` : ''}
     </div>
-
     <div class="detail-actions">
-      <button class="detail-action-btn btn-secondary" onclick="copyCode('${p.product_code_74}')">复制编码</button>
-      <button class="detail-action-btn btn-primary" onclick="generatePoster('${p.product_code_74}')">生成海报</button>
+      <div class="detail-action-btn btn-secondary" onclick="goBack()">返回</div>
+      <div class="detail-action-btn btn-primary" onclick="showPage('contact')">联系采购</div>
     </div>
-  `;
+  </div>`;
 }
 
-function copyCode(code) {
-  navigator.clipboard.writeText(code).then(() => alert('编码已复制: ' + code));
-}
-
-function generatePoster(code) {
-  const p = allProducts.find(x => x.product_code_74 === code);
-  if (!p) return;
-  alert(`海报功能开发中...\n产品: ${p.name}\n编码: ${p.product_code_74}\n价格: ¥${p.settlement_price}`);
+function initDetailCarousel(container) {
+  const track = container.querySelector('.detail-carousel-track');
+  const dots = container.querySelector('.detail-carousel-dots');
+  if (!track || !dots || track.children.length <= 1) return;
+  const slides = track.children;
+  let idx = 0;
+  dots.innerHTML = Array.from(slides).map((_,i) => `<div class="detail-carousel-dot ${i===0?'active':''}"></div>`).join('');
+  window.currentSlide = idx;
+  window.nextSlide = () => { idx=(idx+1)%slides.length; update(); };
+  window.prevSlide = () => { idx=(idx-1+slides.length)%slides.length; update(); };
+  function update() { track.style.transform=`translateX(-${idx*100}%)`; dots.querySelectorAll('.detail-carousel-dot').forEach((d,i)=>d.classList.toggle('active',i===idx)); }
+  let startX=0,curX=0,swiping=false;
+  track.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;swiping=true;},{passive:true});
+  track.addEventListener('touchmove',e=>{if(!swiping)return;curX=e.touches[0].clientX;},{passive:true});
+  track.addEventListener('touchend',()=>{if(!swiping)return;swiping=false;const dx=curX-startX;if(Math.abs(dx)>50){dx>0?window.prevSlide():window.nextSlide();}});
+  track.addEventListener('touchcancel',()=>{swiping=false;});
 }
 
 /* ========== 库存查询 ========== */
+function renderInventory() {
+  const container = document.getElementById('inventoryList');
+  if (!container) return;
+  const warehouse = currentFilters.warehouse || '全部';
+  let filtered = [...allProducts];
+  if (warehouse !== '全部') {
+    const wh = warehouse === '华北' ? 'wh_hb' : warehouse === '华东' ? 'wh_hd' : 'wh_gz';
+    filtered = filtered.filter(p => p[wh] > 0);
+  }
+  filtered.sort((a,b) => b.total_stock - a.total_stock);
+  container.innerHTML = filtered.map(p => `<div class="inv-item" onclick="goDetail('${p.product_code_74}')" data-code="${p.product_code_74}">
+    <img class="inv-item-img" src="${p.images?.length?'images/'+p.images[0]:'placeholder.png'}" alt="${p.name}">
+    <div class="inv-item-info"><div class="inv-item-name">${p.name}</div><div class="inv-item-code">${p.product_code_74}</div></div>
+    <div class="inv-item-stock">${p.total_stock}</div>
+  </div>`).join('');
+  initTouchFeedback('.inv-item');
+}
+
 function switchWarehouse(wh) {
-  currentWarehouse = wh;
-  document.querySelectorAll('.warehouse-tab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
+  currentFilters.warehouse = wh;
+  document.querySelectorAll('.warehouse-tab').forEach(t => t.classList.toggle('active', t.dataset.wh === wh));
   renderInventory();
 }
 
-function renderInventory() {
-  const list = document.getElementById('inventoryList');
-  let products = allProducts.filter(p => p.inventory.total > 0);
+/* ========== 页面导航 ========== */
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const page = document.getElementById(pageId);
+  if (page) page.classList.add('active');
+  updateNav(pageId);
+  window.scrollTo(0,0);
+  if (pageId === 'inventory') renderInventory();
+  if (pageId === 'productList') applyFilter();
+}
 
-  if (currentWarehouse !== 'all') {
-    products = products.filter(p => p.inventory[currentWarehouse] > 0);
-    products.sort((a, b) => b.inventory[currentWarehouse] - a.inventory[currentWarehouse]);
-  } else {
-    products.sort((a, b) => b.inventory.total - a.inventory.total);
+function goBack() {
+  if (!pageStack.length) { showPage('home'); return; }
+  const prev = pageStack.pop();
+  if (prev.filters) currentFilters = {...prev.filters};
+  showPage(prev.page);
+  if (prev.page === 'productList') applyFilter();
+}
+
+function updateNav(pageId) {
+  const map = { home:'nav-home', productList:'nav-category', inventory:'nav-inventory', custom:'nav-custom', contact:'nav-custom', productDetail:'nav-category' };
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const navId = map[pageId];
+  if (navId) {
+    const nav = document.getElementById(navId);
+    if (nav) nav.classList.add('active');
   }
-
-  list.innerHTML = products.slice(0, 100).map(p => {
-    const stock = currentWarehouse === 'all' ? p.inventory.total : p.inventory[currentWarehouse];
-    return `
-    <div class="inv-item" onclick="goDetail('${p.product_code_74}')">
-      <img src="images/${p.images[0]}" alt="" class="inv-item-img" onerror="this.onerror=null;this.outerHTML='<div class=\'no-img-placeholder\'>图片暂无</div>'">
-      <div class="inv-item-info">
-        <div class="inv-item-name">${p.name}</div>
-        <div class="inv-item-code">${p.product_code_74}</div>
-      </div>
-      <div class="inv-item-stock">${stock}件</div>
-    </div>
-    `;
-  }).join('');
 }
 
-/* ========== 定制产品 ========== */
-function renderCustomProducts() {
-  const grid = document.getElementById('customProductGrid');
-  if (!grid) return;
-  
-  // 显示有库存的前12个产品作为定制示例
-  const customProducts = allProducts
-    .filter(p => p.inventory && p.inventory.total > 0)
-    .slice(0, 12);
-  
-  if (!customProducts.length) {
-    grid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><div class="empty-state-icon">📭</div><div class="empty-state-text">暂无可展示的产品</div></div>';
-    return;
-  }
-  
-  grid.innerHTML = customProducts.map(p => {
-    const stockClass = p.inventory.total > 50 ? 'stock-in' : p.inventory.total > 0 ? 'stock-low' : 'stock-out';
-    const stockText = p.inventory.total > 50 ? '库存充足' : p.inventory.total > 0 ? '库存紧张' : '暂无库存';
-    return `
-    <div class="product-card" onclick="goDetail('${p.product_code_74}')">
-      ${p.images[0] ? `<img src="images/${p.images[0]}" alt="${p.name}" class="product-card-img" onerror="this.onerror=null;this.outerHTML='<div class=\'no-img-placeholder\'>图片暂无</div>'">` : `<div class="no-img-placeholder">图片暂无</div>`}
-      <div class="product-card-body">
-        <div class="product-card-name">${p.name}</div>
-        <div class="product-card-meta">
-          <span class="product-card-price">¥${p.settlement_price.toFixed(2)}</span>
-          <span class="product-card-code">${p.product_code_74}</span>
-        </div>
-        <span class="product-card-stock ${stockClass}">${stockText}</span>
-      </div>
-    </div>
-    `;
-  }).join('');
-}
-
-/* ========== 对接人 ========== */
-function renderContacts() {
-  const list = document.getElementById('contactList');
-  list.innerHTML = `
-    <div class="contact-item">
-      <h4>本部及渠道对接人</h4>
-      <p><b>联通文创产品经理</b>：石书宇 shisy60@chinaunicom.cn</p>
-      <p><b>电商/联通APP对接人</b>：于丹妮 15810907624（线上订单售后）</p>
-      <p><b>自有渠道客户经理</b>：杨杰 18601109179（智慧供应链采购）</p>
-      <p><b>政企渠道客户经理</b>：丛婉 18611263526（政企客户采购）</p>
-      <p><b>代理商渠道客户经理</b>：李月 18611206388（泛智联盟采购）</p>
-    </div>
-    
-    <div class="contact-item">
-      <h4>定制对接人</h4>
-      <p><b>荣誉产品定制</b>（奖杯/奖牌/证书/牌匾/奖章）：梁明宇</p>
-      <p><b>服装产品定制</b>（T恤/POLO/外套等）：贾翔榆</p>
-      <p><b>其他文创定制</b>（办公/生活用品/包袋/数码等）：石书宇 shisy60@chinaunicom.cn</p>
-    </div>
-    
-    <div class="contact-item">
-      <h4>售后政策</h4>
-      <p><b>质量问题处理</b>：支持退换货</p>
-      <p><b>退换货流程</b>：联系本省华盛对接人进行退换货处理；线上APP订单请联系电商负责人（于丹妮 15810907624）</p>
-    </div>
-    
-    <div class="contact-item">
-      <h4>采购下单流程</h4>
-      <p><b>智慧供应链（自有渠道）</b>：产品选品→需求沟通→华盛确认→客户下单→华盛发货→客户签收，7-30天</p>
-      <p><b>云POS（自营厅）</b>：云POS下单→华盛省分审批→华盛发货→营业厅扫描签收→产品入库，1-5天</p>
-      <p><b>云光慧企/政企渠道</b>：方案确定→申请货源→客户下单付款→华盛发货，1-5天</p>
-      <p><b>泛智联盟（代理商）</b>：提报方案→申请货源→客户下单→华盛发货，2-7天</p>
-    </div>
-    
-    <div class="contact-item">
-      <h4>物流配送</h4>
-      <p><b>物流方式</b>：京东物流</p>
-      <p><b>发货仓库</b>：北京总仓/昆山总仓/东莞总仓/成都总仓（就近发货）</p>
-      <p><b>同城时效</b>：北京隔日达</p>
-      <p><b>跨省时效</b>：参照京东物流官方时效（如北京到上海2-3天）</p>
-      <p><b>运费</b>：按联通内部结算规则执行</p>
-    </div>
-  `;
-}
-
-/* ========== AI助手 ========== */
-function toggleAI() {
-  document.getElementById('aiChat').classList.toggle('active');
-}
-
-/* ========== ADP AI 助手（腾讯智能体开发平台）—— 已隐藏 ========== */
-const ADP_CONFIG = {
-  // API Key 已移除，后续需要时再配置
-  apiKey: '',
-  botId: 'XCDLaD',
-  baseUrl: 'https://wss.lke.cloud.tencent.com/v1/qbot/chat/sse'
-};
-
-// 调用腾讯ADP SSE流式API
-async function callADPAPI(content) {
-  const payload = {
-    bot_app_key: ADP_CONFIG.apiKey,
-    session_id: 'web_' + Date.now(),
-    visitor_biz_id: 'visitor_' + Math.random().toString(36).substr(2, 9),
-    content: content,
-    incremental: true,
-    streaming_throttle: 10,
-    stream: "enable"
-  };
-  
-  const response = await fetch(ADP_CONFIG.baseUrl, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(payload)
+function initBottomNav() {
+  const items = document.querySelectorAll('.nav-item');
+  items.forEach(item => {
+    item.addEventListener('click', function(e) {
+      e.preventDefault();
+      const page = this.dataset.page;
+      if (page === 'home') { showPage('home'); }
+      else if (page === 'category') { goCategory('全部'); }
+      else if (page === 'inventory') { showPage('inventory'); }
+      else if (page === 'custom') { showPage('custom'); }
+      else if (page === 'contact') { showPage('contact'); }
+    });
+    item.addEventListener('touchstart', () => item.classList.add('pressing'), {passive:true});
+    item.addEventListener('touchend', () => item.classList.remove('pressing'), {passive:true});
+    item.addEventListener('touchcancel', () => item.classList.remove('pressing'), {passive:true});
   });
-  
-  if (!response.ok) throw new Error('HTTP ' + response.status);
-  
-  const reader = response.body.getReader();
-  const decoder = new TextDecoder();
-  let buffer = '';
-  let currentEvent = '';
-  let finalAnswer = '';
-  
-  while (true) {
-    const {done, value} = await reader.read();
-    if (done) break;
-    
-    buffer += decoder.decode(value, {stream: true});
-    const lines = buffer.split('\n');
-    buffer = lines.pop() || '';
-    
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (!trimmed) continue;
-      
-      if (trimmed.startsWith('event:')) {
-        currentEvent = trimmed.split(':', 1)[1].trim();
-      } else if (trimmed.startsWith('data:') && currentEvent === 'reply') {
-        const data = trimmed.substring(5).trim();
-        if (!data) continue;
-        
-        if (data.includes('"is_final":true') || data.includes('"is_final": true')) {
-          try {
-            const json = JSON.parse(data);
-            const outputs = json.payload?.work_flow?.outputs;
-            if (outputs && outputs.length > 0) {
-              try {
-                const output = JSON.parse(outputs[0]);
-                finalAnswer = typeof output === 'string' ? output : JSON.stringify(output);
-              } catch {
-                finalAnswer = outputs[0];
-              }
-            }
-          } catch (e) {
-            console.error('ADP SSE parse error:', e);
-          }
-        }
-      }
-    }
-  }
-  
-  return finalAnswer || 'AI助手没有返回有效回复，请重试。';
 }
 
-async function sendAI() {
-  const input = document.getElementById('aiInput');
-  const text = input.value.trim();
-  if (!text) return;
-  
-  const body = document.getElementById('aiChatBody');
-  body.innerHTML += `<div class="ai-user-msg">${escapeHtml(text)}</div>`;
-  input.value = '';
-  body.scrollTop = body.scrollHeight;
-  
-  // 显示加载中
-  const loadingId = 'ai_loading_' + Date.now();
-  body.innerHTML += `<div class="ai-bot-msg" id="${loadingId}"><div class="ai-loading"><span></span><span></span><span></span></div>AI思考中...</div>`;
-  body.scrollTop = body.scrollHeight;
-  
-  try {
-    const answer = await callADPAPI(text);
-    const loadingEl = document.getElementById(loadingId);
-    if (loadingEl) {
-      loadingEl.innerHTML = escapeHtml(answer).replace(/\n/g, '<br>');
-    }
-  } catch (err) {
-    console.error('ADP API Error:', err);
-    // CORS失败或网络错误时回退到本地FAQ
-    const answer = getAIAnswer(text);
-    const loadingEl = document.getElementById(loadingId);
-    if (loadingEl) {
-      loadingEl.innerHTML = `<div style="color:#999;font-size:12px;margin-bottom:6px;">[ADP服务暂时不可用，已切换本地模式]</div>` + answer;
-    }
-  }
-  body.scrollTop = body.scrollHeight;
-}
-
-function getAIAnswer(q) {
-  const lower = q.toLowerCase();
-
-  // 库存查询
-  if (lower.includes('库存') || lower.includes('有货') || lower.includes('还剩')) {
-    const keywords = q.replace(/[库存有货还剩多少件个]/g, '').trim();
-    if (keywords.length >= 2) {
-      const matches = allProducts.filter(p => p.name.includes(keywords) || p.product_code_74.includes(keywords));
-      if (matches.length > 0) {
-        const p = matches[0];
-        return `【${p.name}】<br>北京：${p.inventory.beijing}件<br>昆山：${p.inventory.kunshan}件<br>东莞：${p.inventory.dongguan}件<br>成都：${p.inventory.chengdu}件<br>小库：${p.inventory.xiaoku}件<br>总计：<b>${p.inventory.total}件</b>`;
-      }
-    }
-    return '请告诉我具体的产品名称或编码，我可以帮你查询库存分布。';
-  }
-
-  // 价格查询
-  if (lower.includes('价格') || lower.includes('多少钱') || lower.includes('结算') || lower.includes('零售')) {
-    const keywords = q.replace(/[价格多少钱结算零售价]/g, '').trim();
-    if (keywords.length >= 2) {
-      const matches = allProducts.filter(p => p.name.includes(keywords) || p.product_code_74.includes(keywords));
-      if (matches.length > 0) {
-        const p = matches[0];
-        return `【${p.name}】<br>74编码：${p.product_code_74}<br>结算价：¥${p.settlement_price.toFixed(2)}<br>零售价：¥${p.retail_price.toFixed(2)}`;
-      }
-    }
-    return '请告诉我具体的产品名称或编码，我可以帮你查询价格。';
-  }
-
-  // 编码查询
-  if (lower.includes('编码') || lower.includes('条码') || lower.includes('74') || lower.includes('69')) {
-    return '产品编码（74码）是联通文创产品的唯一标识码，可以在产品库中搜索查询。每个产品对应唯一的74码和69码（商品条码）。';
-  }
-
-  // 定制
-  if (lower.includes('定制') || lower.includes('logo') || lower.includes('起订')) {
-    return '联通文创产品支持以下定制服务：<br>• 可定制内容：LOGO更换、图案定制、包装定制、外观纹路/花纹定制<br>• 设计费：已包含在定制报价中，不另收<br>• 客户提供素材：AI格式LOGO源文件（或其他高清格式）<br>• 起订量：500-1000件起订<br>• 工期：视产品而定，具体请联系定制对接人。';
-  }
-
-  // 采购流程
-  if (lower.includes('采购') || lower.includes('下单') || lower.includes('买') || lower.includes('怎么订')) {
-    return '采购下单流程：<br>1. 在「联通文创小管家」浏览产品并确认库存<br>2. 联系各省分智慧供应链对接人提交采购需求<br>3. 确认报价和定制方案（如有）<br>4. 签署合同/订单确认<br>5. 等待发货并验收';
-  }
-
-  // 售后
-  if (lower.includes('售后') || lower.includes('退换') || lower.includes('退货') || lower.includes('质量问题')) {
-    return '售后政策：<br>• 退换货请联系各省分对接人或华盛公司客服<br>• 质量问题支持退换货<br>• 定制产品非质量问题不支持退换<br>• 具体售后流程请查看「对接人」页面获取联系方式。';
-  }
-
-  // 新品
-  if (lower.includes('新品') || lower.includes('新款')) {
-    const newProducts = allProducts.filter(p => p.is_new);
-    return `当前有 ${newProducts.length} 款新品，请在首页「新品专区」查看。最新入仓的新品包括：${newProducts.slice(0, 5).map(p => p.name).join('、')}等。`;
-  }
-
-  // 默认回答
-  return '你好！我是联通文创智能助手。我可以帮你查询产品信息、库存、价格、定制服务等。请直接输入你的问题，比如：<br>• "折叠风扇有库存吗？"<br>• "这款产品的价格是多少？"<br>• "定制需要多少起订量？"<br><br>你也可以使用顶部搜索框直接查找产品。';
-}
-
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
-
-/* ========== 工具函数 ========== */
-function scrollNewProducts(dir) {
-  const container = document.getElementById('newProductsList');
+/* ========== 搜索 ========== */
+function searchProducts() {
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  if (!q) return;
+  const results = allProducts.filter(p =>
+    p.name.toLowerCase().includes(q) ||
+    p.product_code_74.includes(q) ||
+    (p.product_code && p.product_code.includes(q)) ||
+    p.category.toLowerCase().includes(q)
+  );
+  pageStack.push({page:document.querySelector('.page.active')?.id||'home',filters:{...currentFilters}});
+  showPage('productList');
+  const container = document.getElementById('productList');
   if (!container) return;
-  const scrollAmount = 200;
-  container.scrollBy({ left: dir * scrollAmount, behavior: 'smooth' });
+  const countEl = document.querySelector('.list-count');
+  if (countEl) countEl.textContent = `搜索"${q}"：共 ${results.length} 款产品`;
+  if (!results.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><div class="empty-state-text">未找到相关产品</div></div>'; return; }
+  container.innerHTML = results.map(p => renderProductCard(p)).join('');
+  initTouchFeedback('.product-card');
+  initLazyImages(container);
+  window.scrollTo(0,0);
 }
 
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// 监听滚动显示返回顶部
-window.addEventListener('scroll', () => {
-  const btn = document.querySelector('.back-to-top');
-  if (window.scrollY > 300) btn.classList.add('visible');
-  else btn.classList.remove('visible');
-});
-
-
-/* ========== 轮播图控制 ========== */
-let currentSlide = 0;
-let totalSlides = 0;
-
-function showSlide(index) {
-    const slides = document.querySelectorAll('.detail-carousel-slide');
-    const dots = document.querySelectorAll('.detail-carousel-dot');
-    if (!slides.length) return;
-    currentSlide = index;
-    if (currentSlide < 0) currentSlide = slides.length - 1;
-    if (currentSlide >= slides.length) currentSlide = 0;
-    slides.forEach((s, i) => { s.style.display = i === currentSlide ? 'flex' : 'none'; });
-    dots.forEach((d, i) => { d.classList.toggle('active', i === currentSlide); });
-}
-
-function nextSlide() { showSlide(currentSlide + 1); }
-function prevSlide() { showSlide(currentSlide - 1); }
-
-/* ========== 初始化 ========== */
-
+/* 回车搜索 */
 document.addEventListener('DOMContentLoaded', () => {
-  loadData();
+  const input = document.getElementById('searchInput');
+  if (input) input.addEventListener('keydown', e => { if (e.key === 'Enter') searchProducts(); });
 });
+
+/* ========== 懒加载 ========== */
+function initLazyLoad() {
+  initLazyImages(document);
+}
+
+function initLazyImages(root) {
+  if (!root) return;
+  const imgs = root.querySelectorAll ? root.querySelectorAll('img.lazy-img') : [];
+  if (!imgs.length || !window.IntersectionObserver) return;
+  const obs = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        const src = img.dataset.src;
+        if (src) {
+          img.src = src;
+          img.onload = () => { img.classList.add('loaded'); const sk = img.parentElement?.querySelector('.skeleton'); if (sk) sk.style.display='none'; };
+          img.onerror = () => { img.classList.add('loaded'); const sk = img.parentElement?.querySelector('.skeleton'); if (sk) sk.style.display='none'; };
+        }
+        observer.unobserve(img);
+      }
+    });
+  }, { rootMargin: '50px', threshold: 0.01 });
+  imgs.forEach(img => obs.observe(img));
+}
+
+/* ========== 触摸反馈 ========== */
+function initTouchFeedback(selector) {
+  if (!selector) selector = '.new-card, .product-card, .category-card, .quick-btn, .inv-item';
+  const elements = typeof selector === 'string' ? document.querySelectorAll(selector) : selector;
+  elements.forEach(el => {
+    el.addEventListener('touchstart', () => el.classList.add('pressing'), {passive:true});
+    el.addEventListener('touchend', () => el.classList.remove('pressing'), {passive:true});
+    el.addEventListener('touchcancel', () => el.classList.remove('pressing'), {passive:true});
+  });
+}
+
+/* ========== 返回顶部 ========== */
+function initBackToTop() {
+  const btn = document.getElementById('backToTop');
+  if (!btn) return;
+  btn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+  btn.addEventListener('touchstart', () => btn.classList.add('pressing'), {passive:true});
+  btn.addEventListener('touchend', () => btn.classList.remove('pressing'), {passive:true});
+}
+
+/* ========== AI 聊天 ========== */
+function toggleAI() { document.getElementById('aiChat')?.classList.toggle('active'); }
+function initAIChat() {
+  const input = document.getElementById('aiInput');
+  const sendBtn = document.getElementById('aiSend');
+  const messages = document.getElementById('aiMessages');
+  if (!input || !sendBtn || !messages) return;
+  sendBtn.addEventListener('click', sendAI);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') sendAI(); });
+  function sendAI() {
+    const text = input.value.trim();
+    if (!text) return;
+    const userDiv = document.createElement('div');
+    userDiv.className = 'ai-user-msg'; userDiv.textContent = text; messages.appendChild(userDiv);
+    input.value = '';
+    const loadingDiv = document.createElement('div');
+    loadingDiv.className = 'ai-bot-msg'; loadingDiv.innerHTML = '<div class="ai-loading"><span></span><span></span><span></span></div>';
+    messages.appendChild(loadingDiv); messages.scrollTop = messages.scrollHeight;
+    fetch('https://kimi-k2.6.com/api/v1/chat', {
+      method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer 642530bb' },
+      body: JSON.stringify({ model: 'kimi-k2.6', messages: [{role:'user',content:text}] })
+    }).then(r => r.json()).then(data => {
+      loadingDiv.remove();
+      const botDiv = document.createElement('div');
+      botDiv.className = 'ai-bot-msg'; botDiv.textContent = data.choices?.[0]?.message?.content || '抱歉，AI服务暂时不可用';
+      messages.appendChild(botDiv); messages.scrollTop = messages.scrollHeight;
+    }).catch(e => {
+      loadingDiv.remove();
+      const botDiv = document.createElement('div');
+      botDiv.className = 'ai-bot-msg'; botDiv.textContent = '网络连接失败，请稍后重试';
+      messages.appendChild(botDiv); messages.scrollTop = messages.scrollHeight;
+    });
+  }
+}
+
+/* ========== 滚动到新品 ========== */
+function scrollToNew() { showPage('home'); setTimeout(() => { const el = document.querySelector('.new-scroll-wrap'); if (el) el.scrollIntoView({behavior:'smooth', block:'center'}); }, 100); }
+
+/* 新品列表滑动 (桌面端按钮) */
+function scrollNewProducts(dir) {
+  const wrap = document.querySelector('.new-scroll-wrap');
+  const track = document.querySelector('.new-track');
+  if (!wrap || !track) return;
+  const cardW = 170, gap = 12, step = (cardW + gap) * 2;
+  const m = track.style.transform.match(/translateX\((-?[\d.]+)px\)/);
+  const cur = m ? parseFloat(m[1]) : 0;
+  const maxTrans = Math.min(0, wrap.clientWidth - track.scrollWidth - 32);
+  let target = cur + (dir === 'left' ? step : -step);
+  target = Math.max(maxTrans, Math.min(0, target));
+  track.style.transition = 'transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94)';
+  track.style.transform = `translateX(${target}px)`;
+  setTimeout(() => { track.style.transition = 'none'; }, 400);
+}
