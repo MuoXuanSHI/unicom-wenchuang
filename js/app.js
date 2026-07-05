@@ -127,32 +127,47 @@ function renderNewProducts() {
   const container = document.getElementById('newProductsList');
   if (!container) return;
   
+  let isDown = false, startX = 0, scrollStart = 0;
+  let velX = 0, lastX = 0, lastTime = 0, rafId = null;
+  
+  // 统一滚动函数（带惯性）
+  function momentumScroll() {
+    if (Math.abs(velX) < 0.5) { velX = 0; return; }
+    container.scrollLeft += velX;
+    velX *= 0.92; // 摩擦力
+    rafId = requestAnimationFrame(momentumScroll);
+  }
+  
   // 触摸滑动
-  let startX = 0, startY = 0, isDown = false;
   container.addEventListener('touchstart', (e) => {
+    cancelAnimationFrame(rafId); velX = 0;
     startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
+    lastX = startX; lastTime = Date.now();
     isDown = true;
   }, {passive: true});
+  
   container.addEventListener('touchmove', (e) => {
     if (!isDown) return;
     const x = e.touches[0].clientX;
-    const y = e.touches[0].clientY;
-    const dx = startX - x;
-    const dy = startY - y;
-    if (Math.abs(dx) > Math.abs(dy)) {
-      e.preventDefault();
-      container.scrollLeft += dx;
-      startX = x;
-    }
-  }, {passive: false});
-  container.addEventListener('touchend', () => { isDown = false; });
+    const dx = lastX - x;
+    container.scrollLeft += dx;
+    // 记录速度用于惯性
+    const now = Date.now();
+    const dt = now - lastTime;
+    if (dt > 0) velX = dx / dt * 16;
+    lastX = x; lastTime = now;
+  }, {passive: true});
   
-  // 鼠标滚轮横向滑动
+  container.addEventListener('touchend', () => {
+    isDown = false;
+    if (Math.abs(velX) > 2) momentumScroll();
+  });
+  
+  // 鼠标滚轮横向滑动（放大滚动量）
   container.addEventListener('wheel', (e) => {
     if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
       e.preventDefault();
-      container.scrollLeft += e.deltaY;
+      container.scrollLeft += e.deltaY * 2.5;
     }
   }, {passive: false});
   
@@ -169,7 +184,7 @@ function renderNewProducts() {
   container.addEventListener('mousemove', (e) => {
     if (!mouseDown) return;
     e.preventDefault();
-    const walk = (e.pageX - mouseStartX) * 1.5;
+    const walk = (e.pageX - mouseStartX) * 2;
     container.scrollLeft = mouseScrollLeft - walk;
   });
   container.style.cursor = 'grab';
@@ -477,7 +492,6 @@ function renderContacts() {
       <h4>售后政策</h4>
       <p><b>质量问题处理</b>：支持退换货</p>
       <p><b>退换货流程</b>：联系本省华盛对接人进行退换货处理；线上APP订单请联系电商负责人（于丹妮 15810907624）</p>
-      <p style="color:#999;font-size:12px;">不主动提及"运费""7天无理由"等概念，淡化此类概念</p>
     </div>
     
     <div class="contact-item">
