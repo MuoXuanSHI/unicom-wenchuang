@@ -249,6 +249,10 @@ img { max-width: 100%; display: block; }
 .stock-in { background: #e8f5e9; color: #2e7d32; }
 .stock-low { background: #fff3e0; color: #ef6c00; }
 .stock-out { background: #ffebee; color: #c62828; }
+.stock-custom { background: #e3f2fd; color: #1565c0; }
+.stock-demand { background: #e3f2fd; color: #1565c0; }
+.stock-low { background: #fff3e0; color: #ef6c00; }
+.stock-out { background: #ffebee; color: #c62828; }
 
 /* ====== 产品详情页 ====== */
 .detail-container { background: #fff; min-height: 100vh; padding-bottom: 80px; }

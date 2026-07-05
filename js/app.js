@@ -277,12 +277,16 @@ function getStockClass(p) {
   var total = p.inventory ? p.inventory.total : 0;
   if (total > 20) return 'stock-in';
   if (total > 0) return 'stock-low';
+  if (p.category === '荣誉体系') return 'stock-custom';
+  if (p.category === '服装体系') return 'stock-demand';
   return 'stock-out';
 }
 function getStockText(p) {
   var total = p.inventory ? p.inventory.total : 0;
   if (total > 20) return '现货充足';
   if (total > 0) return '库存紧张';
+  if (p.category === '荣誉体系') return '定制咨询';
+  if (p.category === '服装体系') return '以需定采';
   return '缺货';
 }
 
