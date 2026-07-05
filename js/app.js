@@ -355,6 +355,10 @@ function renderProductDetail(code) {
   if (p.category) tags.push('<span class="detail-tag tag-category">' + p.category + '</span>');
   if (p.is_customizable) tags.push('<span class="detail-tag tag-custom">可定制</span>');
 
+  var customText = '';
+  if (p.category === '荣誉体系') customText = '是（联系梁明宇）';
+  else if (p.category === '服装体系') customText = '是（联系贾翔榆）';
+  else customText = '是（联系石书宇）';
   var inv = p.inventory || {};
   var invRows = [
     ['北京总仓', inv.beijing || 0],
@@ -374,17 +378,18 @@ function renderProductDetail(code) {
       '<div class="detail-name">' + p.name + '</div>' +
       '<div class="detail-tags">' + tags.join('') + '</div>' +
       '<div class="detail-price-row">' +
-        '<div class="detail-price-item"><div class="detail-price-label">批发价</div><div class="detail-price-value">' + (p.purchase_price ? '¥'+p.purchase_price : '面议') + '</div></div>' +
+        '<div class="detail-price-item"><div class="detail-price-label">供货价</div><div class="detail-price-value">' + (p.purchase_price ? '¥'+p.purchase_price : '面议') + '</div></div>' +
         '<div class="detail-price-item"><div class="detail-price-label">零售价</div><div class="detail-price-value purchase">' + (p.retail_price ? '¥'+p.retail_price : '面议') + '</div></div>' +
       '</div>' +
       '<div class="detail-info">' +
         '<h3>产品信息</h3>' +
-        '<div class="info-row"><span class="info-label">74码</span><span class="info-value code">' + p.product_code_74 + '</span></div>' +
+        (p.description ? '<div class="detail-desc">' + p.description + '</div>' : '') +
+        '<div class="info-row"><span class="info-label">74码</span><span class="info-value">' + p.product_code_74 + '</span></div>' +
         '<div class="info-row"><span class="info-label">69码</span><span class="info-value">' + (p.product_code_69 || '-') + '</span></div>' +
         '<div class="info-row"><span class="info-label">品类</span><span class="info-value">' + (p.category || '-') + '</span></div>' +
         '<div class="info-row"><span class="info-label">材质</span><span class="info-value">' + (p.material || '详见说明') + '</span></div>' +
         '<div class="info-row"><span class="info-label">规格</span><span class="info-value">' + (p.spec || '详见说明') + '</span></div>' +
-        '<div class="info-row"><span class="info-label">可定制</span><span class="info-value">' + (p.is_customizable ? '是' : '否') + '</span></div>' +
+        '<div class="info-row"><span class="info-label">可定制</span><span class="info-value">' + customText + '</span></div>' +
         '<div class="info-row"><span class="info-label">库存总量</span><span class="info-value">' + (inv.total || 0) + '</span></div>' +
         '<h3 style="margin-top:20px">分仓库存</h3>' +
         '<table class="inventory-table"><tbody>' + invRows + '</tbody></table>' +

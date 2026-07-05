@@ -300,6 +300,7 @@ img { max-width: 100%; display: block; }
 .detail-price-value.purchase { color: #666; font-size: 16px; }
 
 .detail-info { margin-top: 16px; }
+.detail-desc { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 12px; padding: 10px; background: #fafafa; border-radius: 8px; }
 .detail-info h3 { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
 .info-row {
   display: flex; justify-content: space-between; padding: 10px 0;
