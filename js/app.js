@@ -143,6 +143,9 @@ function renderNewProducts() {
 
   initLazyImages(container);
   initTouchFeedback(container.querySelectorAll('.new-card'));
+}
+
+/* Transform-based 新品滑动 */
 
 /* Transform-based 新品滑动 */
 let newScrollPos = 0;
