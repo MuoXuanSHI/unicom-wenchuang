@@ -360,13 +360,11 @@ function renderProductDetail(code) {
   else if (p.category === '服装体系') customText = '是（联系贾翔榆）';
   else customText = '是（联系石书宇）';
   var inv = p.inventory || {};
-  var invRows = [
-    ['北京总仓', inv.beijing || 0],
-    ['昆山总仓', inv.kunshan || 0],
-    ['东莞总仓', inv.dongguan || 0],
-    ['成都总仓', inv.chengdu || 0],
-    ['小库', inv.xiaoku || 0]
-  ].map(function(row) { return '<tr><th>' + row[0] + '</th><td>' + row[1] + '</td></tr>'; }).join('');
+  var whMap = {beijing:'北京总仓', kunshan:'昆山总仓', dongguan:'东莞总仓', chengdu:'成都总仓', xiaoku:'小库'};
+  var invRows = Object.keys(whMap)
+    .filter(function(k) { return (inv[k] || 0) > 0; })
+    .sort(function(a, b) { return (inv[b] || 0) - (inv[a] || 0); })
+    .map(function(k) { return '<tr><th>' + whMap[k] + '</th><td>' + inv[k] + '</td></tr>'; }).join('');
 
   document.getElementById('detailContainer').innerHTML =
     '<div class="detail-carousel">' +
@@ -440,8 +438,12 @@ function renderInventory() {
   var filtered = allProducts.slice();
   if (currentWarehouse !== 'all') {
     filtered = filtered.filter(function(p) { return p.inventory && p.inventory[currentWarehouse] > 0; });
+    filtered.sort(function(a, b) {
+      return (b.inventory[currentWarehouse] || 0) - (a.inventory[currentWarehouse] || 0);
+    });
+  } else {
+    filtered = sortByPriority(filtered);
   }
-  filtered = sortByPriority(filtered);
 
   container.innerHTML = filtered.map(function(p) {
     var imgHtml = '';
@@ -450,13 +452,16 @@ function renderInventory() {
     } else {
       imgHtml = '<div class="inv-item-img no-img-placeholder" style="width:56px;height:56px;font-size:10px;border-radius:8px;">图片暂无</div>';
     }
+    var stockNum = currentWarehouse === 'all'
+      ? (p.inventory ? p.inventory.total : 0)
+      : (p.inventory ? p.inventory[currentWarehouse] : 0);
     return '<div class="inv-item" onclick="renderProductDetail(\'' + p.product_code_74 + '\')">' +
       imgHtml +
       '<div class="inv-item-info">' +
         '<div class="inv-item-name">' + p.name + '</div>' +
         '<div class="inv-item-code">' + p.product_code_74 + '</div>' +
       '</div>' +
-      '<div class="inv-item-stock">' + (p.inventory ? p.inventory.total : 0) + '</div>' +
+      '<div class="inv-item-stock">' + stockNum + '</div>' +
     '</div>';
   }).join('');
 
