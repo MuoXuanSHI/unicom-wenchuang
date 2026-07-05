@@ -96,32 +96,53 @@ function updateNav(activeType) {
   }
 }
 
+/* ====== 排序和图片渲染辅助函数 ====== */
+function getSortPriority(p) {
+  var hasStock = (p.inventory && p.inventory.total > 0);
+  var hasImg = (p.images && p.images.length > 0);
+  if (hasStock && hasImg) return 3;
+  if (hasStock && !hasImg) return 2;
+  return 1;
+}
+function sortByPriority(products) {
+  return products.sort(function(a, b) {
+    return getSortPriority(b) - getSortPriority(a);
+  });
+}
+function getProductImageHTML(p, isLazy) {
+  if (p.images && p.images.length > 0) {
+    if (isLazy) {
+      return '<div class="skeleton"></div><img class="lazy-img" data-src="images/' + p.images[0] + '" alt="' + p.name + '" loading="lazy">';
+    } else {
+      return '<img class="lazy-img loaded" src="images/' + p.images[0] + '" alt="' + p.name + '" style="opacity:1">';
+    }
+  } else {
+    return '<div class="no-img-placeholder">图片暂无</div>';
+  }
+}
+
 /* ====== 新品专区 ====== */
 function renderNewProducts() {
   const container = document.getElementById('newProductsList');
   if (!container) return;
-  const newProducts = allProducts.filter(p => p.is_new).slice(0, 21);
+  var newProducts = allProducts.filter(function(p) { return p.is_new; });
+  newProducts = sortByPriority(newProducts).slice(0, 21);
   if (!newProducts.length) { container.innerHTML = '<p style="padding:20px;text-align:center;color:#999;">暂无新品</p>'; return; }
 
-  container.innerHTML = newProducts.map(p => `
-    <div class="new-card" onclick="renderProductDetail('${p.product_code_74}')">
-      <div class="new-card-img-wrap">
-        <div class="skeleton"></div>
-        <img class="lazy-img" data-src="images/${p.images && p.images[0] ? p.images[0] : 'placeholder.png'}" alt="${p.name}" loading="lazy">
-        <span class="new-tag">新品</span>
-      </div>
-      <div class="new-card-body">
-        <div class="new-card-name">${p.name}</div>
-        <div class="new-card-price">${p.purchase_price ? '¥' + p.purchase_price : '面议'}</div>
-        <div class="new-card-code">${p.product_code_74}</div>
-      </div>
-    </div>
-  `).join('');
+  container.innerHTML = newProducts.map(function(p) {
+    return '<div class="new-card" onclick="renderProductDetail(\'' + p.product_code_74 + '\')">' +
+      '<div class="new-card-img-wrap">' +
+        getProductImageHTML(p, true) +
+      '</div>' +
+      '<div class="new-card-body">' +
+        '<div class="new-card-name">' + p.name + '</div>' +
+        '<div class="new-card-price">' + (p.purchase_price ? '¥' + p.purchase_price : '面议') + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
 
   initLazyImages(container);
   initTouchFeedback(container.querySelectorAll('.new-card'));
-  initNewScrollTransform();
-}
 
 /* Transform-based 新品滑动 */
 let newScrollPos = 0;
@@ -220,6 +241,7 @@ function applyFilter() {
   if (sort === 'price-asc') filtered.sort(function(a,b) { return (a.purchase_price||0) - (b.purchase_price||0); });
   else if (sort === 'price-desc') filtered.sort(function(a,b) { return (b.purchase_price||0) - (a.purchase_price||0); });
   else if (sort === 'stock') filtered.sort(function(a,b) { return ((b.inventory&&b.inventory.total)||0) - ((a.inventory&&a.inventory.total)||0); });
+  else filtered = sortByPriority(filtered);
 
   var countEl = document.getElementById('listCount');
   if (countEl) countEl.textContent = '共 ' + filtered.length + ' 款产品';
@@ -231,8 +253,7 @@ function applyFilter() {
   container.innerHTML = filtered.map(function(p) {
     return '<div class="product-card" onclick="renderProductDetail(\'' + p.product_code_74 + '\')">' +
       '<div class="product-img-wrap">' +
-        '<div class="skeleton"></div>' +
-        '<img class="lazy-img" data-src="images/' + (p.images && p.images[0] ? p.images[0] : 'placeholder.png') + '" alt="' + p.name + '" loading="lazy">' +
+        getProductImageHTML(p, true) +
       '</div>' +
       '<div class="product-card-body">' +
         '<div class="product-card-name">' + p.name + '</div>' +
@@ -277,6 +298,7 @@ function doSearch() {
       (p.product_code_69 && p.product_code_69.includes(q)) ||
       (p.category && p.category.toLowerCase().includes(q));
   });
+  results = sortByPriority(results);
 
   pageHistory.push({page:'page-home', title:'首页'});
   showPage('page-list');
@@ -292,8 +314,7 @@ function doSearch() {
   container.innerHTML = results.map(function(p) {
     return '<div class="product-card" onclick="renderProductDetail(\'' + p.product_code_74 + '\')">' +
       '<div class="product-img-wrap">' +
-        '<div class="skeleton"></div>' +
-        '<img class="lazy-img" data-src="images/' + (p.images && p.images[0] ? p.images[0] : 'placeholder.png') + '" alt="' + p.name + '" loading="lazy">' +
+        getProductImageHTML(p, true) +
       '</div>' +
       '<div class="product-card-body">' +
         '<div class="product-card-name">' + p.name + '</div>' +
@@ -408,11 +429,17 @@ function renderInventory() {
   if (currentWarehouse !== 'all') {
     filtered = filtered.filter(function(p) { return p.inventory && p.inventory[currentWarehouse] > 0; });
   }
-  filtered.sort(function(a,b) { return ((b.inventory&&b.inventory.total)||0) - ((a.inventory&&a.inventory.total)||0); });
+  filtered = sortByPriority(filtered);
 
   container.innerHTML = filtered.map(function(p) {
+    var imgHtml = '';
+    if (p.images && p.images.length > 0) {
+      imgHtml = '<img class="inv-item-img" src="images/' + p.images[0] + '" alt="' + p.name + '" loading="lazy" onerror="this.style.display=\'none\'">';
+    } else {
+      imgHtml = '<div class="inv-item-img no-img-placeholder" style="width:56px;height:56px;font-size:10px;border-radius:8px;">图片暂无</div>';
+    }
     return '<div class="inv-item" onclick="renderProductDetail(\'' + p.product_code_74 + '\')">' +
-      '<img class="inv-item-img" src="images/' + (p.images && p.images[0] ? p.images[0] : 'placeholder.png') + '" alt="' + p.name + '" loading="lazy" onerror="this.style.display=\'none\'">' +
+      imgHtml +
       '<div class="inv-item-info">' +
         '<div class="inv-item-name">' + p.name + '</div>' +
         '<div class="inv-item-code">' + p.product_code_74 + '</div>' +

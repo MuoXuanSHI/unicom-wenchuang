@@ -2351,9 +2351,7 @@
     "moq": "",
     "lead_time": "",
     "is_new": false,
-    "images": [
-      "image6.webp"
-    ],
+    "images": [],
     "inventory": {
       "beijing": 332,
       "kunshan": 0,
