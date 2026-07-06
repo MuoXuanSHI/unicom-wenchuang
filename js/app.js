@@ -138,7 +138,7 @@ function renderNewProducts() {
       '</div>' +
       '<div class="new-card-body">' +
         '<div class="new-card-name">' + p.name + '</div>' +
-        '<div class="new-card-price">' + (p.purchase_price ? '¥' + p.purchase_price : '面议') + '</div>' +
+        '<div class="new-card-price">' + (p.settlement_price ? '¥' + p.settlement_price : '面议') + '</div>' +
       '</div>' +
     '</div>';
   }).join('');
@@ -222,7 +222,7 @@ function applyFilter() {
 
   if (price) {
     filtered = filtered.filter(function(p) {
-      var pr = p.purchase_price;
+      var pr = p.settlement_price;
       if (!pr && pr !== 0) return false;
       if (price === '0-50') return pr >= 0 && pr <= 50;
       if (price === '50-100') return pr > 50 && pr <= 100;
@@ -243,8 +243,8 @@ function applyFilter() {
     });
   }
 
-  if (sort === 'price-asc') filtered.sort(function(a,b) { return (a.purchase_price||0) - (b.purchase_price||0); });
-  else if (sort === 'price-desc') filtered.sort(function(a,b) { return (b.purchase_price||0) - (a.purchase_price||0); });
+  if (sort === 'price-asc') filtered.sort(function(a,b) { return (a.settlement_price||0) - (b.settlement_price||0); });
+  else if (sort === 'price-desc') filtered.sort(function(a,b) { return (b.settlement_price||0) - (a.settlement_price||0); });
   else if (sort === 'stock') filtered.sort(function(a,b) { return ((b.inventory&&b.inventory.total)||0) - ((a.inventory&&a.inventory.total)||0); });
   else filtered = sortByPriority(filtered);
 
@@ -263,7 +263,7 @@ function applyFilter() {
       '<div class="product-card-body">' +
         '<div class="product-card-name">' + p.name + '</div>' +
         '<div class="product-card-meta">' +
-          '<span class="product-card-price">' + (p.purchase_price ? '¥'+p.purchase_price : '面议') + '</span>' +
+          '<span class="product-card-price">' + (p.settlement_price ? '¥'+p.settlement_price : '面议') + '</span>' +
           '<span class="product-card-code">' + p.product_code_74 + '</span>' +
         '</div>' +
         '<span class="product-card-stock ' + getStockClass(p) + '">' + getStockText(p) + '</span>' +
@@ -328,7 +328,7 @@ function doSearch() {
       '<div class="product-card-body">' +
         '<div class="product-card-name">' + p.name + '</div>' +
         '<div class="product-card-meta">' +
-          '<span class="product-card-price">' + (p.purchase_price ? '¥'+p.purchase_price : '面议') + '</span>' +
+          '<span class="product-card-price">' + (p.settlement_price ? '¥'+p.settlement_price : '面议') + '</span>' +
           '<span class="product-card-code">' + p.product_code_74 + '</span>' +
         '</div>' +
         '<span class="product-card-stock ' + getStockClass(p) + '">' + getStockText(p) + '</span>' +
@@ -378,7 +378,7 @@ function renderProductDetail(code) {
       '<div class="detail-name">' + p.name + '</div>' +
       '<div class="detail-tags">' + tags.join('') + '</div>' +
       '<div class="detail-price-row">' +
-        '<div class="detail-price-item"><div class="detail-price-label">供货价</div><div class="detail-price-value">' + (p.purchase_price ? '¥'+p.purchase_price : '面议') + '</div></div>' +
+        '<div class="detail-price-item"><div class="detail-price-label">供货价</div><div class="detail-price-value">' + (p.settlement_price ? '¥'+p.settlement_price : '面议') + '</div></div>' +
         '<div class="detail-price-item"><div class="detail-price-label">零售价</div><div class="detail-price-value purchase">' + (p.retail_price ? '¥'+p.retail_price : '面议') + '</div></div>' +
       '</div>' +
       '<div class="detail-info">' +
@@ -444,10 +444,10 @@ function renderInventory() {
     filtered = filtered.filter(function(p) { return p.inventory && p.inventory[currentWarehouse] > 0; });
   }
 
-  // 价格筛选（基于结算价 purchase_price）
+  // 价格筛选（基于结算价 settlement_price）
   if (priceFilterMin !== null || priceFilterMax !== null) {
     filtered = filtered.filter(function(p) {
-      var price = p.purchase_price || 0;
+      var price = p.settlement_price || 0;
       if (priceFilterMin !== null && price < priceFilterMin) return false;
       if (priceFilterMax !== null && price > priceFilterMax) return false;
       return true;
@@ -467,7 +467,7 @@ function renderInventory() {
     });
   } else if (priceFilterMin !== null || priceFilterMax !== null) {
     // 有价格筛选时按价格从高到低排序
-    filtered.sort(function(a, b) { return (b.purchase_price || 0) - (a.purchase_price || 0); });
+    filtered.sort(function(a, b) { return (b.settlement_price || 0) - (a.settlement_price || 0); });
   } else {
     filtered = sortByPriority(filtered);
   }
