@@ -352,6 +352,7 @@ function renderProductDetail(code) {
   updateNav('detail');
 
   var imgs = (p.images || []).map(function(img) { return '<img src="images/' + img + '" alt="' + p.name + '">'; }).join('');
+  var imgCount = (p.images || []).length;
   var tags = [];
   if (p.is_new) tags.push('<span class="detail-tag tag-new">新品</span>');
   if (p.category) tags.push('<span class="detail-tag tag-category">' + p.category + '</span>');
@@ -373,6 +374,7 @@ function renderProductDetail(code) {
       '<div class="detail-carousel-track">' + (imgs || '<div style="padding:40px;text-align:center;color:#999;">暂无图片</div>') + '</div>' +
       '<div class="detail-carousel-dots"></div>' +
       '<div class="detail-back" onclick="goBack()">←</div>' +
+      (imgCount > 1 ? '<div class="carousel-arrow carousel-prev" onclick="window.prevSlide()">‹</div><div class="carousel-arrow carousel-next" onclick="window.nextSlide()">›</div>' : '') +
     '</div>' +
     '<div class="detail-body">' +
       '<div class="detail-name">' + p.name + '</div>' +

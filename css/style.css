@@ -273,6 +273,19 @@ img { max-width: 100%; display: block; }
   transition: background 0.2s;
 }
 .detail-carousel-dot.active { background: #E60012; }
+
+.carousel-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.9); display: flex;
+  align-items: center; justify-content: center; font-size: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15); cursor: pointer; z-index: 10;
+  color: #333; border: 1px solid #eee; font-weight: 300;
+}
+.carousel-arrow:active { background: #f0f0f0; }
+.carousel-prev { left: 8px; }
+.carousel-next { right: 8px; }
+
 .detail-back {
   position: absolute; top: 16px; left: 16px;
   width: 36px; height: 36px; border-radius: 50%;
