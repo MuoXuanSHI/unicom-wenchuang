@@ -454,7 +454,13 @@ function renderInventory() {
     });
   }
 
-  // 排序
+  // 排序：全部按总库存降序，各仓位按该仓位库存降序
+  filtered.sort(function(a, b) {
+    if (currentWarehouse === 'all') {
+      return ((b.inventory && b.inventory.total) || 0) - ((a.inventory && a.inventory.total) || 0);
+    }
+    return (b.inventory[currentWarehouse] || 0) - (a.inventory[currentWarehouse] || 0);
+  });
   if (currentWarehouse !== 'all') {
     filtered.sort(function(a, b) {
       return (b.inventory[currentWarehouse] || 0) - (a.inventory[currentWarehouse] || 0);
