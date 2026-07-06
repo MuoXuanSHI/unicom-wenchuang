@@ -2,6 +2,8 @@
 let allProducts = [];
 let pageHistory = [];
 let currentWarehouse = 'all';
+let priceFilterMin = null;
+let priceFilterMax = null;
 
 /* ====== 初始化 ====== */
 document.addEventListener('DOMContentLoaded', () => {
@@ -436,11 +438,30 @@ function renderInventory() {
   if (!container) return;
 
   var filtered = allProducts.slice();
+
+  // 仓位筛选
   if (currentWarehouse !== 'all') {
     filtered = filtered.filter(function(p) { return p.inventory && p.inventory[currentWarehouse] > 0; });
+  }
+
+  // 价格筛选（基于结算价 purchase_price）
+  if (priceFilterMin !== null || priceFilterMax !== null) {
+    filtered = filtered.filter(function(p) {
+      var price = p.purchase_price || 0;
+      if (priceFilterMin !== null && price < priceFilterMin) return false;
+      if (priceFilterMax !== null && price > priceFilterMax) return false;
+      return true;
+    });
+  }
+
+  // 排序
+  if (currentWarehouse !== 'all') {
     filtered.sort(function(a, b) {
       return (b.inventory[currentWarehouse] || 0) - (a.inventory[currentWarehouse] || 0);
     });
+  } else if (priceFilterMin !== null || priceFilterMax !== null) {
+    // 有价格筛选时按价格从高到低排序
+    filtered.sort(function(a, b) { return (b.purchase_price || 0) - (a.purchase_price || 0); });
   } else {
     filtered = sortByPriority(filtered);
   }
@@ -466,6 +487,49 @@ function renderInventory() {
   }).join('');
 
   initTouchFeedback(container.querySelectorAll('.inv-item'));
+}
+
+/* ====== 库存价格筛选 ====== */
+function applyPriceFilter() {
+  var minInput = document.getElementById('priceMin');
+  var maxInput = document.getElementById('priceMax');
+  priceFilterMin = minInput && minInput.value ? parseFloat(minInput.value) : null;
+  priceFilterMax = maxInput && maxInput.value ? parseFloat(maxInput.value) : null;
+  updatePriceTagActive();
+  renderInventory();
+}
+
+function setPriceRange(min, max) {
+  priceFilterMin = min;
+  priceFilterMax = max;
+  var minInput = document.getElementById('priceMin');
+  var maxInput = document.getElementById('priceMax');
+  if (minInput) minInput.value = min;
+  if (maxInput) maxInput.value = max === 99999 ? '' : max;
+  updatePriceTagActive();
+  renderInventory();
+}
+
+function clearPriceFilter() {
+  priceFilterMin = null;
+  priceFilterMax = null;
+  var minInput = document.getElementById('priceMin');
+  var maxInput = document.getElementById('priceMax');
+  if (minInput) minInput.value = '';
+  if (maxInput) maxInput.value = '';
+  updatePriceTagActive();
+  renderInventory();
+}
+
+function updatePriceTagActive() {
+  document.querySelectorAll('.price-tag').forEach(function(tag) {
+    tag.classList.remove('active');
+  });
+  if (priceFilterMin === 0 && priceFilterMax === 50) document.querySelectorAll('.price-tag')[0].classList.add('active');
+  else if (priceFilterMin === 50 && priceFilterMax === 100) document.querySelectorAll('.price-tag')[1].classList.add('active');
+  else if (priceFilterMin === 100 && priceFilterMax === 200) document.querySelectorAll('.price-tag')[2].classList.add('active');
+  else if (priceFilterMin === 200 && priceFilterMax === 500) document.querySelectorAll('.price-tag')[3].classList.add('active');
+  else if (priceFilterMin === 500 && priceFilterMax === 99999) document.querySelectorAll('.price-tag')[4].classList.add('active');
 }
 
 /* ====== 对接人 ====== */

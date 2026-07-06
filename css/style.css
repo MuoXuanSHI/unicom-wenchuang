@@ -347,6 +347,36 @@ img { max-width: 100%; display: block; }
   border: none; cursor: pointer; transition: all 0.2s;
 }
 .warehouse-tab.active { background: #E60012; color: #fff; }
+
+/* 价格筛选 */
+.price-filter { margin-top: 16px; padding-top: 12px; border-top: 1px solid #f0f0f0; }
+.price-filter-label { font-size: 13px; font-weight: 600; color: #333; margin-bottom: 8px; }
+.price-filter-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.price-filter-row input {
+  flex: 1; padding: 8px 12px; border-radius: 8px;
+  border: 1px solid #e0e0e0; background: #f8f8f8;
+  font-size: 13px; text-align: center;
+}
+.price-sep { color: #999; font-size: 13px; }
+.price-search-btn {
+  padding: 8px 16px; border-radius: 8px;
+  background: linear-gradient(135deg, #E60012, #ff1a35);
+  color: #fff; font-size: 13px; font-weight: 600;
+  border: none; cursor: pointer; flex-shrink: 0;
+}
+.price-quick-tags {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.price-tag {
+  padding: 6px 12px; border-radius: 16px;
+  background: #f5f5f5; font-size: 12px;
+  color: #666; cursor: pointer; transition: all 0.2s;
+  border: 1px solid transparent;
+}
+.price-tag:hover, .price-tag.active { background: #E60012; color: #fff; }
+.price-tag-clear { background: #fff; border-color: #ddd; }
+.price-tag-clear:hover { background: #666; }
+
 .inventory-list { padding: 12px 16px; }
 .inv-item {
   background: #fff; border-radius: 12px; padding: 14px;

@@ -206,6 +206,23 @@
         <button class="warehouse-tab" onclick="switchWarehouse('chengdu')">成都总仓</button>
         <button class="warehouse-tab" onclick="switchWarehouse('xiaoku')">小库</button>
       </div>
+      <div class="price-filter">
+        <div class="price-filter-label">结算价筛选</div>
+        <div class="price-filter-row">
+          <input type="number" id="priceMin" placeholder="最低价格" min="0" step="1">
+          <span class="price-sep">—</span>
+          <input type="number" id="priceMax" placeholder="最高价格" min="0" step="1">
+          <button class="price-search-btn" onclick="applyPriceFilter()">搜索</button>
+        </div>
+        <div class="price-quick-tags">
+          <span class="price-tag" onclick="setPriceRange(0,50)">0-50元</span>
+          <span class="price-tag" onclick="setPriceRange(50,100)">50-100元</span>
+          <span class="price-tag" onclick="setPriceRange(100,200)">100-200元</span>
+          <span class="price-tag" onclick="setPriceRange(200,500)">200-500元</span>
+          <span class="price-tag" onclick="setPriceRange(500,99999)">500元以上</span>
+          <span class="price-tag price-tag-clear" onclick="clearPriceFilter()">清除筛选</span>
+        </div>
+      </div>
     </div>
     <div class="inventory-list" id="inventoryList"></div>
   </div>
