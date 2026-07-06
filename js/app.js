@@ -461,16 +461,6 @@ function renderInventory() {
     }
     return (b.inventory[currentWarehouse] || 0) - (a.inventory[currentWarehouse] || 0);
   });
-  if (currentWarehouse !== 'all') {
-    filtered.sort(function(a, b) {
-      return (b.inventory[currentWarehouse] || 0) - (a.inventory[currentWarehouse] || 0);
-    });
-  } else if (priceFilterMin !== null || priceFilterMax !== null) {
-    // 有价格筛选时按价格从高到低排序
-    filtered.sort(function(a, b) { return (b.settlement_price || 0) - (a.settlement_price || 0); });
-  } else {
-    filtered = sortByPriority(filtered);
-  }
 
   container.innerHTML = filtered.map(function(p) {
     var imgHtml = '';
