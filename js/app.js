@@ -145,6 +145,7 @@ function renderNewProducts() {
 
   initLazyImages(container);
   initTouchFeedback(container.querySelectorAll('.new-card'));
+  initNewScrollTransform();
 }
 
 /* Transform-based 新品滑动 */
@@ -380,7 +381,7 @@ function renderProductDetail(code) {
       '<div class="detail-name">' + p.name + '</div>' +
       '<div class="detail-tags">' + tags.join('') + '</div>' +
       '<div class="detail-price-row">' +
-        '<div class="detail-price-item"><div class="detail-price-label">供货价</div><div class="detail-price-value">' + (p.settlement_price ? '¥'+p.settlement_price : '面议') + '</div></div>' +
+        '<div class="detail-price-item"><div class="detail-price-label">结算价</div><div class="detail-price-value">' + (p.settlement_price ? '¥'+p.settlement_price : '面议') + '</div></div>' +
         '<div class="detail-price-item"><div class="detail-price-label">零售价</div><div class="detail-price-value purchase">' + (p.retail_price ? '¥'+p.retail_price : '面议') + '</div></div>' +
       '</div>' +
       '<div class="detail-info">' +
