@@ -8731,12 +8731,12 @@
       "151_3.webp"
     ],
     "inventory": {
-      "beijing": 0,
+      "beijing": 706,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 0
+      "total": 706
     }
   },
   {
@@ -8790,12 +8790,12 @@
       "7441303555.webp"
     ],
     "inventory": {
-      "beijing": 0,
-      "kunshan": 0,
+      "beijing": 57,
+      "kunshan": 161,
       "dongguan": 0,
       "chengdu": 0,
-      "xiaoku": 0,
-      "total": 0
+      "xiaoku": 7,
+      "total": 225
     }
   },
   {
@@ -8818,12 +8818,12 @@
       "7441303556.webp"
     ],
     "inventory": {
-      "beijing": 0,
-      "kunshan": 0,
+      "beijing": 9,
+      "kunshan": 27,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 0
+      "total": 36
     }
   },
   {
@@ -8846,12 +8846,12 @@
       "image29.webp"
     ],
     "inventory": {
-      "beijing": 0,
-      "kunshan": 0,
+      "beijing": 1,
+      "kunshan": 1,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 0
+      "total": 2
     }
   },
   {
@@ -24793,12 +24793,12 @@
       "32_4.webp"
     ],
     "inventory": {
-      "beijing": 0,
+      "beijing": 38,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
-      "xiaoku": 0,
-      "total": 0
+      "xiaoku": 20,
+      "total": 58
     }
   },
   {
@@ -24823,12 +24823,12 @@
       "33_2.webp"
     ],
     "inventory": {
-      "beijing": 0,
+      "beijing": 734,
       "kunshan": 0,
-      "dongguan": 0,
+      "dongguan": 474,
       "chengdu": 0,
-      "xiaoku": 0,
-      "total": 0
+      "xiaoku": 30,
+      "total": 1238
     }
   },
   {
@@ -24851,12 +24851,12 @@
       "35_2.webp"
     ],
     "inventory": {
-      "beijing": 0,
+      "beijing": 22,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
-      "xiaoku": 0,
-      "total": 0
+      "xiaoku": 5,
+      "total": 27
     }
   },
   {
@@ -24879,12 +24879,12 @@
       "34_2.webp"
     ],
     "inventory": {
-      "beijing": 0,
+      "beijing": 23,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
-      "xiaoku": 0,
-      "total": 0
+      "xiaoku": 5,
+      "total": 28
     }
   },
   {
@@ -24907,12 +24907,12 @@
       "34_2.webp"
     ],
     "inventory": {
-      "beijing": 0,
+      "beijing": 24,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
-      "xiaoku": 0,
-      "total": 0
+      "xiaoku": 5,
+      "total": 29
     }
   }
 ]
