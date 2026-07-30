@@ -474,6 +474,29 @@ img { max-width: 100%; display: block; }
 .empty-state-icon { font-size: 48px; margin-bottom: 12px; }
 .empty-state-text { font-size: 14px; color: #999; }
 
+/* ====== 分页加载提示 ====== */
+.list-sentinel {
+  grid-column: 1 / -1; /* 跨越所有网格列 */
+  padding: 16px 0;
+  text-align: center;
+}
+.inventory-list .list-sentinel {
+  grid-column: auto; /* 库存列表非grid布局，重置 */
+}
+.list-loading-hint {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; color: #999; font-size: 13px;
+}
+.list-spinner {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 2px solid #e0e0e0; border-top-color: #E60012;
+  animation: spin 0.6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.list-end-hint {
+  color: #bbb; font-size: 12px; padding: 8px 0;
+}
+
 /* ====== 加载状态 ====== */
 .detail-loading, .loading {
   text-align: center; padding: 60px 20px; color: #999; font-size: 14px;

@@ -5,6 +5,18 @@ let currentWarehouse = 'all';
 let priceFilterMin = null;
 let priceFilterMax = null;
 
+/* ====== 分页加载状态 ====== */
+var PAGE_SIZE = 24;            // 每页加载的产品数量（适配2/3/4列网格）
+var listVisibleCount = 0;      // 产品列表已渲染数量
+var listFilteredData = [];     // 产品列表当前筛选结果
+var invVisibleCount = 0;       // 库存列表已渲染数量
+var invFilteredData = [];      // 库存列表当前筛选结果
+var searchDebounceTimer = null; // 搜索防抖计时器
+var listSentinel = null;       // 列表滚动哨兵元素
+var invSentinel = null;        // 库存滚动哨兵元素
+var listObserver = null;       // 列表无限滚动观察器
+var invObserver = null;        // 库存无限滚动观察器
+
 /* ====== 初始化 ====== */
 document.addEventListener('DOMContentLoaded', () => {
   loadData();
@@ -114,9 +126,9 @@ function sortByPriority(products) {
 function getProductImageHTML(p, isLazy) {
   if (p.images && p.images.length > 0) {
     if (isLazy) {
-      return '<div class="skeleton"></div><img class="lazy-img" data-src="images/' + p.images[0] + '" alt="' + p.name + '" loading="lazy">';
+      return '<div class="skeleton"></div><img class="lazy-img" data-src="images/' + p.images[0] + '" alt="' + p.name + '" loading="lazy" decoding="async">';
     } else {
-      return '<img class="lazy-img loaded" src="images/' + p.images[0] + '" alt="' + p.name + '" style="opacity:1">';
+      return '<img class="lazy-img loaded" src="images/' + p.images[0] + '" alt="' + p.name + '" style="opacity:1" decoding="async">';
     }
   } else {
     return '<div class="no-img-placeholder">图片暂无</div>';
@@ -252,28 +264,102 @@ function applyFilter() {
   var countEl = document.getElementById('listCount');
   if (countEl) countEl.textContent = '共 ' + filtered.length + ' 款产品';
 
+  /* --- 分页加载初始化 --- */
+  listFilteredData = filtered;
+  listVisibleCount = 0;
   var container = document.getElementById('productGrid');
   if (!container) return;
-  if (!filtered.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-text">暂无相关产品</div></div>'; return; }
+  container.innerHTML = '';
 
-  container.innerHTML = filtered.map(function(p) {
-    return '<div class="product-card" onclick="renderProductDetail(\'' + p.product_code_74 + '\')">' +
-      '<div class="product-img-wrap">' +
-        getProductImageHTML(p, true) +
-      '</div>' +
-      '<div class="product-card-body">' +
-        '<div class="product-card-name">' + p.name + '</div>' +
-        '<div class="product-card-meta">' +
-          '<span class="product-card-price">' + (p.settlement_price ? '¥'+p.settlement_price : '面议') + '</span>' +
-          '<span class="product-card-code">' + p.product_code_74 + '</span>' +
-        '</div>' +
-        '<span class="product-card-stock ' + getStockClass(p) + '">' + getStockText(p) + '</span>' +
-      '</div>' +
-    '</div>';
-  }).join('');
+  /* 创建底部哨兵用于无限滚动 */
+  var sentinel = document.createElement('div');
+  sentinel.className = 'list-sentinel';
+  sentinel.id = 'listSentinel';
+  container.appendChild(sentinel);
 
+  if (!filtered.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">[empty]</div><div class="empty-state-text">暂无相关产品</div></div>';
+    return;
+  }
+
+  /* 初始加载第一页 */
+  loadMoreProducts();
+
+  /* 设置无限滚动观察器 */
+  if (listObserver) listObserver.disconnect();
+  listObserver = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting && listVisibleCount < listFilteredData.length) {
+      loadMoreProducts();
+    }
+  }, { rootMargin: '200px', threshold: 0 });
+  listObserver.observe(sentinel);
+}
+
+/* 分页加载更多产品 */
+function loadMoreProducts() {
+  var container = document.getElementById('productGrid');
+  if (!container) return;
+  var sentinel = document.getElementById('listSentinel');
+
+  var start = listVisibleCount;
+  var end = Math.min(start + PAGE_SIZE, listFilteredData.length);
+  if (start >= end) return;
+
+  var fragment = document.createDocumentFragment();
+
+  for (var i = start; i < end; i++) {
+    var p = listFilteredData[i];
+    var card = document.createElement('div');
+    card.className = 'product-card';
+    card.setAttribute('onclick', "renderProductDetail('" + p.product_code_74 + "')");
+
+    var imgWrap = document.createElement('div');
+    imgWrap.className = 'product-img-wrap';
+    imgWrap.innerHTML = getProductImageHTML(p, true);
+
+    var cardBody = document.createElement('div');
+    cardBody.className = 'product-card-body';
+    cardBody.innerHTML =
+      '<div class="product-card-name">' + p.name + '</div>' +
+      '<div class="product-card-meta">' +
+        '<span class="product-card-price">' + (p.settlement_price ? '¥'+p.settlement_price : '面议') + '</span>' +
+        '<span class="product-card-code">' + p.product_code_74 + '</span>' +
+      '</div>' +
+      '<span class="product-card-stock ' + getStockClass(p) + '">' + getStockText(p) + '</span>';
+
+    card.appendChild(imgWrap);
+    card.appendChild(cardBody);
+    fragment.appendChild(card);
+  }
+
+  listVisibleCount = end;
+
+  /* 插入到哨兵之前 */
+  if (sentinel) {
+    container.insertBefore(fragment, sentinel);
+  } else {
+    container.appendChild(fragment);
+  }
+
+  /* 初始化新加载图片的懒加载 */
   initLazyImages(container);
-  initTouchFeedback(container.querySelectorAll('.product-card'));
+  initTouchFeedback(container.querySelectorAll('.product-card:not(.touch-bound)'));
+  container.querySelectorAll('.product-card:not(.touch-bound)').forEach(function(el) {
+    el.classList.add('touch-bound');
+  });
+
+  /* 更新加载提示 */
+  updateLoadMoreHint(sentinel);
+}
+
+/* 更新底部加载提示 */
+function updateLoadMoreHint(sentinel) {
+  if (!sentinel) return;
+  if (listVisibleCount >= listFilteredData.length) {
+    sentinel.innerHTML = '<div class="list-end-hint">已加载全部 ' + listFilteredData.length + ' 款产品</div>';
+  } else {
+    sentinel.innerHTML = '<div class="list-loading-hint"><div class="list-spinner"></div>加载中...</div>';
+  }
 }
 
 function getStockClass(p) {
@@ -295,7 +381,11 @@ function getStockText(p) {
 
 /* ====== 搜索 ====== */
 function handleSearch(value) {
-  // 实时搜索可选，当前留空
+  /* 实时搜索：300ms 防抖 */
+  if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+  searchDebounceTimer = setTimeout(function() {
+    doSearch();
+  }, 300);
 }
 
 function doSearch() {
@@ -317,28 +407,33 @@ function doSearch() {
   var countEl = document.getElementById('listCount');
   if (countEl) countEl.textContent = '搜索"' + q + '"：共 ' + results.length + ' 款产品';
 
+  /* 复用分页加载机制 */
+  listFilteredData = results;
+  listVisibleCount = 0;
   var container = document.getElementById('productGrid');
   if (!container) return;
-  if (!results.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><div class="empty-state-text">未找到相关产品</div></div>'; return; }
+  container.innerHTML = '';
 
-  container.innerHTML = results.map(function(p) {
-    return '<div class="product-card" onclick="renderProductDetail(\'' + p.product_code_74 + '\')">' +
-      '<div class="product-img-wrap">' +
-        getProductImageHTML(p, true) +
-      '</div>' +
-      '<div class="product-card-body">' +
-        '<div class="product-card-name">' + p.name + '</div>' +
-        '<div class="product-card-meta">' +
-          '<span class="product-card-price">' + (p.settlement_price ? '¥'+p.settlement_price : '面议') + '</span>' +
-          '<span class="product-card-code">' + p.product_code_74 + '</span>' +
-        '</div>' +
-        '<span class="product-card-stock ' + getStockClass(p) + '">' + getStockText(p) + '</span>' +
-      '</div>' +
-    '</div>';
-  }).join('');
+  var sentinel = document.createElement('div');
+  sentinel.className = 'list-sentinel';
+  sentinel.id = 'listSentinel';
+  container.appendChild(sentinel);
 
-  initLazyImages(container);
-  initTouchFeedback(container.querySelectorAll('.product-card'));
+  if (!results.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">[search]</div><div class="empty-state-text">未找到相关产品</div></div>';
+    return;
+  }
+
+  loadMoreProducts();
+
+  if (listObserver) listObserver.disconnect();
+  listObserver = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting && listVisibleCount < listFilteredData.length) {
+      loadMoreProducts();
+    }
+  }, { rootMargin: '200px', threshold: 0 });
+  listObserver.observe(sentinel);
+
   window.scrollTo(0, 0);
 }
 
@@ -465,27 +560,97 @@ function renderInventory() {
     return (b.inventory[currentWarehouse] || 0) - (a.inventory[currentWarehouse] || 0);
   });
 
-  container.innerHTML = filtered.map(function(p) {
+  /* --- 分页加载初始化 --- */
+  invFilteredData = filtered;
+  invVisibleCount = 0;
+  container.innerHTML = '';
+
+  if (!filtered.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">[empty]</div><div class="empty-state-text">暂无库存数据</div></div>';
+    return;
+  }
+
+  /* 创建底部哨兵 */
+  var sentinel = document.createElement('div');
+  sentinel.className = 'list-sentinel';
+  sentinel.id = 'invSentinel';
+  container.appendChild(sentinel);
+
+  /* 初始加载第一页 */
+  loadMoreInventory();
+
+  /* 设置无限滚动观察器 */
+  if (invObserver) invObserver.disconnect();
+  invObserver = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting && invVisibleCount < invFilteredData.length) {
+      loadMoreInventory();
+    }
+  }, { rootMargin: '200px', threshold: 0 });
+  invObserver.observe(sentinel);
+}
+
+/* 分页加载更多库存项 */
+function loadMoreInventory() {
+  var container = document.getElementById('inventoryList');
+  if (!container) return;
+  var sentinel = document.getElementById('invSentinel');
+
+  var start = invVisibleCount;
+  var end = Math.min(start + PAGE_SIZE, invFilteredData.length);
+  if (start >= end) return;
+
+  var fragment = document.createDocumentFragment();
+
+  for (var i = start; i < end; i++) {
+    var p = invFilteredData[i];
+    var item = document.createElement('div');
+    item.className = 'inv-item';
+    item.setAttribute('onclick', "renderProductDetail('" + p.product_code_74 + "')");
+
     var imgHtml = '';
     if (p.images && p.images.length > 0) {
-      imgHtml = '<img class="inv-item-img" src="images/' + p.images[0] + '" alt="' + p.name + '" loading="lazy" onerror="this.style.display=\'none\'">';
+      imgHtml = '<img class="inv-item-img lazy-img" data-src="images/' + p.images[0] + '" alt="' + p.name + '" loading="lazy" onerror="this.style.display=\'none\'">';
     } else {
       imgHtml = '<div class="inv-item-img no-img-placeholder" style="width:56px;height:56px;font-size:10px;border-radius:8px;">图片暂无</div>';
     }
+
     var stockNum = currentWarehouse === 'all'
       ? (p.inventory ? p.inventory.total : 0)
       : (p.inventory ? p.inventory[currentWarehouse] : 0);
-    return '<div class="inv-item" onclick="renderProductDetail(\'' + p.product_code_74 + '\')">' +
-      imgHtml +
+
+    item.innerHTML = imgHtml +
       '<div class="inv-item-info">' +
         '<div class="inv-item-name">' + p.name + '</div>' +
         '<div class="inv-item-code">' + p.product_code_74 + '</div>' +
       '</div>' +
-      '<div class="inv-item-stock">' + stockNum + '</div>' +
-    '</div>';
-  }).join('');
+      '<div class="inv-item-stock">' + stockNum + '</div>';
 
-  initTouchFeedback(container.querySelectorAll('.inv-item'));
+    fragment.appendChild(item);
+  }
+
+  invVisibleCount = end;
+
+  if (sentinel) {
+    container.insertBefore(fragment, sentinel);
+  } else {
+    container.appendChild(fragment);
+  }
+
+  /* 初始化懒加载 */
+  initLazyImages(container);
+  initTouchFeedback(container.querySelectorAll('.inv-item:not(.touch-bound)'));
+  container.querySelectorAll('.inv-item:not(.touch-bound)').forEach(function(el) {
+    el.classList.add('touch-bound');
+  });
+
+  /* 更新加载提示 */
+  if (sentinel) {
+    if (invVisibleCount >= invFilteredData.length) {
+      sentinel.innerHTML = '<div class="list-end-hint">已加载全部 ' + invFilteredData.length + ' 款产品</div>';
+    } else {
+      sentinel.innerHTML = '<div class="list-loading-hint"><div class="list-spinner"></div>加载中...</div>';
+    }
+  }
 }
 
 /* ====== 库存价格筛选 ====== */
@@ -596,8 +761,9 @@ window.addEventListener('scroll', function() {
 /* ====== 懒加载 ====== */
 function initLazyImages(root) {
   if (!root || !window.IntersectionObserver) return;
-  var imgs = root.querySelectorAll('img.lazy-img');
+  var imgs = root.querySelectorAll('img.lazy-img:not(.lazy-bound)');
   if (!imgs.length) return;
+  imgs.forEach(function(img) { img.classList.add('lazy-bound'); });
   var obs = new IntersectionObserver(function(entries, observer) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
@@ -611,7 +777,7 @@ function initLazyImages(root) {
         observer.unobserve(img);
       }
     });
-  }, { rootMargin: '50px', threshold: 0.01 });
+  }, { rootMargin: '100px', threshold: 0.01 });
   imgs.forEach(function(img) { obs.observe(img); });
 }
 
