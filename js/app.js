@@ -420,13 +420,19 @@ function renderNewProducts() {
   }
   if (!source.length) { container.innerHTML = '<p style="padding:20px;text-align:center;color:#999;">暂无新品</p>'; return; }
 
-  container.innerHTML = source.map(function(p) {
+  container.innerHTML = source.map(function(p, i) {
     var isPreview = p._preview === true;
     var hasCode = !!p.product_code_74;
-    var imgs = p.images && p.images.length ? p.images : [];
-    var imgHtml = imgs.length
-      ? '<div class="skeleton"></div><img class="lazy-img" data-src="' + imgUrl(imgs[0]) + '" alt="' + p.name + '" loading="lazy" decoding="async">'
-      : '<div class="no-img-placeholder">图片暂无</div>';
+    var imgs;
+    try { imgs = p.images && p.images.length ? p.images : []; } catch (_) { imgs = []; }
+    var imgHtml;
+    try {
+      imgHtml = imgs.length
+        ? '<div class="skeleton"></div><img class="lazy-img" data-src="' + imgUrl(imgs[0]) + '" alt="' + (p.name||'') + '" loading="lazy" decoding="async">'
+        : '<div class="no-img-placeholder">图片暂无</div>';
+    } catch (_) {
+      imgHtml = '<div class="no-img-placeholder">图片暂无</div>';
+    }
     var priceHtml;
     if (isPreview || !hasCode) {
       priceHtml = '<div class="new-card-price preview-price">即将上市/引入</div>';
