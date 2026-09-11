@@ -1,0 +1,1864 @@
+[
+ {
+  "product_code_74": "7441309832",
+  "name": "无纺布袋-万象更新款_文创_粉绿",
+  "category": "营销场景",
+  "settlement_price": 2.6,
+  "retail_price": 3.6,
+  "images": [
+   "images/top100_910/product_top001.webp"
+  ],
+  "inventory": {
+   "beijing": 44,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 70,
+   "total": 114
+  },
+  "rank": 1
+ },
+ {
+  "product_code_74": "7441309804",
+  "name": "魔方_文创_彩色",
+  "category": "营销场景",
+  "settlement_price": 8.5,
+  "retail_price": 19.9,
+  "images": [
+   "images/top100_910/product_top002.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 1540,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 1540
+  },
+  "rank": 2
+ },
+ {
+  "product_code_74": "7470709840",
+  "name": "文创可夹可立护眼灯_文创_杏白色",
+  "category": "校园文创",
+  "settlement_price": 28.0,
+  "retail_price": 47.9,
+  "images": [
+   "images/top100_910/product_top003.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 399,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 399
+  },
+  "rank": 3
+ },
+ {
+  "product_code_74": "7440703354",
+  "name": "吉祥物通通炫彩系列充电线_文创_银色",
+  "category": "营销场景",
+  "settlement_price": 25.0,
+  "retail_price": 36.0,
+  "images": [
+   "images/top100_910/product_top004.webp"
+  ],
+  "inventory": {
+   "beijing": 67,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 67
+  },
+  "rank": 4
+ },
+ {
+  "product_code_74": "7441307285",
+  "name": "文创桌面mini加湿器_文创_白色",
+  "category": "营销场景",
+  "settlement_price": 42.0,
+  "retail_price": 68.0,
+  "images": [
+   "images/top100_910/product_top005.webp"
+  ],
+  "inventory": {
+   "beijing": 34,
+   "kunshan": 0,
+   "dongguan": 342,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 376
+  },
+  "rank": 5
+ },
+ {
+  "product_code_74": "7441302488",
+  "name": "观山玻璃泡茶杯_文创_灰色",
+  "category": "营销场景",
+  "settlement_price": 55.0,
+  "retail_price": 118.0,
+  "images": [
+   "images/top100_910/product_top006.webp"
+  ],
+  "inventory": {
+   "beijing": 348,
+   "kunshan": 288,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 3,
+   "total": 639
+  },
+  "rank": 6
+ },
+ {
+  "product_code_74": "7441306475",
+  "name": "文创超韧原生木浆抽纸（3包1提）_文创_米黄色",
+  "category": "营销场景",
+  "settlement_price": 8.0,
+  "retail_price": 12.0,
+  "images": [
+   "images/top100_910/product_top007.webp"
+  ],
+  "inventory": {
+   "beijing": 805,
+   "kunshan": 1342,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 2147
+  },
+  "rank": 7
+ },
+ {
+  "product_code_74": "7441307906",
+  "name": "eSIM无纺布袋_文创_彩色",
+  "category": "eSIM文创",
+  "settlement_price": 2.6,
+  "retail_price": 3.6,
+  "images": [
+   "images/top100_910/product_top008.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 1,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 22,
+   "total": 23
+  },
+  "rank": 8
+ },
+ {
+  "product_code_74": "7441303478",
+  "name": "品牌家族文化帆布袋",
+  "category": "营销场景",
+  "settlement_price": 22.0,
+  "retail_price": 38.0,
+  "images": [
+   "images/top100_910/product_top009.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 2970,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 2970
+  },
+  "rank": 9
+ },
+ {
+  "product_code_74": "7441304165",
+  "name": "吉祥物通通炫彩包_文创_炫彩",
+  "category": "营销场景",
+  "settlement_price": 28.0,
+  "retail_price": 38.0,
+  "images": [
+   "images/top100_910/product_top010.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 1000,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 3,
+   "total": 1003
+  },
+  "rank": 10
+ },
+ {
+  "product_code_74": "7441304983",
+  "name": "通通开心拼接单肩帆布袋-横版_文创_白色",
+  "category": "营销场景",
+  "settlement_price": 22.0,
+  "retail_price": 35.0,
+  "images": [
+   "images/top100_910/product_top011.webp"
+  ],
+  "inventory": {
+   "beijing": 1386,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 29,
+   "total": 1415
+  },
+  "rank": 11
+ },
+ {
+  "product_code_74": "7441304980",
+  "name": "通通如意单肩帆布袋-竖版_文创_白色",
+  "category": "营销场景",
+  "settlement_price": 22.0,
+  "retail_price": 35.0,
+  "images": [
+   "images/top100_910/product_top012.webp"
+  ],
+  "inventory": {
+   "beijing": 1327,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 30,
+   "total": 1357
+  },
+  "rank": 12
+ },
+ {
+  "product_code_74": "7441310201",
+  "name": "运动摇摇杯 米白色",
+  "category": "校园文创",
+  "settlement_price": 30.0,
+  "retail_price": 59.0,
+  "images": [
+   "images/top100_910/product_top013.webp"
+  ],
+  "inventory": {
+   "beijing": 403,
+   "kunshan": 527,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 930
+  },
+  "rank": 13
+ },
+ {
+  "product_code_74": "7441307933",
+  "name": "通通能量满格充电宝_文创_流光白",
+  "category": "eSIM文创",
+  "settlement_price": 72.0,
+  "retail_price": 128.0,
+  "images": [
+   "images/top100_910/product_top014.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 144,
+   "xiaoku": 41,
+   "total": 185
+  },
+  "rank": 14
+ },
+ {
+  "product_code_74": "7441304982",
+  "name": "通通开心拼接单肩帆布袋-竖版_文创_白色",
+  "category": "营销场景",
+  "settlement_price": 22.0,
+  "retail_price": 35.0,
+  "images": [
+   "images/top100_910/product_top015.webp"
+  ],
+  "inventory": {
+   "beijing": 564,
+   "kunshan": 164,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 21,
+   "total": 749
+  },
+  "rank": 15
+ },
+ {
+  "product_code_74": "7441306807",
+  "name": "办公笔记本B5-红色_文创_红",
+  "category": "办公场景",
+  "settlement_price": 26.0,
+  "retail_price": 36.0,
+  "images": [
+   "images/top100_910/product_top016.webp"
+  ],
+  "inventory": {
+   "beijing": 823,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 8,
+   "total": 831
+  },
+  "rank": 16
+ },
+ {
+  "product_code_74": "7441306284",
+  "name": "PU笔记本-冰山蓝_文创_冰山蓝",
+  "category": "办公场景",
+  "settlement_price": 26.0,
+  "retail_price": 40.0,
+  "images": [
+   "images/top100_910/product_top017.webp"
+  ],
+  "inventory": {
+   "beijing": 313,
+   "kunshan": 4,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 317
+  },
+  "rank": 17
+ },
+ {
+  "product_code_74": "7441308851",
+  "name": "通通有福保温杯-660ML_文创_瓷白色",
+  "category": "营销场景",
+  "settlement_price": 56.0,
+  "retail_price": 119.0,
+  "images": [
+   "images/top100_910/product_top018.webp"
+  ],
+  "inventory": {
+   "beijing": 13,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 1,
+   "total": 14
+  },
+  "rank": 18
+ },
+ {
+  "product_code_74": "7470709841",
+  "name": "文创便携折叠风扇_文创_霜白色",
+  "category": "校园文创",
+  "settlement_price": 17.0,
+  "retail_price": 28.0,
+  "images": [
+   "images/top100_910/product_top019.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 5,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 5
+  },
+  "rank": 19
+ },
+ {
+  "product_code_74": "7441309895",
+  "name": "磁吸泡茶保温杯-蓝色_文创_蓝色",
+  "category": "校园文创",
+  "settlement_price": 80.0,
+  "retail_price": 129.0,
+  "images": [
+   "images/top100_910/product_top020.webp"
+  ],
+  "inventory": {
+   "beijing": 514,
+   "kunshan": 470,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 984
+  },
+  "rank": 20
+ },
+ {
+  "product_code_74": "7441310196",
+  "name": "磁吸泡茶保温杯-粉色_文创_粉色",
+  "category": "校园文创",
+  "settlement_price": 80.0,
+  "retail_price": 129.0,
+  "images": [
+   "images/top100_910/product_top021.webp"
+  ],
+  "inventory": {
+   "beijing": 960,
+   "kunshan": 430,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 1390
+  },
+  "rank": 21
+ },
+ {
+  "product_code_74": "7441302486",
+  "name": "黑胶防晒高尔夫雨伞_文创_黑色",
+  "category": "营销场景",
+  "settlement_price": 35.0,
+  "retail_price": 88.0,
+  "images": [
+   "images/top100_910/product_top022.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 472,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 472
+  },
+  "rank": 22
+ },
+ {
+  "product_code_74": "7441306473",
+  "name": "文创定制超轻伞（淡粉色）_文创_淡粉色",
+  "category": "营销场景",
+  "settlement_price": 42.0,
+  "retail_price": 68.0,
+  "images": [
+   "images/top100_910/product_top023.webp"
+  ],
+  "inventory": {
+   "beijing": 553,
+   "kunshan": 1297,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 19,
+   "total": 1869
+  },
+  "rank": 23
+ },
+ {
+  "product_code_74": "7441306414",
+  "name": "定制多功能商务旅行双肩背包_文创_曜石黑",
+  "category": "营销场景",
+  "settlement_price": 105.0,
+  "retail_price": 299.0,
+  "images": [
+   "images/top100_910/product_top024.webp"
+  ],
+  "inventory": {
+   "beijing": 473,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 3,
+   "total": 476
+  },
+  "rank": 24
+ },
+ {
+  "product_code_74": "7441306472",
+  "name": "文创定制超轻伞（黑色）_文创_黑色",
+  "category": "营销场景",
+  "settlement_price": 42.0,
+  "retail_price": 68.0,
+  "images": [
+   "images/top100_910/product_top025.webp"
+  ],
+  "inventory": {
+   "beijing": 348,
+   "kunshan": 1246,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 24,
+   "total": 1618
+  },
+  "rank": 25
+ },
+ {
+  "product_code_74": "7441306415",
+  "name": "定制通勤商务双肩背包_文创_曜石黑",
+  "category": "营销场景",
+  "settlement_price": 99.0,
+  "retail_price": 269.0,
+  "images": [
+   "images/top100_910/product_top026.webp"
+  ],
+  "inventory": {
+   "beijing": 408,
+   "kunshan": 7,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 415
+  },
+  "rank": 26
+ },
+ {
+  "product_code_74": "7441306497",
+  "name": "定制多功能拉杆箱24寸（商务灰）_文创_商务灰",
+  "category": "营销场景",
+  "settlement_price": 230.0,
+  "retail_price": 399.0,
+  "images": [
+   "images/top100_910/product_top027.webp"
+  ],
+  "inventory": {
+   "beijing": 113,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 113
+  },
+  "rank": 27
+ },
+ {
+  "product_code_74": "7441306185",
+  "name": "吉祥物旅行双肩背包_文创_典雅黑",
+  "category": "营销场景",
+  "settlement_price": 165.0,
+  "retail_price": 186.0,
+  "images": [
+   "images/top100_910/product_top028.webp"
+  ],
+  "inventory": {
+   "beijing": 445,
+   "kunshan": 3,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 2,
+   "total": 450
+  },
+  "rank": 28
+ },
+ {
+  "product_code_74": "7471702679",
+  "name": "文创电动剃须刀_文创_灰蓝色",
+  "category": "营销场景",
+  "settlement_price": 75.0,
+  "retail_price": 118.0,
+  "images": [
+   "images/top100_910/product_top029.webp"
+  ],
+  "inventory": {
+   "beijing": 928,
+   "kunshan": 899,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 3,
+   "total": 1830
+  },
+  "rank": 29
+ },
+ {
+  "product_code_74": "7441307113",
+  "name": "纯钛迷你保温杯（冰蓝）_文创_冰蓝",
+  "category": "商务场景",
+  "settlement_price": 160.0,
+  "retail_price": 298.0,
+  "images": [
+   "images/top100_910/product_top030.webp"
+  ],
+  "inventory": {
+   "beijing": 84,
+   "kunshan": 349,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 7,
+   "total": 440
+  },
+  "rank": 30
+ },
+ {
+  "product_code_74": "7471702678",
+  "name": "文创高转速负离子吹风机G9型号_文创_浅灰色",
+  "category": "营销场景",
+  "settlement_price": 140.0,
+  "retail_price": 224.0,
+  "images": [
+   "images/top100_910/product_top031.webp"
+  ],
+  "inventory": {
+   "beijing": 366,
+   "kunshan": 283,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 1,
+   "total": 650
+  },
+  "rank": 31
+ },
+ {
+  "product_code_74": "7441304117",
+  "name": "吉祥物L型文件夹套装_文创_彩色",
+  "category": "办公场景",
+  "settlement_price": 8.0,
+  "retail_price": 12.0,
+  "images": [
+   "images/top100_910/product_top033.webp"
+  ],
+  "inventory": {
+   "beijing": 1054,
+   "kunshan": 12,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 1066
+  },
+  "rank": 33
+ },
+ {
+  "product_code_74": "7441308157",
+  "name": "联通文创高端纯钛保温杯（银色）",
+  "category": "营销场景",
+  "settlement_price": 250.0,
+  "retail_price": 499.0,
+  "images": [
+   "images/top100_910/product_top034.webp"
+  ],
+  "inventory": {
+   "beijing": 135,
+   "kunshan": 203,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 6,
+   "total": 344
+  },
+  "rank": 34
+ },
+ {
+  "product_code_74": "7441307434",
+  "name": "中国联通 电报大楼木质冰箱贴 北京自采",
+  "category": "营销场景",
+  "settlement_price": 23.0,
+  "retail_price": 30.0,
+  "images": [
+   "images/top100_910/product_top035.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "rank": 35
+ },
+ {
+  "product_code_74": "7441303392",
+  "name": "吉祥物无纺布袋_文创_白色（总部）",
+  "category": "营销场景",
+  "settlement_price": 2.6,
+  "retail_price": 3.6,
+  "images": [
+   "images/top100_910/product_top036.webp"
+  ],
+  "inventory": {
+   "beijing": 3,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 9,
+   "total": 12
+  },
+  "rank": 36
+ },
+ {
+  "product_code_74": "7441304981",
+  "name": "通通如意单肩帆布袋-横版_文创_白色",
+  "category": "营销场景",
+  "settlement_price": 22.0,
+  "retail_price": 35.0,
+  "images": [
+   "images/top100_910/product_top037.webp"
+  ],
+  "inventory": {
+   "beijing": 842,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 30,
+   "total": 872
+  },
+  "rank": 37
+ },
+ {
+  "product_code_74": "7441306494",
+  "name": "定制多功能拉杆箱20寸（薄荷绿）_文创_薄荷绿",
+  "category": "营销场景",
+  "settlement_price": 195.0,
+  "retail_price": 369.0,
+  "images": [
+   "images/top100_910/product_top038.webp"
+  ],
+  "inventory": {
+   "beijing": 307,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 307
+  },
+  "rank": 38
+ },
+ {
+  "product_code_74": "7441304115",
+  "name": "文创晶透妙干中性笔-12支装_文创_彩色",
+  "category": "办公场景",
+  "settlement_price": 11.0,
+  "retail_price": 18.0,
+  "images": [
+   "images/top100_910/product_top039.webp"
+  ],
+  "inventory": {
+   "beijing": 134,
+   "kunshan": 222,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 4,
+   "total": 360
+  },
+  "rank": 39
+ },
+ {
+  "product_code_74": "7441308803",
+  "name": "中国结毛绒挂件_文创_红色",
+  "category": "营销场景",
+  "settlement_price": 46.0,
+  "retail_price": 68.0,
+  "images": [
+   "images/top100_910/product_top040.webp"
+  ],
+  "inventory": {
+   "beijing": 1026,
+   "kunshan": 57,
+   "dongguan": 46,
+   "chengdu": 0,
+   "xiaoku": 1,
+   "total": 1130
+  },
+  "rank": 40
+ },
+ {
+  "product_code_74": "7441303428",
+  "name": "信号塔书签套装_文创_彩色",
+  "category": "办公场景",
+  "settlement_price": 88.0,
+  "retail_price": 130.0,
+  "images": [
+   "images/top100_910/product_top041.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 1,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 1
+  },
+  "rank": 41
+ },
+ {
+  "product_code_74": "7441307193",
+  "name": "TONE×COSMOS 保温杯（奔赴星空）_文创_白配红",
+  "category": "合作IP",
+  "settlement_price": 110.0,
+  "retail_price": 199.0,
+  "images": [
+   "images/top100_910/product_top042.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 592,
+   "chengdu": 0,
+   "xiaoku": 3,
+   "total": 595
+  },
+  "rank": 42
+ },
+ {
+  "product_code_74": "7441306492",
+  "name": "定制高端商务旅行箱20寸（珐琅银）_文创_珐琅银",
+  "category": "营销场景",
+  "settlement_price": 245.0,
+  "retail_price": 489.0,
+  "images": [
+   "images/top100_910/product_top043.webp"
+  ],
+  "inventory": {
+   "beijing": 249,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 249
+  },
+  "rank": 43
+ },
+ {
+  "product_code_74": "7441306493",
+  "name": "定制高端商务旅行箱24寸（珐琅银）_文创_珐琅银",
+  "category": "营销场景",
+  "settlement_price": 275.0,
+  "retail_price": 499.0,
+  "images": [
+   "images/top100_910/product_top044.webp"
+  ],
+  "inventory": {
+   "beijing": 101,
+   "kunshan": 12,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 113
+  },
+  "rank": 44
+ },
+ {
+  "product_code_74": "7441308852",
+  "name": "通通有福双盖保温杯-540ML_文创_瓷白色",
+  "category": "营销场景",
+  "settlement_price": 56.0,
+  "retail_price": 119.0,
+  "images": [
+   "images/top100_910/product_top045.webp"
+  ],
+  "inventory": {
+   "beijing": 416,
+   "kunshan": 65,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 4,
+   "total": 485
+  },
+  "rank": 45
+ },
+ {
+  "product_code_74": "7441307108",
+  "name": "吉祥物通通炫彩系列金属手机支架_文创_银色",
+  "category": "营销场景",
+  "settlement_price": 49.0,
+  "retail_price": 78.0,
+  "images": [
+   "images/top100_910/product_top046.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 2,
+   "total": 2
+  },
+  "rank": 46
+ },
+ {
+  "product_code_74": "7441307116",
+  "name": "先生瓷-海上明珠四件套盖杯（文创定制金）_文创_蓝白",
+  "category": "商务场景",
+  "settlement_price": 390.0,
+  "retail_price": 680.0,
+  "images": [
+   "images/top100_910/product_top047.webp"
+  ],
+  "inventory": {
+   "beijing": 240,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 6,
+   "total": 246
+  },
+  "rank": 47
+ },
+ {
+  "product_code_74": "7441306285",
+  "name": "PU笔记本-长城灰_文创_长城灰",
+  "category": "办公场景",
+  "settlement_price": 26.0,
+  "retail_price": 40.0,
+  "images": [
+   "images/top100_910/product_top048.webp"
+  ],
+  "inventory": {
+   "beijing": 1495,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 1495
+  },
+  "rank": 48
+ },
+ {
+  "product_code_74": "7441306808",
+  "name": "办公笔记本B5-灰色_文创_深灰色",
+  "category": "办公场景",
+  "settlement_price": 26.0,
+  "retail_price": 36.0,
+  "images": [
+   "images/top100_910/product_top049.webp"
+  ],
+  "inventory": {
+   "beijing": 705,
+   "kunshan": 391,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 1096
+  },
+  "rank": 49
+ },
+ {
+  "product_code_74": "7441306290",
+  "name": "吉祥物按动签字笔-黑色（12支盒）_文创_黑色",
+  "category": "办公场景",
+  "settlement_price": 14.0,
+  "retail_price": 18.6,
+  "images": [
+   "images/top100_910/product_top050.webp"
+  ],
+  "inventory": {
+   "beijing": 793,
+   "kunshan": 402,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 1195
+  },
+  "rank": 50
+ },
+ {
+  "product_code_74": "7441303431",
+  "name": "四季如意基站香卡_文创_彩色",
+  "category": "营销场景",
+  "settlement_price": 30.0,
+  "retail_price": 48.0,
+  "images": [
+   "images/top100_910/product_top051.webp"
+  ],
+  "inventory": {
+   "beijing": 1457,
+   "kunshan": 7861,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 9318
+  },
+  "rank": 51
+ },
+ {
+  "product_code_74": "7441304119",
+  "name": "文创针管直液笔-12支装_文创_黑色",
+  "category": "办公场景",
+  "settlement_price": 15.0,
+  "retail_price": 18.0,
+  "images": [
+   "images/top100_910/product_top052.webp"
+  ],
+  "inventory": {
+   "beijing": 983,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 7,
+   "total": 990
+  },
+  "rank": 52
+ },
+ {
+  "product_code_74": "7441310206",
+  "name": "折叠黑胶晴雨伞 黑色(SN）",
+  "category": "校园文创",
+  "settlement_price": 37.0,
+  "retail_price": 68.0,
+  "images": [
+   "images/top100_910/product_top053.webp"
+  ],
+  "inventory": {
+   "beijing": 217,
+   "kunshan": 535,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 752
+  },
+  "rank": 53
+ },
+ {
+  "product_code_74": "7441310257",
+  "name": "文创 中国结毛巾",
+  "category": "校园文创",
+  "settlement_price": 16.0,
+  "retail_price": 29.0,
+  "images": [
+   "images/top100_910/product_top054.webp"
+  ],
+  "inventory": {
+   "beijing": 1806,
+   "kunshan": 715,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 2521
+  },
+  "rank": 54
+ },
+ {
+  "product_code_74": "7441306246",
+  "name": "四海4头旅行茶具（130ml）_文创_海浪蓝",
+  "category": "商务场景",
+  "settlement_price": 300.0,
+  "retail_price": 568.0,
+  "images": [
+   "images/top100_910/product_top055.webp"
+  ],
+  "inventory": {
+   "beijing": 204,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 3,
+   "total": 207
+  },
+  "rank": 55
+ },
+ {
+  "product_code_74": "7471902951",
+  "name": "文创便携榨汁机_文创_米白色",
+  "category": "营销场景",
+  "settlement_price": 70.0,
+  "retail_price": 105.0,
+  "images": [
+   "images/top100_910/product_top056.webp"
+  ],
+  "inventory": {
+   "beijing": 501,
+   "kunshan": 660,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 3,
+   "total": 1164
+  },
+  "rank": 56
+ },
+ {
+  "product_code_74": "7441307575",
+  "name": "联通文创 北京联通通通加油金属冰箱贴",
+  "category": "营销场景",
+  "settlement_price": 43.0,
+  "retail_price": 54.0,
+  "images": [
+   "images/top100_910/product_top057.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "rank": 57
+ },
+ {
+  "product_code_74": "7470709462",
+  "name": "文创小医药箱_文创_白色+红色",
+  "category": "营销场景",
+  "settlement_price": 22.0,
+  "retail_price": 24.0,
+  "images": [
+   "images/top100_910/product_top058.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 406,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 406
+  },
+  "rank": 58
+ },
+ {
+  "product_code_74": "7441306474",
+  "name": "文创云柔乳霜保湿抽纸（3包1提）_文创_米黄色",
+  "category": "营销场景",
+  "settlement_price": 14.0,
+  "retail_price": 18.0,
+  "images": [
+   "images/top100_910/product_top059.webp"
+  ],
+  "inventory": {
+   "beijing": 203,
+   "kunshan": 534,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 737
+  },
+  "rank": 59
+ },
+ {
+  "product_code_74": "7441307112",
+  "name": "吉祥物通通炫彩配件礼盒（三件套）_文创_银色",
+  "category": "营销场景",
+  "settlement_price": 160.0,
+  "retail_price": 256.0,
+  "images": [
+   "images/top100_910/product_top060.webp"
+  ],
+  "inventory": {
+   "beijing": 308,
+   "kunshan": 1246,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 3,
+   "total": 1557
+  },
+  "rank": 60
+ },
+ {
+  "product_code_74": "7441306809",
+  "name": "办公笔记本B5-黑色_文创_黑色",
+  "category": "办公场景",
+  "settlement_price": 26.0,
+  "retail_price": 36.0,
+  "images": [
+   "images/top100_910/product_top061.webp"
+  ],
+  "inventory": {
+   "beijing": 381,
+   "kunshan": 416,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 797
+  },
+  "rank": 61
+ },
+ {
+  "product_code_74": "7441306496",
+  "name": "定制多功能拉杆箱20寸（商务灰）_文创_商务灰",
+  "category": "营销场景",
+  "settlement_price": 195.0,
+  "retail_price": 369.0,
+  "images": [
+   "images/top100_910/product_top062.webp"
+  ],
+  "inventory": {
+   "beijing": 237,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 237
+  },
+  "rank": 62
+ },
+ {
+  "product_code_74": "7441304862",
+  "name": "夫人瓷-西湖蓝2头茶杯碟 (150ml) 文创定制款_文创_蓝色",
+  "category": "商务场景",
+  "settlement_price": 260.0,
+  "retail_price": 458.0,
+  "images": [
+   "images/top100_910/product_top063.webp"
+  ],
+  "inventory": {
+   "beijing": 268,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 5,
+   "total": 273
+  },
+  "rank": 63
+ },
+ {
+  "product_code_74": "7441309176",
+  "name": "办公可撕笔记本-A4-科技蓝_文创_科技蓝",
+  "category": "办公场景",
+  "settlement_price": 10.5,
+  "retail_price": 18.0,
+  "images": [
+   "images/top100_910/product_top064.webp"
+  ],
+  "inventory": {
+   "beijing": 432,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 432
+  },
+  "rank": 64
+ },
+ {
+  "product_code_74": "7441310215",
+  "name": "文创折叠磁吸手机支架_文创_黑色",
+  "category": "校园文创",
+  "settlement_price": 50.0,
+  "retail_price": 92.0,
+  "images": [
+   "images/top100_910/product_top065.webp"
+  ],
+  "inventory": {
+   "beijing": 656,
+   "kunshan": 565,
+   "dongguan": 1520,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 2741
+  },
+  "rank": 65
+ },
+ {
+  "product_code_74": "7441309177",
+  "name": "办公可撕笔记本-A4-红_文创_红",
+  "category": "办公场景",
+  "settlement_price": 10.5,
+  "retail_price": 18.0,
+  "images": [
+   "images/top100_910/product_top066.webp"
+  ],
+  "inventory": {
+   "beijing": 664,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 3,
+   "total": 667
+  },
+  "rank": 66
+ },
+ {
+  "product_code_74": "7441309321",
+  "name": "嘉瑞偕臻香囊(红色款)_文创_红",
+  "category": "养生主题",
+  "settlement_price": 13.0,
+  "retail_price": 20.0,
+  "images": [
+   "images/top100_910/product_top067.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 15,
+   "total": 15
+  },
+  "rank": 67
+ },
+ {
+  "product_code_74": "7441307275",
+  "name": "抬头见喜折扇_文创_黄色",
+  "category": "合作IP",
+  "settlement_price": 36.0,
+  "retail_price": 48.0,
+  "images": [
+   "images/top100_910/product_top068.webp"
+  ],
+  "inventory": {
+   "beijing": 26,
+   "kunshan": 221,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 10,
+   "total": 257
+  },
+  "rank": 68
+ },
+ {
+  "product_code_74": "7441309172",
+  "name": "直液笔（12支装）_文创_黑色(SN）",
+  "category": "办公场景",
+  "settlement_price": 16.0,
+  "retail_price": 26.0,
+  "images": [
+   "images/top100_910/product_top069.webp"
+  ],
+  "inventory": {
+   "beijing": 2210,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 2210
+  },
+  "rank": 69
+ },
+ {
+  "product_code_74": "7472301507",
+  "name": "AI智能笔记本_文创_典雅黑",
+  "category": "AI文创",
+  "settlement_price": 335.0,
+  "retail_price": 699.0,
+  "images": [
+   "images/top100_910/product_top070.webp"
+  ],
+  "inventory": {
+   "beijing": 26,
+   "kunshan": 406,
+   "dongguan": 55,
+   "chengdu": 0,
+   "xiaoku": 3,
+   "total": 490
+  },
+  "rank": 70
+ },
+ {
+  "product_code_74": "7441310224",
+  "name": "多功能伸缩卡套 米白色",
+  "category": "办公场景",
+  "settlement_price": 8.0,
+  "retail_price": 15.9,
+  "images": [
+   "images/top100_910/product_top071.webp"
+  ],
+  "inventory": {
+   "beijing": 1816,
+   "kunshan": 435,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 2251
+  },
+  "rank": 71
+ },
+ {
+  "product_code_74": "7441307890",
+  "name": "吉祥物通通磁吸充电宝(5.8mm)-科技银_文创_银色",
+  "category": "eSIM文创",
+  "settlement_price": 180.0,
+  "retail_price": 218.0,
+  "images": [
+   "images/top100_910/product_top072.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 317,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 317
+  },
+  "rank": 72
+ },
+ {
+  "product_code_74": "7441304861",
+  "name": "夫人瓷-西湖蓝四件套盖杯(280ml)-文创定制款_文创_蓝色",
+  "category": "商务场景",
+  "settlement_price": 390.0,
+  "retail_price": 680.0,
+  "images": [
+   "images/top100_910/product_top073.webp"
+  ],
+  "inventory": {
+   "beijing": 472,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 4,
+   "total": 476
+  },
+  "rank": 73
+ },
+ {
+  "product_code_74": "7441303430",
+  "name": "吉祥物香卡_文创_彩色",
+  "category": "营销场景",
+  "settlement_price": 8.0,
+  "retail_price": 13.0,
+  "images": [
+   "images/top100_910/product_top074.webp"
+  ],
+  "inventory": {
+   "beijing": 1537,
+   "kunshan": 1566,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 3103
+  },
+  "rank": 74
+ },
+ {
+  "product_code_74": "7441305850",
+  "name": "办公笔记本-黑色_文创_黑色",
+  "category": "办公场景",
+  "settlement_price": 14.0,
+  "retail_price": 18.0,
+  "images": [
+   "images/top100_910/product_top075.webp"
+  ],
+  "inventory": {
+   "beijing": 1634,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 20,
+   "total": 1654
+  },
+  "rank": 75
+ },
+ {
+  "product_code_74": "7441308156",
+  "name": "文创磁吸无线充移动电源_文创_神秘灰",
+  "category": "校园文创",
+  "settlement_price": 126.0,
+  "retail_price": 209.0,
+  "images": [
+   "images/top100_910/product_top076.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 170,
+   "chengdu": 0,
+   "xiaoku": 108,
+   "total": 278
+  },
+  "rank": 76
+ },
+ {
+  "product_code_74": "7471702677",
+  "name": "文创高转速负离子吹风机6811型号_文创_深灰色",
+  "category": "营销场景",
+  "settlement_price": 180.0,
+  "retail_price": 299.0,
+  "images": [
+   "images/top100_910/product_top077.webp"
+  ],
+  "inventory": {
+   "beijing": 842,
+   "kunshan": 129,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 4,
+   "total": 975
+  },
+  "rank": 77
+ },
+ {
+  "product_code_74": "7441306476",
+  "name": "文创超韧原生木浆盒抽（3盒1提）_文创_米黄色",
+  "category": "营销场景",
+  "settlement_price": 17.0,
+  "retail_price": 22.0,
+  "images": [
+   "images/top100_910/product_top078.webp"
+  ],
+  "inventory": {
+   "beijing": 1110,
+   "kunshan": 5,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 1115
+  },
+  "rank": 78
+ },
+ {
+  "product_code_74": "7441309899",
+  "name": "中国结书签礼盒_文创_彩色",
+  "category": "校园文创",
+  "settlement_price": 35.0,
+  "retail_price": 49.0,
+  "images": [
+   "images/top100_910/product_top079.webp"
+  ],
+  "inventory": {
+   "beijing": 276,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 276
+  },
+  "rank": 79
+ },
+ {
+  "product_code_74": "7441305851",
+  "name": "吉祥物通通毛绒抱枕-仿獭兔毛_文创_红",
+  "category": "营销场景",
+  "settlement_price": 40.0,
+  "retail_price": 45.0,
+  "images": [
+   "images/top100_910/product_top080.webp"
+  ],
+  "inventory": {
+   "beijing": 1,
+   "kunshan": 262,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 263
+  },
+  "rank": 80
+ },
+ {
+  "product_code_74": "7441306704",
+  "name": "通通游豫园冰箱贴",
+  "category": "定制场景",
+  "settlement_price": 22.0,
+  "retail_price": 39.0,
+  "images": [
+   "images/top100_910/product_top081.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "rank": 81
+ },
+ {
+  "product_code_74": "7441002774",
+  "name": "文创四合一乐享礼盒 黑色",
+  "category": "商务场景",
+  "settlement_price": 345.0,
+  "retail_price": 660.0,
+  "images": [
+   "images/top100_910/product_top082.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 772,
+   "chengdu": 0,
+   "xiaoku": 20,
+   "total": 792
+  },
+  "rank": 82
+ },
+ {
+  "product_code_74": "7441306293",
+  "name": "吉祥物凤尾夹_文创_彩色",
+  "category": "办公场景",
+  "settlement_price": 10.0,
+  "retail_price": 11.0,
+  "images": [
+   "images/top100_910/product_top083.webp"
+  ],
+  "inventory": {
+   "beijing": 1548,
+   "kunshan": 684,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 2232
+  },
+  "rank": 83
+ },
+ {
+  "product_code_74": "7441306288",
+  "name": "吉祥物书写板_文创_静谧灰",
+  "category": "办公场景",
+  "settlement_price": 7.5,
+  "retail_price": 8.0,
+  "images": [
+   "images/top100_910/product_top084.webp"
+  ],
+  "inventory": {
+   "beijing": 1993,
+   "kunshan": 3,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 1996
+  },
+  "rank": 84
+ },
+ {
+  "product_code_74": "7441306247",
+  "name": "通通AI智慧终端_文创_金色",
+  "category": "AI文创",
+  "settlement_price": 370.0,
+  "retail_price": 599.0,
+  "images": [
+   "images/top100_910/product_top085.webp"
+  ],
+  "inventory": {
+   "beijing": 1055,
+   "kunshan": 72,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 2,
+   "total": 1129
+  },
+  "rank": 85
+ },
+ {
+  "product_code_74": "7441303376",
+  "name": "吉祥物通通钥匙扣（旋转款）_文创_彩色",
+  "category": "营销场景",
+  "settlement_price": 45.0,
+  "retail_price": 86.0,
+  "images": [
+   "images/top100_910/product_top086.webp"
+  ],
+  "inventory": {
+   "beijing": 3373,
+   "kunshan": 2794,
+   "dongguan": 1325,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 7492
+  },
+  "rank": 86
+ },
+ {
+  "product_code_74": "7441307843",
+  "name": "通通eSIM金属手机支架_文创_爱马仕橙",
+  "category": "eSIM文创",
+  "settlement_price": 48.0,
+  "retail_price": 68.0,
+  "images": [
+   "images/top100_910/product_top087.webp"
+  ],
+  "inventory": {
+   "beijing": 287,
+   "kunshan": 0,
+   "dongguan": 543,
+   "chengdu": 0,
+   "xiaoku": 1,
+   "total": 831
+  },
+  "rank": 87
+ },
+ {
+  "product_code_74": "7441303378",
+  "name": "吉祥物通通毛绒玩具基础款_文创_彩色",
+  "category": "营销场景",
+  "settlement_price": 98.0,
+  "retail_price": 156.0,
+  "images": [
+   "images/top100_910/product_top088.webp"
+  ],
+  "inventory": {
+   "beijing": 347,
+   "kunshan": 279,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 2,
+   "total": 628
+  },
+  "rank": 88
+ },
+ {
+  "product_code_74": "7441303393",
+  "name": "建筑系列文化尺套装_文创_彩色",
+  "category": "办公场景",
+  "settlement_price": 68.0,
+  "retail_price": 130.0,
+  "images": [
+   "images/top100_910/product_top089.webp"
+  ],
+  "inventory": {
+   "beijing": 667,
+   "kunshan": 36,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 2,
+   "total": 705
+  },
+  "rank": 89
+ },
+ {
+  "product_code_74": "7441305373",
+  "name": "通通如意随行杯_文创_彩色",
+  "category": "营销场景",
+  "settlement_price": 61.0,
+  "retail_price": 70.0,
+  "images": [
+   "images/top100_910/product_top090.webp"
+  ],
+  "inventory": {
+   "beijing": 851,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 5,
+   "total": 856
+  },
+  "rank": 90
+ },
+ {
+  "product_code_74": "7441310214",
+  "name": "文创笔记本金属支架_文创_银色",
+  "category": "校园文创",
+  "settlement_price": 71.0,
+  "retail_price": 130.0,
+  "images": [
+   "images/top100_910/product_top091.webp"
+  ],
+  "inventory": {
+   "beijing": 641,
+   "kunshan": 551,
+   "dongguan": 1599,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 2791
+  },
+  "rank": 91
+ },
+ {
+  "product_code_74": "7441307117",
+  "name": "文创×新秀丽 联名商务背包_文创_黑色",
+  "category": "商务场景",
+  "settlement_price": 390.0,
+  "retail_price": 799.0,
+  "images": [
+   "images/top100_910/product_top092.webp"
+  ],
+  "inventory": {
+   "beijing": 121,
+   "kunshan": 1,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 122
+  },
+  "rank": 92
+ },
+ {
+  "product_code_74": "7441306495",
+  "name": "定制多功能拉杆箱24寸（薄荷绿）_文创_薄荷绿",
+  "category": "营销场景",
+  "settlement_price": 230.0,
+  "retail_price": 399.0,
+  "images": [
+   "images/top100_910/product_top093.webp"
+  ],
+  "inventory": {
+   "beijing": 111,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 111
+  },
+  "rank": 93
+ },
+ {
+  "product_code_74": "7441303391",
+  "name": "吉祥物手提纸袋-白色",
+  "category": "营销场景",
+  "settlement_price": 3.8,
+  "retail_price": 6.0,
+  "images": [
+   "images/top100_910/product_top094.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "rank": 94
+ },
+ {
+  "product_code_74": "7441309169",
+  "name": "PU鼠标垫_文创_彩色",
+  "category": "办公场景",
+  "settlement_price": 10.0,
+  "retail_price": 15.0,
+  "images": [
+   "images/top100_910/product_top095.webp"
+  ],
+  "inventory": {
+   "beijing": 1,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 1
+  },
+  "rank": 95
+ },
+ {
+  "product_code_74": "7441306296",
+  "name": "记事本A5（12本套）_文创_彩色",
+  "category": "办公场景",
+  "settlement_price": 18.0,
+  "retail_price": 22.0,
+  "images": [
+   "images/top100_910/product_top096.webp"
+  ],
+  "inventory": {
+   "beijing": 1411,
+   "kunshan": 365,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 3,
+   "total": 1779
+  },
+  "rank": 96
+ },
+ {
+  "product_code_74": "7441304118",
+  "name": "吉祥物按扣袋套装_文创_彩色",
+  "category": "办公场景",
+  "settlement_price": 8.0,
+  "retail_price": 12.0,
+  "images": [
+   "images/top100_910/product_top097.webp"
+  ],
+  "inventory": {
+   "beijing": 588,
+   "kunshan": 1,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 589
+  },
+  "rank": 97
+ },
+ {
+  "product_code_74": "7441309900",
+  "name": "签字笔套装 墨蓝色",
+  "category": "办公场景",
+  "settlement_price": 115.0,
+  "retail_price": 299.0,
+  "images": [
+   "images/top100_910/product_top098.webp"
+  ],
+  "inventory": {
+   "beijing": 806,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 15,
+   "total": 821
+  },
+  "rank": 98
+ },
+ {
+  "product_code_74": "7441306287",
+  "name": "吉祥物工牌_文创_彩色",
+  "category": "办公场景",
+  "settlement_price": 8.0,
+  "retail_price": 12.0,
+  "images": [
+   "images/top100_910/product_top099.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 15,
+   "total": 15
+  },
+  "rank": 99
+ }
+]

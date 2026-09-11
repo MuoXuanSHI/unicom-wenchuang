@@ -1,0 +1,54 @@
+{
+  "商务办公礼盒": {
+    "name": "商务办公礼盒",
+    "price_settle": 158,
+    "price_retail": 198,
+    "cover": "118_1.png",
+    "gallery": ["118_1.png", "118_2.png"],
+    "items": [
+      {"name": "商务会议礼盒", "code": "", "img": "7441304615.webp", "price": 0},
+      {"name": "联通定制便利贴套装", "code": "", "img": "", "price": 0},
+      {"name": "联通定制回形针", "code": "7441309170", "img": "7441309170.webp", "price": 0},
+      {"name": "联通品牌元素中性笔套装", "code": "7441304115", "img": "images/top100_910/product_top039.webp", "price": 0},
+      {"name": "联通定制铅笔", "code": "", "img": "", "price": 0},
+      {"name": "品牌家族文化笔记本", "code": "7441302365", "img": "221_1.webp", "price": 0},
+      {"name": "联通定制L型文件夹", "code": "7441304117", "img": "images/top100_910/product_top033.webp", "price": 0},
+      {"name": "联通定制书写板", "code": "7441306288", "img": "images/top100_910/product_top084.webp", "price": 0}
+    ]
+  },
+  "商务旅行套装": {
+    "name": "商务旅行套装",
+    "price_settle": 258,
+    "price_retail": 288,
+    "cover": "119_1.png",
+    "gallery": ["119_1.png", "119_2.png"],
+    "items": [
+      {"name": "商旅礼盒+手提袋", "code": "7441302033", "img": "164_1.webp", "price": 0},
+      {"name": "联通旅行收纳袋四件套", "code": "7441303475", "img": "181_1.webp", "price": 0},
+      {"name": "联通电脑内胆包", "code": "7441303389", "img": "", "price": 0},
+      {"name": "联通品牌家族文化雨伞", "code": "7441302486", "img": "images/top100_910/product_top022.webp", "price": 0},
+      {"name": "联通无重力眼罩", "code": "7441307195", "img": "208_1.webp", "price": 0},
+      {"name": "联通便携充气颈枕", "code": "7441307195", "img": "208_1.webp", "price": 0},
+      {"name": "联通多功能可拆卸挂包", "code": "7441308529", "img": "54_2.webp", "price": 0}
+    ]
+  },
+  "新员工入职套装": {
+    "name": "新员工入职套装",
+    "price_settle": 268,
+    "price_retail": 299,
+    "cover": "120_1.png",
+    "gallery": ["120_1.png", "120_2.png"],
+    "items": [
+      {"name": "礼盒+手提袋", "code": "7441302033", "img": "164_1.webp", "price": 0},
+      {"name": "联通品牌元素中性笔套装", "code": "7441304115", "img": "images/top100_910/product_top039.webp", "price": 0},
+      {"name": "品牌家族文化笔记本", "code": "7441302365", "img": "221_1.webp", "price": 0},
+      {"name": "联通多功能卡套", "code": "7441302068", "img": "122_1.webp", "price": 0},
+      {"name": "联通红鼠标垫", "code": "7441306286", "img": "113_3.webp", "price": 0},
+      {"name": "联通品牌家族随行杯", "code": "7441310563", "img": "images/top100_910/product_top100.webp", "price": 0},
+      {"name": "中国结徽章", "code": "7441302647", "img": "7441302647.webp", "price": 0},
+      {"name": "中国结毛绒挂饰", "code": "7441303378", "img": "images/top100_910/product_top088.webp", "price": 0},
+      {"name": "多功能数据线挂绳", "code": "7441309897", "img": "27_2.webp", "price": 0},
+      {"name": "品牌家族文创帆布袋", "code": "7441303478", "img": "images/top100_910/product_top113.webp", "price": 0}
+    ]
+  }
+}

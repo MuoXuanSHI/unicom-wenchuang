@@ -1,0 +1,366 @@
+[
+ {
+  "product_code_74": "7441201275",
+  "name": "WorkBuddy随身版_银色",
+  "category": "AI文创",
+  "settlement_price": 121.0,
+  "retail_price": 168.0,
+  "images": [
+   "images/top100_910/product_top111.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "_preview": false,
+  "_source": "910API id=425 sort=13"
+ },
+ {
+  "product_code_74": "7441310204",
+  "name": "随身快充自带线充电宝一万毫安 天蓝色",
+  "category": "eSIM文创",
+  "settlement_price": 120,
+  "retail_price": 235,
+  "images": [
+   "images/top100_910/product_charging.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "_preview": false,
+  "_source": "user provided price+image 2026-09-12"
+ },
+ {
+  "product_code_74": "7441310299",
+  "name": "元景UniClaw 随身版",
+  "category": "AI文创",
+  "settlement_price": 90.0,
+  "retail_price": 99.0,
+  "images": [
+   "images/top100_910/product_top112.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "_preview": false,
+  "_source": "910API id=426 sort=14"
+ },
+ {
+  "product_code_74": "7441310300",
+  "name": "联通文创 联通文创渐变绿冰霸杯",
+  "category": "营销场景",
+  "settlement_price": 62,
+  "retail_price": 128,
+  "images": [
+   "images/top100_910/product_usb32.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "_preview": false,
+  "_source": "xlsx 0906",
+  "_note": "即将上市/引入"
+ },
+ {
+  "product_code_74": "7441310301",
+  "name": "联通文创 联通文创渐变蓝冰霸杯",
+  "category": "营销场景",
+  "settlement_price": 62,
+  "retail_price": 128,
+  "images": [
+   "images/top100_910/product_usb32.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "_preview": false,
+  "_source": "xlsx 0906",
+  "_note": "即将上市/引入"
+ },
+ {
+  "product_code_74": "7441310302",
+  "name": "联通文创结结如意文创U盘（32G） 铜色",
+  "category": "eSIM文创",
+  "settlement_price": 52,
+  "retail_price": 59,
+  "images": [
+   "images/top100_910/product_usb32.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "_preview": false,
+  "_source": "xlsx 0906",
+  "_note": "即将上市/引入"
+ },
+ {
+  "product_code_74": "7441310560",
+  "name": "联通文创 联通品牌家族pu笔记本",
+  "category": "办公场景",
+  "settlement_price": 29.0,
+  "retail_price": 49.0,
+  "images": [
+   "images/top100_910/product_top103.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "_preview": true,
+  "_source": "910API id=417 (no-code conflict with 7441310562)",
+  "_note": "即将上市/引入"
+ },
+ {
+  "product_code_74": "7441310561",
+  "name": "联通文创 联通品牌家族纪念冰箱贴",
+  "category": "营销场景",
+  "settlement_price": 28.0,
+  "retail_price": 49.0,
+  "images": [
+   "images/top100_910/product_top101.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "_preview": false,
+  "_source": "910API id=415 sort=3"
+ },
+ {
+  "product_code_74": "7441310562",
+  "name": "联通文创 联通品牌家族签字笔套装",
+  "category": "办公场景",
+  "settlement_price": 18.0,
+  "retail_price": 28.0,
+  "images": [
+   "images/top100_910/product_top102.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "_preview": false,
+  "_source": "910API id=416 sort=4"
+ },
+ {
+  "product_code_74": "7441310563",
+  "name": "联通文创 联通品牌家族随行杯",
+  "category": "营销场景",
+  "settlement_price": 58.0,
+  "retail_price": 79.0,
+  "images": [
+   "images/top100_910/product_top100.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "_preview": false,
+  "_source": "910API id=414 sort=2"
+ },
+ {
+  "product_code_74": "7441310566",
+  "name": "联通文创 中国联通挂饰牌匾（60*40cm）",
+  "category": "营销场景",
+  "settlement_price": 85.0,
+  "retail_price": 128.0,
+  "images": [
+   "images/top100_910/product_top104.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "_preview": false,
+  "_source": "910API id=418 sort=6"
+ },
+ {
+  "product_code_74": "7441310569",
+  "name": "联通文创一结同心画册_红色",
+  "category": "营销场景",
+  "settlement_price": 48.0,
+  "retail_price": 59.0,
+  "images": [],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "_preview": false,
+  "_source": "xlsx 0906"
+ },
+ {
+  "product_code_74": "7441310570",
+  "name": "联通文创托特包_美拉德",
+  "category": "营销场景",
+  "settlement_price": 188.0,
+  "retail_price": 288.0,
+  "images": [
+   "images/top100_910/product_top109.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "_preview": false,
+  "_source": "910API id=422 sort=10"
+ },
+ {
+  "product_code_74": "7441310571",
+  "name": "联通文创四口包_墨绿色",
+  "category": "营销场景",
+  "settlement_price": 329.0,
+  "retail_price": 459.0,
+  "images": [
+   "images/top100_910/product_top110.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "_preview": false,
+  "_source": "910API id=424 sort=12"
+ },
+ {
+  "product_code_74": "7441310572",
+  "name": "联通文创国风贝壳包_美拉德",
+  "category": "营销场景",
+  "settlement_price": 379.0,
+  "retail_price": 499.0,
+  "images": [
+   "images/top100_910/product_top108.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "_preview": false,
+  "_source": "910API id=423 (now 7441310572)"
+ },
+ {
+  "product_code_74": "7471601688",
+  "name": "联通文创 观山玻璃泡茶壶套装",
+  "category": "营销场景",
+  "settlement_price": 88.0,
+  "retail_price": 118.0,
+  "images": [
+   "images/top100_910/product_top107.webp"
+  ],
+  "inventory": {
+   "beijing": 0,
+   "kunshan": 0,
+   "dongguan": 0,
+   "chengdu": 0,
+   "xiaoku": 0,
+   "total": 0
+  },
+  "_preview": false,
+  "_source": "910API id=421 sort=9"
+ },
+ {
+  "product_code_74": "",
+  "name": "品牌家族文化徽章礼盒",
+  "category": "办公场景",
+  "settlement_price": 188.0,
+  "retail_price": 268.0,
+  "images": [
+   "images/top100_910/product_top114.webp"
+  ],
+  "inventory": {},
+  "_preview": true,
+  "_source": "910API id=413 sort=1",
+  "_note": "即将上市/引入"
+ },
+ {
+  "product_code_74": "",
+  "name": "品牌家族文化鼠标垫",
+  "category": "办公场景",
+  "settlement_price": 12.0,
+  "retail_price": 18.0,
+  "images": [
+   "images/top100_910/product_top115.webp"
+  ],
+  "inventory": {},
+  "_preview": true,
+  "_source": "910API id=428 sort=16",
+  "_note": "即将上市/引入"
+ },
+ {
+  "product_code_74": "",
+  "name": "联通双肩多用包",
+  "category": "办公场景",
+  "settlement_price": 105.0,
+  "retail_price": 128.0,
+  "images": [
+   "images/top100_910/product_top116.webp"
+  ],
+  "inventory": {},
+  "_preview": true,
+  "_source": "910API id=429 sort=17",
+  "_note": "即将上市/引入"
+ }
+]

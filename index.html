@@ -28,7 +28,7 @@
   <div id="page-home" class="page active">
     <div class="hero-banner">
       <h1>产品信息库</h1>
-      <p>14大品类 · 890+ SKU · 实时库存 · 智能查询</p>
+      <p>14大品类 · 891 SKU · 实时库存 · 智能查询</p>
     </div>
 
     <!-- 新品专区 -->
@@ -42,6 +42,18 @@
         <button class="scroll-btn scroll-left" onclick="scrollNewProducts(-1)">‹</button>
         <div class="horizontal-scroll" id="newProductsList"></div>
         <button class="scroll-btn scroll-right" onclick="scrollNewProducts(1)">›</button>
+      </div>
+    </section>
+
+    <!-- 套装专区 -->
+    <section class="section" id="suits-section">
+      <div class="section-header">
+        <span class="section-badge suit">SUIT</span>
+        <h2>套装专区</h2>
+        <span class="section-count">3 款</span>
+      </div>
+      <div class="suits-scroll-wrapper">
+        <div class="suits-scroll" id="suitsGrid"></div>
       </div>
     </section>
 
@@ -202,7 +214,7 @@
         <button class="warehouse-tab" onclick="switchWarehouse('kunshan')">昆山总仓</button>
         <button class="warehouse-tab" onclick="switchWarehouse('dongguan')">东莞总仓</button>
         <button class="warehouse-tab" onclick="switchWarehouse('chengdu')">成都总仓</button>
-        <button class="warehouse-tab" onclick="switchWarehouse('xiaoku')">小库</button>
+        <button class="warehouse-tab" onclick="switchWarehouse('xiaoku')">西单仓库</button>
       </div>
       <div class="price-filter">
         <div class="price-filter-label">结算价筛选</div>
@@ -286,7 +298,7 @@
       <table class="inventory-table" style="font-size:12px;margin-bottom:16px;">
         <tr><th>产品类别</th><th>起订量</th><th>工期</th><th>联系人</th></tr>
         <tr><td>荣誉产品（奖杯/奖牌/证书/牌匾/奖章）</td><td>1件起</td><td>7-10天</td><td>梁明宇</td></tr>
-        <tr><td>服装产品（T恤/POLO/外套/冲锋衣等）</td><td>1件起</td><td>15天</td><td>贾翔榆</td></tr>
+        <tr><td>服装产品（T恤/POLO/外套/冲锋衣等）</td><td>1件起</td><td>15天</td><td>宋天姿</td></tr>
         <tr><td>办公用品（笔记本/笔/胶带/鼠标垫等）</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
         <tr><td>生活用品（保温杯/杯具/雨伞/香囊等）</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
         <tr><td>包袋类（帆布袋/无纺布袋/背包/胸包等）</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
@@ -319,6 +331,44 @@
     </div>
   </div>
 
+  <!-- 套装详情页 -->
+  <div id="page-suit" class="page">
+    <div class="page-back-header">
+      <div class="page-back-btn" onclick="goBack()">←</div>
+      <span class="page-back-title">套装详情</span>
+    </div>
+    <div class="suit-detail" id="suitDetailContainer">
+      <div class="suit-loading">加载中...</div>
+    </div>
+  </div>
+
+  <!-- 热力榜 -->
+  <div id="page-hot" class="page">
+    <div class="page-back-header">
+      <div class="page-back-btn" onclick="goHome()">←</div>
+      <span class="page-back-title">热力榜</span>
+    </div>
+    <div class="hot-header">
+      <div class="hot-eyebrow">本月热销 · 月度新品</div>
+      <div class="hot-title">文创热力榜</div>
+      <div class="hot-sub">实时滚动 · 近四周销量排序</div>
+    </div>
+    <div class="hot-tabs">
+      <div class="hot-tab active" data-tab="top100" onclick="switchHotTab('top100')">
+        <span class="hot-tab-icon">🔥</span>
+        <span>销量 TOP</span>
+        <span class="hot-tab-count" id="hotTabTopCount"></span>
+      </div>
+      <div class="hot-tab" data-tab="new" onclick="switchHotTab('new')">
+        <span class="hot-tab-icon">✨</span>
+        <span>本月新品</span>
+        <span class="hot-tab-count" id="hotTabNewCount"></span>
+      </div>
+    </div>
+    <div id="hotTop100List" class="hot-list"></div>
+    <div id="hotNewList" class="hot-list" style="display:none"></div>
+  </div>
+
 </div>
 
 <!-- 底部导航 -->
@@ -335,9 +385,9 @@
     <span class="nav-icon">📊</span>
     <span class="nav-label">库存</span>
   </button>
-  <button class="nav-item" onclick="showPage('search')">
-    <span class="nav-icon">🔍</span>
-    <span class="nav-label">搜索</span>
+  <button class="nav-item" onclick="goHot()">
+    <span class="nav-icon">🔥</span>
+    <span class="nav-label">热力榜</span>
   </button>
 </nav>
 

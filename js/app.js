@@ -1,9 +1,13 @@
 /* ====== 全局数据 ====== */
 let allProducts = [];
+let top100Data = [];
+let newData = [];
+let suitsData = {};
 let pageHistory = [];
 let currentWarehouse = 'all';
 let priceFilterMin = null;
 let priceFilterMax = null;
+let currentHotTab = 'top100';
 
 /* ====== 分页加载状态 ====== */
 var PAGE_SIZE = 24;            // 每页加载的产品数量（适配2/3/4列网格）
@@ -20,7 +24,9 @@ var invObserver = null;        // 库存无限滚动观察器
 /* ====== 初始化 ====== */
 document.addEventListener('DOMContentLoaded', () => {
   loadData();
+  loadAuxData();
   renderContacts();
+  initTopNavScroll();
 });
 
 /* ====== 数据加载 ====== */
@@ -29,10 +35,34 @@ async function loadData() {
     const res = await fetch('data/products.json');
     if (!res.ok) throw new Error('HTTP ' + res.status);
     allProducts = await res.json();
-    renderNewProducts();
+    // wait for newData to be ready before rendering new section
+    if (newData && newData.length) {
+      renderNewProducts();
+    } else {
+      // fallback: render with is_new right away, then refresh after aux loads
+      renderNewProducts();
+    }
   } catch (e) {
     console.error('加载数据失败:', e);
     document.getElementById('newProductsList').innerHTML = '<p style="padding:20px;text-align:center;color:#999;">加载失败，请刷新重试</p>';
+  }
+}
+
+async function loadAuxData() {
+  try {
+    const [r1, r2, r3] = await Promise.all([
+      fetch('data/top100_hot.json').then(function(r){return r.ok?r.json():[]}),
+      fetch('data/new_products.json').then(function(r){return r.ok?r.json():[]}),
+      fetch('data/suits.json').then(function(r){return r.ok?r.json():{}})
+    ]);
+    top100Data = Array.isArray(r1) ? r1 : [];
+    newData = Array.isArray(r2) ? r2 : [];
+    suitsData = r3 && typeof r3 === 'object' ? r3 : {};
+    // refresh home page new section now that newData is loaded
+    if (allProducts && allProducts.length) renderNewProducts();
+    renderSuits();
+  } catch (e) {
+    console.error('加载热力榜数据失败:', e);
   }
 }
 
@@ -87,10 +117,6 @@ function goBack() {
 }
 
 function showPage(pageId) {
-  if (pageId === 'search') {
-    document.getElementById('globalSearch').focus();
-    return;
-  }
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const page = document.getElementById(pageId);
   if (page) page.classList.add('active');
@@ -100,14 +126,238 @@ function showPage(pageId) {
 function updateNav(activeType) {
   document.querySelectorAll('.bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
   const navMap = {
-    'home': 0, 'list': 1, 'inventory': 2, 'custom': 2, 'contact': 2, 'search': 3,
-    'detail': 1
+    'home': 0, 'list': 1, 'inventory': 2, 'custom': 2, 'contact': 2, 'hot': 3,
+    'detail': 1, 'suit': 1
   };
   const idx = navMap[activeType];
   if (idx !== undefined) {
     const items = document.querySelectorAll('.bottom-nav .nav-item');
     if (items[idx]) items[idx].classList.add('active');
   }
+}
+
+function renderSuits() {
+  var container = document.getElementById('suitsGrid');
+  if (!container) return;
+  var names = Object.keys(suitsData);
+  if (!names.length) {
+    container.innerHTML = '<p style="padding:20px;text-align:center;color:#999;">暂无套装</p>';
+    return;
+  }
+  container.innerHTML = names.map(function(name, i) {
+    var s = suitsData[name];
+    var count = s.items ? s.items.length : 0;
+    var cover = s.cover ? imgUrl(s.cover) : '';
+    var imgHtml = cover
+      ? '<div class="suit-card-img-wrap"><div class="skeleton"></div><img class="lazy-img" data-src="' + cover + '" alt="' + name + '" loading="lazy" decoding="async"></div>'
+      : '<div class="suit-card-img-wrap"><div class="no-img-placeholder">图片暂无</div></div>';
+    return '<div class="suit-card stagger" style="animation-delay:' + (i*80) + 'ms" onclick="showSuit(\'' + name + '\')">' +
+      imgHtml +
+      '<div class="suit-card-body">' +
+        '<div class="suit-card-tag-row"><span class="suit-card-tag">套装</span><span class="suit-card-count">' + count + ' 件好物</span></div>' +
+        '<div class="suit-card-name">' + name + '</div>' +
+        '<div class="suit-card-price">¥' + s.price_settle + ' <span class="suit-card-retail">零售 ¥' + s.price_retail + '</span></div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  initLazyImages(container);
+  initTouchFeedback(container.querySelectorAll('.suit-card'));
+}
+
+function showSuit(name) {
+  var s = suitsData[name];
+  if (!s) return;
+  pageHistory.push({page: 'page-home', title: '首页'});
+  showPage('page-suit');
+  updateNav('suit');
+  var items = s.items || [];
+
+  var galleryHtml = '';
+  if (s.gallery && s.gallery.length) {
+    galleryHtml = '<div class="suit-gallery">' +
+      '<div class="suit-gallery-track" id="suitGalleryTrack">' +
+        s.gallery.map(function(g) { return '<img src="' + imgUrl(g) + '" alt="' + name + '">'; }).join('') +
+      '</div>' +
+      (s.gallery.length > 1 ? '<div class="suit-gallery-dots">' + s.gallery.map(function(_,i){ return '<span class="' + (i===0?'active':'') + '"></span>'; }).join('') + '</div>' : '') +
+    '</div>';
+  }
+
+  var itemsHtml = items.map(function(it, idx) {
+    var itemImg = it.img ? imgUrl(it.img) : '';
+    var imgBlock = itemImg
+      ? '<div class="suit-item-img-wrap"><div class="skeleton"></div><img class="lazy-img" data-src="' + itemImg + '" alt="' + it.name + '" loading="lazy" decoding="async"></div>'
+      : '<div class="suit-item-img-wrap"><div class="suit-item-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="7" y="7" width="10" height="10" rx="1.5"/><rect x="7" y="7" width="10" height="10" rx="1.5" transform="rotate(45 12 12)"/></svg></div></div>';
+    var codeBlock = it.code ? '<div class="suit-item-code">74码 ' + it.code + '</div>' : '';
+    return '<div class="suit-item-row stagger" style="animation-delay:' + (idx*50) + 'ms">' +
+      imgBlock +
+      '<div class="suit-item-info">' +
+        '<div class="suit-item-name">' + it.name + '</div>' +
+        codeBlock +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  document.getElementById('suitDetailContainer').innerHTML =
+    galleryHtml +
+    '<div class="suit-detail-card">' +
+      '<div class="suit-detail-tag-row"><span class="suit-detail-tag">套装</span><span class="suit-detail-count">内含 ' + items.length + ' 件好物</span></div>' +
+      '<div class="suit-detail-name">' + name + '</div>' +
+      '<div class="suit-detail-price">' +
+        '<span class="suit-detail-settle">¥' + s.price_settle + '</span>' +
+        '<span class="suit-detail-retail">零售 ¥' + s.price_retail + '</span>' +
+      '</div>' +
+    '</div>' +
+    '<div class="suit-section-title">套装清单</div>' +
+    '<div class="suit-items-list">' + itemsHtml + '</div>' +
+    '<div class="suit-actions">' +
+      '<div class="suit-action-btn btn-secondary" onclick="goBack()">返回</div>' +
+      '<div class="suit-action-btn btn-primary" onclick="goContact()">咨询采购</div>' +
+    '</div>';
+  initLazyImages(document.getElementById('suitDetailContainer'));
+  initSuitGallery();
+  initTouchFeedback(document.querySelectorAll('.suit-action-btn'));
+  window.scrollTo(0, 0);
+}
+
+function initSuitGallery() {
+  var track = document.getElementById('suitGalleryTrack');
+  var dots = document.querySelectorAll('.suit-gallery-dots span');
+  if (!track || track.children.length <= 1) return;
+  var idx = 0;
+  var total = track.children.length;
+  function update() {
+    track.style.transform = 'translateX(-' + idx*100 + '%)';
+    dots.forEach(function(d, i){ d.classList.toggle('active', i===idx); });
+  }
+  var startX = 0, swiping = false;
+  track.parentElement.addEventListener('touchstart', function(e){ startX = e.touches[0].clientX; swiping = true; }, {passive:true});
+  track.parentElement.addEventListener('touchmove', function(){}, {passive:true});
+  track.parentElement.addEventListener('touchend', function(e){
+    if (!swiping) return; swiping = false;
+    var dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 40) {
+      idx = (idx + (dx < 0 ? 1 : -1) + total) % total;
+      update();
+    }
+  }, {passive:true});
+}
+
+function goHot() {
+  pageHistory.push({page:'page-home', title:'首页'});
+  showPage('page-hot');
+  updateNav('hot');
+  // update counts
+  var tcount = document.getElementById('hotTabTopCount');
+  var ncount = document.getElementById('hotTabNewCount');
+  if (tcount) tcount.textContent = top100Data.length || '';
+  if (ncount) ncount.textContent = newData.length || '';
+  switchHotTab(currentHotTab || 'top100');
+}
+
+function switchHotTab(tab) {
+  currentHotTab = tab;
+  document.querySelectorAll('.hot-tab').forEach(function(t){
+    t.classList.toggle('active', t.dataset.tab === tab);
+  });
+  var top = document.getElementById('hotTop100List');
+  var nt = document.getElementById('hotNewList');
+  if (tab === 'top100') {
+    if (top) top.style.display = '';
+    if (nt) nt.style.display = 'none';
+    renderHotTop100();
+  } else {
+    if (top) top.style.display = 'none';
+    if (nt) nt.style.display = '';
+    renderHotNew();
+  }
+}
+
+function renderHotTop100() {
+  var container = document.getElementById('hotTop100List');
+  if (!container) return;
+  if (!top100Data.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-state-text">暂无销量数据</div></div>';
+    return;
+  }
+  container.innerHTML = top100Data.map(function(p, i) {
+    var imgs = p.images && p.images.length ? p.images : [];
+    var img = imgs[0] ? '<img class="hot-img lazy-img" data-src="' + imgUrl(imgs[0]) + '" alt="' + p.name + '" loading="lazy">' : '<div class="no-img-placeholder" style="height:72px;border-radius:10px;">图片暂无</div>';
+    var stock = p.inventory ? (p.inventory.total || 0) : 0;
+    return '<div class="hot-row stagger" style="animation-delay:' + (i*30) + 'ms" onclick="renderProductDetail(\'' + p.product_code_74 + '\')">' +
+      '<div class="hot-rank rank-' + (p.rank<=3?'top':'') + '">' + p.rank + '</div>' +
+      '<div class="hot-img-wrap">' + img + '</div>' +
+      '<div class="hot-info">' +
+        '<div class="hot-name">' + p.name + '</div>' +
+        '<div class="hot-meta">' +
+          '<span class="hot-cat">' + (p.category || '') + '</span>' +
+          '<span class="hot-code">' + p.product_code_74 + '</span>' +
+        '</div>' +
+        '<div class="hot-bottom">' +
+          '<span class="hot-price">' + (p.settlement_price ? '¥'+p.settlement_price : '面议') + '</span>' +
+          '<span class="hot-stock">库存 ' + stock + '</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  initLazyImages(container);
+  initTouchFeedback(container.querySelectorAll('.hot-row'));
+}
+
+function renderHotNew() {
+  var container = document.getElementById('hotNewList');
+  if (!container) return;
+  if (!newData.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-state-text">暂无新品数据</div></div>';
+    return;
+  }
+  // sort: items WITH product_code_74 first (in-DB before preview), then items WITHOUT code (即将上市/引入)
+  var sorted = newData.slice().sort(function(a, b) {
+    var aHasCode = !!a.product_code_74;
+    var bHasCode = !!b.product_code_74;
+    if (aHasCode !== bHasCode) return aHasCode ? -1 : 1;
+    if (aHasCode && bHasCode) {
+      if (a._preview !== b._preview) return a._preview ? 1 : -1;
+      return a.product_code_74.localeCompare(b.product_code_74);
+    }
+    return a.name.localeCompare(b.name);
+  });
+  container.innerHTML = sorted.map(function(p, i) {
+    var imgs = p.images && p.images.length ? p.images : [];
+    var img = imgs[0] ? '<img class="hot-img lazy-img" data-src="' + imgUrl(imgs[0]) + '" alt="' + p.name + '" loading="lazy">' : '<div class="no-img-placeholder" style="height:72px;border-radius:10px;">图片暂无</div>';
+    var isPreview = p._preview === true;
+    var hasCode = !!p.product_code_74;
+    // price logic: 即将上市/引入 for preview OR no-code items
+    var priceHtml;
+    if (isPreview || !hasCode) {
+      priceHtml = '<span class="hot-price preview-price">即将上市/引入</span>';
+    } else if (p.settlement_price) {
+      priceHtml = '<span class="hot-price">¥' + p.settlement_price + '</span>';
+    } else {
+      priceHtml = '<span class="hot-price">面议</span>';
+    }
+    // category + code/meta
+    var codeOrPreview = isPreview
+      ? '<span class="hot-preview-tag">PPT 预览</span>'
+      : (p.product_code_74 ? '<span class="hot-code">' + p.product_code_74 + '</span>' : '');
+    var stockHtml = isPreview ? '' : '<span class="hot-stock">库存 ' + (p.inventory ? p.inventory.total || 0 : 0) + '</span>';
+    return '<div class="hot-row stagger" style="animation-delay:' + (i*30) + 'ms"' + (p.product_code_74 && !isPreview ? ' onclick="renderProductDetail(\'' + p.product_code_74 + '\')"' : '') + '>' +
+      '<div class="hot-rank new-rank">' + (isPreview ? '预' : '新') + '</div>' +
+      '<div class="hot-img-wrap">' + img + '</div>' +
+      '<div class="hot-info">' +
+        '<div class="hot-name">' + p.name + '</div>' +
+        '<div class="hot-meta">' +
+          '<span class="hot-cat">' + (p.category || '办公场景') + '</span>' +
+          codeOrPreview +
+        '</div>' +
+        '<div class="hot-bottom">' +
+          priceHtml +
+          stockHtml +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  initLazyImages(container);
+  initTouchFeedback(container.querySelectorAll('.hot-row'));
 }
 
 /* ====== 排序和图片渲染辅助函数 ====== */
@@ -123,12 +373,21 @@ function sortByPriority(products) {
     return getSortPriority(b) - getSortPriority(a);
   });
 }
+function normalizeImgPath(rel) {
+  if (!rel) return rel;
+  // strip leading "images/" since most call sites prepend it
+  return rel.replace(/^images\//, '');
+}
+function imgUrl(rel) {
+  return 'images/' + normalizeImgPath(rel);
+}
 function getProductImageHTML(p, isLazy) {
   if (p.images && p.images.length > 0) {
+    var src = imgUrl(p.images[0]);
     if (isLazy) {
-      return '<div class="skeleton"></div><img class="lazy-img" data-src="images/' + p.images[0] + '" alt="' + p.name + '" loading="lazy" decoding="async">';
+      return '<div class="skeleton"></div><img class="lazy-img" data-src="' + src + '" alt="' + p.name + '" loading="lazy" decoding="async">';
     } else {
-      return '<img class="lazy-img loaded" src="images/' + p.images[0] + '" alt="' + p.name + '" style="opacity:1" decoding="async">';
+      return '<img class="lazy-img loaded" src="' + src + '" alt="' + p.name + '" style="opacity:1" decoding="async">';
     }
   } else {
     return '<div class="no-img-placeholder">图片暂无</div>';
@@ -139,18 +398,52 @@ function getProductImageHTML(p, isLazy) {
 function renderNewProducts() {
   const container = document.getElementById('newProductsList');
   if (!container) return;
-  var newProducts = allProducts.filter(function(p) { return p.is_new; });
-  newProducts = sortByPriority(newProducts).slice(0, 21);
-  if (!newProducts.length) { container.innerHTML = '<p style="padding:20px;text-align:center;color:#999;">暂无新品</p>'; return; }
+  // Prefer new_products.json (TOP100 p102+ + 910 PPT p3-22); fallback to is_new=true products
+  var source = [];
+  if (newData && newData.length) {
+    // sort: items WITH product_code_74 first (in-DB before preview), then items WITHOUT code (即将上市/引入)
+    source = newData.slice().sort(function(a, b) {
+      var aHasCode = !!a.product_code_74;
+      var bHasCode = !!b.product_code_74;
+      if (aHasCode !== bHasCode) return aHasCode ? -1 : 1;
+      // both have codes: in-DB before preview
+      if (aHasCode && bHasCode) {
+        if (a._preview !== b._preview) return a._preview ? 1 : -1;
+        return a.product_code_74.localeCompare(b.product_code_74);
+      }
+      // both no code: by name
+      return a.name.localeCompare(b.name);
+    }).slice(0, 21);
+  } else {
+    source = allProducts.filter(function(p) { return p.is_new; });
+    source = sortByPriority(source).slice(0, 21);
+  }
+  if (!source.length) { container.innerHTML = '<p style="padding:20px;text-align:center;color:#999;">暂无新品</p>'; return; }
 
-  container.innerHTML = newProducts.map(function(p) {
-    return '<div class="new-card" onclick="renderProductDetail(\'' + p.product_code_74 + '\')">' +
+  container.innerHTML = source.map(function(p) {
+    var isPreview = p._preview === true;
+    var hasCode = !!p.product_code_74;
+    var imgs = p.images && p.images.length ? p.images : [];
+    var imgHtml = imgs.length
+      ? '<div class="skeleton"></div><img class="lazy-img" data-src="' + imgUrl(imgs[0]) + '" alt="' + p.name + '" loading="lazy" decoding="async">'
+      : '<div class="no-img-placeholder">图片暂无</div>';
+    var priceHtml;
+    if (isPreview || !hasCode) {
+      priceHtml = '<div class="new-card-price preview-price">即将上市/引入</div>';
+    } else {
+      priceHtml = '<div class="new-card-price">' + (p.settlement_price ? '¥' + p.settlement_price : '面议') + '</div>';
+    }
+    var onClick = (p.product_code_74 && !isPreview)
+      ? ' onclick="renderProductDetail(\'' + p.product_code_74 + '\')"'
+      : '';
+    return '<div class="new-card' + (isPreview || !hasCode ? ' preview-card' : '') + '"' + onClick + '>' +
       '<div class="new-card-img-wrap">' +
-        getProductImageHTML(p, true) +
+        imgHtml +
+        (isPreview || !hasCode ? '<span class="new-card-preview-tag">预览</span>' : '<span class="new-card-tag">NEW</span>') +
       '</div>' +
       '<div class="new-card-body">' +
         '<div class="new-card-name">' + p.name + '</div>' +
-        '<div class="new-card-price">' + (p.settlement_price ? '¥' + p.settlement_price : '面议') + '</div>' +
+        priceHtml +
       '</div>' +
     '</div>';
   }).join('');
@@ -447,7 +740,7 @@ function renderProductDetail(code) {
   showPage('page-detail');
   updateNav('detail');
 
-  var imgs = (p.images || []).map(function(img) { return '<img src="images/' + img + '" alt="' + p.name + '">'; }).join('');
+  var imgs = (p.images || []).map(function(img) { return '<img src="' + imgUrl(img) + '" alt="' + p.name + '">'; }).join('');
   var imgCount = (p.images || []).length;
   var tags = [];
   if (p.is_new) tags.push('<span class="detail-tag tag-new">新品</span>');
@@ -456,10 +749,10 @@ function renderProductDetail(code) {
 
   var customText = '';
   if (p.category === '荣誉体系') customText = '是（联系梁明宇）';
-  else if (p.category === '服装体系') customText = '是（联系贾翔榆）';
+  else if (p.category === '服装体系') customText = '是（联系宋天姿）';
   else customText = '是（联系石书宇）';
   var inv = p.inventory || {};
-  var whMap = {beijing:'北京总仓', kunshan:'昆山总仓', dongguan:'东莞总仓', chengdu:'成都总仓', xiaoku:'小库'};
+  var whMap = {beijing:'北京总仓', kunshan:'昆山总仓', dongguan:'东莞总仓', chengdu:'成都总仓', xiaoku:'西单仓库'};
   var invRows = Object.keys(whMap)
     .filter(function(k) { return (inv[k] || 0) > 0; })
     .sort(function(a, b) { return (inv[b] || 0) - (inv[a] || 0); })
@@ -524,7 +817,7 @@ function initDetailCarousel() {
 /* ====== 库存查询 ====== */
 function switchWarehouse(wh) {
   currentWarehouse = wh;
-  var whLabels = {all:'全部', beijing:'北京总仓', kunshan:'昆山总仓', dongguan:'东莞总仓', chengdu:'成都总仓', xiaoku:'小库'};
+  var whLabels = {all:'全部', beijing:'北京总仓', kunshan:'昆山总仓', dongguan:'东莞总仓', chengdu:'成都总仓', xiaoku:'西单仓库'};
   document.querySelectorAll('.warehouse-tab').forEach(function(t) {
     t.classList.toggle('active', t.textContent.trim() === whLabels[wh]);
   });
@@ -609,7 +902,7 @@ function loadMoreInventory() {
 
     var imgHtml = '';
     if (p.images && p.images.length > 0) {
-      imgHtml = '<img class="inv-item-img lazy-img" data-src="images/' + p.images[0] + '" alt="' + p.name + '" loading="lazy" onerror="this.style.display=\'none\'">';
+      imgHtml = '<img class="inv-item-img lazy-img" data-src="' + imgUrl(p.images[0]) + '" alt="' + p.name + '" loading="lazy" onerror="this.style.display=\'none\'">';
     } else {
       imgHtml = '<div class="inv-item-img no-img-placeholder" style="width:56px;height:56px;font-size:10px;border-radius:8px;">图片暂无</div>';
     }
@@ -702,7 +995,7 @@ function renderContacts() {
   if (!container) return;
   var contacts = [
     {name:'梁明宇', role:'荣誉产品负责人', scope:'奖杯/奖牌/证书/牌匾/奖章', note:'1件起订，7-10天工期'},
-    {name:'贾翔榆', role:'服装产品负责人', scope:'T恤/POLO/外套/冲锋衣等', note:'1件起订，15天工期'},
+    {name:'宋天姿', role:'服装产品负责人', scope:'T恤/POLO/外套/冲锋衣等', note:'1件起订，15天工期'},
     {name:'石书宇', role:'常规文创负责人', scope:'办公/生活/包袋/数码/徽章/摆件等', note:'500-1000件起订'},
   ];
   container.innerHTML = contacts.map(function(c) {
@@ -756,7 +1049,14 @@ function scrollToTop() {
 window.addEventListener('scroll', function() {
   var btn = document.querySelector('.back-to-top');
   if (btn) btn.style.opacity = window.scrollY > 300 ? '1' : '0';
+  var nav = document.querySelector('.top-nav');
+  if (nav) nav.classList.toggle('scrolled', window.scrollY > 8);
 });
+
+/* 顶部导航滚动时增强阴影 */
+function initTopNavScroll() {
+  window.dispatchEvent(new Event('scroll'));
+}
 
 /* ====== 懒加载 ====== */
 function initLazyImages(root) {
