@@ -12,6 +12,42 @@ let priceFilterMin = null;
 let priceFilterMax = null;
 let currentHotTab = 'top100';
 
+/* ====== 同步到 GitHub 工具 ====== */
+// 通过 Cloudflare Pages Function 提交修改到 GitHub
+// 返回 { ok, error?, commit? }
+async function commitToGitHub(file, dataObj, message) {
+  try {
+    var contentStr = typeof dataObj === 'string' ? dataObj : JSON.stringify(dataObj, null, 2);
+    var res = await fetch('/api/commit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        file: file,
+        content: contentStr,
+        message: message,
+        password: ADMIN_PWD
+      })
+    });
+    var r = await res.json();
+    if (!res.ok || !r.ok) {
+      return { ok: false, error: (r && r.error) || ('HTTP ' + res.status) };
+    }
+    return { ok: true, commit: r.commit };
+  } catch (e) {
+    return { ok: false, error: e && e.message ? e.message : String(e) };
+  }
+}
+
+// 拉取最新的 JSON 数据（绕过本地缓存），用于编辑/删除前重新同步基准
+async function fetchFreshProducts() {
+  var r = await fetch('data/products.json?_=' + Date.now());
+  return r.ok ? r.json() : null;
+}
+async function fetchFreshEvents() {
+  var r = await fetch('data/events.json?_=' + Date.now());
+  return r.ok ? r.json() : null;
+}
+
 /* ====== 分页加载状态 ====== */
 var PAGE_SIZE = 24;            // 每页加载的产品数量（适配2/3/4列网格）
 var listVisibleCount = 0;      // 产品列表已渲染数量
@@ -1216,7 +1252,7 @@ function onEventImagePick(ev) {
   });
 }
 
-function saveEvent() {
+async function saveEvent() {
   var title = (document.getElementById('eventTitleInput').value || '').trim();
   var subtitle = (document.getElementById('eventSubtitleInput').value || '').trim();
   var body = (document.getElementById('eventBodyInput').value || '').trim();
@@ -1254,7 +1290,18 @@ function saveEvent() {
   if (document.getElementById('page-events').classList.contains('active')) renderEvents();
   if (document.getElementById('page-event-detail').classList.contains('active')) showEventDetail(id);
   if (document.getElementById('page-admin').classList.contains('active')) renderAdmin();
-  alert(adminAuthed ? '已保存' : '已提交，等待管理员审核');
+  // 管理员模式下同步到 GitHub
+  if (adminAuthed) {
+    alert('正在同步到 GitHub...');
+    var r = await commitToGitHub('data/events.json', eventsData, 'admin: ' + (window._editingEventId ? '更新' : '新增') + '事件 ' + title);
+    if (r.ok) {
+      alert('✅ 事件已保存并同步到 GitHub，约 1-2 分钟后线上生效。');
+    } else {
+      alert('⚠️ 事件已暂存到本地，但同步 GitHub 失败：' + r.error);
+    }
+  } else {
+    alert('已提交，等待管理员审核');
+  }
 }
 
 function loadLocalEvents() {
@@ -1492,7 +1539,7 @@ function onProductImagePick(ev) {
   reader.readAsDataURL(f);
 }
 
-function saveProductEdit() {
+async function saveProductEdit() {
   var p = window._editingProduct;
   if (!p) return;
   p.product_code_74 = (document.getElementById('peCode').value || '').trim();
@@ -1521,15 +1568,24 @@ function saveProductEdit() {
     p._pendingImage = newImg;
   }
   saveLocalProductEdit(p);
+
+  // 同步到 GitHub
+  var pendingText = '正在同步到 GitHub...';
   closeProductEdit();
   renderAdmin();
-  alert('已暂存。点击「导出变更」下载 products.json 替换文件。');
+  alert(pendingText);
+  var r = await commitToGitHub('data/products.json', allProducts, 'admin: 更新产品 ' + (p.product_code_74 || p.name || ''));
+  if (r.ok) {
+    alert('✅ 已保存并同步到 GitHub，约 1-2 分钟后线上生效。');
+  } else {
+    alert('⚠️ 已保存到本地，但同步 GitHub 失败：' + r.error + '\n（修改仍暂存在浏览器，可点击「导出变更」手动处理）');
+  }
 }
 
-function deleteProduct() {
+async function deleteProduct() {
   var p = window._editingProduct;
   if (!p) return;
-  if (!confirm('确认删除产品「' + (p.name||'') + '」？此操作仅暂存到本地，导出后请同步从 products.json 移除。')) return;
+  if (!confirm('确认删除产品「' + (p.name||'') + '」？此操作会同步删除线上数据。')) return;
   // 从 allProducts 移除
   var idx = allProducts.findIndex(function(x){
     return (x.product_code_74||'') === (p.product_code_74||'') && (x.name||'') === (p.name||'');
@@ -1543,7 +1599,13 @@ function deleteProduct() {
   } catch(e) {}
   closeProductEdit();
   renderAdmin();
-  alert('已暂存删除。请导出变更包后，从 products.json 移除对应条目。');
+  alert('正在同步删除到 GitHub...');
+  var r = await commitToGitHub('data/products.json', allProducts, 'admin: 删除产品 ' + (p.product_code_74 || p.name || ''));
+  if (r.ok) {
+    alert('✅ 已删除并同步到 GitHub，约 1-2 分钟后线上生效。');
+  } else {
+    alert('⚠️ 已暂存本地删除，但同步 GitHub 失败：' + r.error + '\n（请重新打开后台重试，或点击「导出变更」手动处理）');
+  }
 }
 
 function saveLocalProductEdit(p) {
@@ -1917,6 +1979,20 @@ let topNoticeIdx = 0;
 let topNoticeTimer = null;
 
 function loadTopNotices() {
+  // 优先从服务器 notices.json 拉取（管理员提交的最新数据）
+  try {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'data/notices.json?_=' + Date.now(), false);
+    xhr.send(null);
+    if (xhr.status === 200) {
+      var remote = JSON.parse(xhr.responseText);
+      if (Array.isArray(remote) && remote.length) {
+        topNotices = remote;
+        return;
+      }
+    }
+  } catch(e) {}
+  // fallback 到 localStorage
   try {
     var arr = JSON.parse(localStorage.getItem('unicom-wenchuang-top-notices') || 'null');
     if (Array.isArray(arr) && arr.length) topNotices = arr;
@@ -1983,22 +2059,29 @@ function editNotice(idx) {
   document.getElementById('noticeFormModal').style.display = 'flex';
 }
 
-function deleteNotice(idx) {
-  if (!confirm('确认删除这条顶部提醒？')) return;
+async function deleteNotice(idx) {
+  if (!confirm('确认删除这条顶部提醒？此操作会同步到 GitHub。')) return;
   topNotices.splice(idx, 1);
   saveTopNotices();
   if (topNoticeIdx >= topNotices.length) topNoticeIdx = 0;
   renderTopNotice();
   startTopNoticeLoop();
   if (typeof renderAdmin === 'function' && document.getElementById('page-admin').classList.contains('active')) renderAdmin();
-  alert('已删除');
+  alert('正在同步到 GitHub...');
+  var r = await commitToGitHub('data/notices.json', topNotices, 'admin: 删除顶部提醒 #' + idx);
+  if (r.ok) {
+    alert('✅ 已删除并同步到 GitHub');
+  } else {
+    alert('⚠️ 同步 GitHub 失败：' + r.error);
+  }
 }
 
-function saveNotice() {
+async function saveNotice() {
   var text = (document.getElementById('noticeTextInput').value || '').trim();
   var link = (document.getElementById('noticeLinkInput').value || '').trim();
   if (!text) { alert('请填写提醒内容'); return; }
   var idx = window._editingNoticeIdx;
+  var isNew = !(idx >= 0);
   var item = { text: text, link: link };
   if (idx >= 0) {
     topNotices[idx] = item;
@@ -2010,7 +2093,13 @@ function saveNotice() {
   renderTopNotice();
   startTopNoticeLoop();
   if (typeof renderAdmin === 'function' && document.getElementById('page-admin').classList.contains('active')) renderAdmin();
-  alert('已保存');
+  alert('正在同步到 GitHub...');
+  var r = await commitToGitHub('data/notices.json', topNotices, 'admin: ' + (isNew ? '新增' : '更新') + '顶部提醒');
+  if (r.ok) {
+    alert('✅ 已保存并同步到 GitHub');
+  } else {
+    alert('⚠️ 同步 GitHub 失败：' + r.error);
+  }
 }
 
 function closeNoticeForm() {
