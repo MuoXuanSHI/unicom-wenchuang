@@ -475,6 +475,14 @@ function renderNewProducts() {
     var withCode = newData.filter(function(x){ return !x._preview; });
     var preview = newData.filter(function(x){ return x._preview; });
     source = withCode.concat(preview);
+    // 按 product_code_74 去重（防止 new_products.json 重复条目或被污染）
+    var seen = {};
+    source = source.filter(function(x) {
+      var k = x.product_code_74 || ('name:' + (x.name || ''));
+      if (seen[k]) return false;
+      seen[k] = true;
+      return true;
+    });
     // if no code at all (无 _preview 标记), fallback to is_new
     if (!source.length) source = allProducts.filter(function(p) { return p.is_new; }).slice(0, 21);
   } else {
