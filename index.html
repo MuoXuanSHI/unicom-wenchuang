@@ -10,6 +10,13 @@
 </head>
 <body>
 
+<!-- 顶部轮播提醒 -->
+<div class="top-notice" id="topNotice" style="display:none">
+  <div class="top-notice-icon">📢</div>
+  <div class="top-notice-track" id="topNoticeTrack"></div>
+  <button class="top-notice-close" onclick="closeTopNotice()" title="关闭">✕</button>
+</div>
+
 <!-- 顶部导航 -->
 <header class="top-nav">
   <div class="nav-brand" onclick="goHome()">
@@ -54,6 +61,27 @@
       </div>
       <div class="suits-scroll-wrapper">
         <div class="suits-scroll" id="suitsGrid"></div>
+      </div>
+    </section>
+
+    <!-- 快捷功能 -->
+    <section class="section">
+      <div class="section-header">
+        <h2>快捷功能</h2>
+      </div>
+      <div class="quick-actions">
+        <div class="quick-btn" onclick="goInventory()">
+          <span class="quick-icon">📊</span>
+          <span>库存查询</span>
+        </div>
+        <div class="quick-btn" onclick="goCustom()">
+          <span class="quick-icon">✏️</span>
+          <span>定制服务</span>
+        </div>
+        <div class="quick-btn" onclick="goContact()">
+          <span class="quick-icon">📞</span>
+          <span>对接人</span>
+        </div>
       </div>
     </section>
 
@@ -118,27 +146,7 @@
       </div>
     </section>
 
-    <!-- 快速入口 -->
-    <section class="section">
-      <div class="section-header">
-        <h2>快捷功能</h2>
-      </div>
-      <div class="quick-actions">
-        <div class="quick-btn" onclick="goInventory()">
-          <span class="quick-icon">📊</span>
-          <span>库存查询</span>
-        </div>
-        <div class="quick-btn" onclick="goCustom()">
-          <span class="quick-icon">✏️</span>
-          <span>定制服务</span>
-        </div>
-        <div class="quick-btn" onclick="goContact()">
-          <span class="quick-icon">📞</span>
-          <span>对接人</span>
-        </div>
-      </div>
-    </section>
-  </div>
+    </div>
 
   <!-- 产品列表页 -->
   <div id="page-list" class="page">
@@ -369,6 +377,208 @@
     <div id="hotNewList" class="hot-list" style="display:none"></div>
   </div>
 
+  <!-- 文创事件 -->
+  <div id="page-events" class="page">
+    <div class="page-back-header">
+      <div class="page-back-btn" onclick="goHome()">←</div>
+      <span class="page-back-title">文创事件</span>
+      <button class="page-back-action" onclick="openAdminLogin()">🔐 管理</button>
+    </div>
+    <div class="events-header">
+      <div class="events-eyebrow">联通文创 · 实时播报</div>
+      <div class="events-title">文创事件</div>
+      <div class="events-sub">近期动态 · 合作故事 · 行业资讯</div>
+    </div>
+    <div class="events-list" id="eventsList"></div>
+    <div class="events-submit-entry" id="eventsSubmitEntry">
+      <button class="events-submit-btn" onclick="openEventSubmit()">📮 提交一条事件</button>
+      <p class="events-submit-tip">联通文创同事均可提交，含图片和文字，管理员审核后发布</p>
+    </div>
+  </div>
+
+  <!-- 文创事件详情 -->
+  <div id="page-event-detail" class="page">
+    <div class="page-back-header">
+      <div class="page-back-btn" onclick="goEvents()">←</div>
+      <span class="page-back-title">事件详情</span>
+    </div>
+    <div class="event-detail" id="eventDetailContainer">
+      <div class="event-loading">加载中...</div>
+    </div>
+  </div>
+
+  <!-- 管理员页 -->
+  <div id="page-admin" class="page">
+    <div class="page-back-header">
+      <div class="page-back-btn" onclick="goEvents()">←</div>
+      <span class="page-back-title">管理员控制台</span>
+      <button class="page-back-action" onclick="adminLogout()">退出</button>
+    </div>
+    <div class="admin-container" id="adminContainer"></div>
+  </div>
+
+  <!-- 管理员登录 Modal -->
+  <div id="adminLoginModal" class="modal-overlay" style="display:none">
+    <div class="modal-box">
+      <div class="modal-title">🔐 管理员登录</div>
+      <div class="modal-hint">管理员可编辑产品信息与文创事件</div>
+      <input type="password" id="adminPwdInput" class="modal-input" placeholder="管理员密码">
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-secondary" onclick="closeAdminLogin()">取消</button>
+        <button class="modal-btn modal-btn-primary" onclick="adminLogin()">登录</button>
+      </div>
+      <div id="adminLoginError" class="modal-error"></div>
+    </div>
+  </div>
+
+  <!-- 事件提交/编辑 Modal -->
+  <div id="eventFormModal" class="modal-overlay" style="display:none">
+    <div class="modal-box modal-box-wide">
+      <div class="modal-title" id="eventFormTitle">📮 提交事件</div>
+      <input type="text" id="eventTitleInput" class="modal-input" placeholder="事件标题">
+      <input type="text" id="eventSubtitleInput" class="modal-input" placeholder="副标题（可选）">
+      <textarea id="eventBodyInput" class="modal-textarea" placeholder="事件正文（支持换行）" rows="6"></textarea>
+      <div class="modal-image-upload">
+        <label class="modal-upload-label">
+          <input type="file" id="eventImgInput" accept="image/*" multiple onchange="onEventImagePick(event)">
+          <span id="eventImgPickText">📷 点击上传图片（最多 3 张，可选）</span>
+        </label>
+        <div id="eventImgPreview" class="modal-img-preview"></div>
+      </div>
+      <select id="eventCategoryInput" class="modal-input">
+        <option value="动态">动态</option>
+        <option value="合作故事">合作故事</option>
+        <option value="行业资讯">行业资讯</option>
+        <option value="活动回顾">活动回顾</option>
+        <option value="新品发布">新品发布</option>
+      </select>
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-secondary" onclick="closeEventForm()">取消</button>
+        <button class="modal-btn modal-btn-primary" onclick="saveEvent()">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 产品编辑 Modal -->
+  <div id="productEditModal" class="modal-overlay" style="display:none">
+    <div class="modal-box modal-box-wide">
+      <div class="modal-title" id="productEditTitle">编辑产品</div>
+      <div class="modal-row modal-row-2">
+        <div>
+          <label class="modal-label">74 码</label>
+          <input type="text" id="peCode" class="modal-input" placeholder="74413xxxxxx">
+        </div>
+        <div>
+          <label class="modal-label">69 码</label>
+          <input type="text" id="peCode69" class="modal-input" placeholder="69xxxxxx">
+        </div>
+      </div>
+      <div class="modal-row">
+        <label class="modal-label">名称</label>
+        <input type="text" id="peName" class="modal-input" placeholder="产品名称">
+      </div>
+      <div class="modal-row modal-row-2">
+        <div>
+          <label class="modal-label">采购价</label>
+          <input type="number" id="pePurchase" class="modal-input" placeholder="0">
+        </div>
+        <div>
+          <label class="modal-label">结算价</label>
+          <input type="number" id="peSettle" class="modal-input" placeholder="0">
+        </div>
+      </div>
+      <div class="modal-row modal-row-2">
+        <div>
+          <label class="modal-label">零售价</label>
+          <input type="number" id="peRetail" class="modal-input" placeholder="0">
+        </div>
+        <div>
+          <label class="modal-label">起订量</label>
+          <input type="number" id="peMoq" class="modal-input" placeholder="1">
+        </div>
+      </div>
+      <div class="modal-row modal-row-2">
+        <div>
+          <label class="modal-label">分类</label>
+          <input type="text" id="peCategory" class="modal-input" placeholder="办公场景/养生主题">
+        </div>
+        <div>
+          <label class="modal-label">子分类</label>
+          <input type="text" id="peSubCategory" class="modal-input" placeholder="子分类（可选）">
+        </div>
+      </div>
+      <div class="modal-row modal-row-2">
+        <div>
+          <label class="modal-label">规格 / 尺寸</label>
+          <input type="text" id="peSpec" class="modal-input" placeholder="如：500ml / 165/88A">
+        </div>
+        <div>
+          <label class="modal-label">材质</label>
+          <input type="text" id="peMaterial" class="modal-input" placeholder="如：304 不锈钢 / 纯棉">
+        </div>
+      </div>
+      <div class="modal-row modal-row-2">
+        <div>
+          <label class="modal-label">交期</label>
+          <input type="text" id="peLeadTime" class="modal-input" placeholder="如：15 天">
+        </div>
+        <div>
+          <label class="modal-label">计划到货时间</label>
+          <input type="date" id="peArrivalDate" class="modal-input" placeholder="yyyy-mm-dd">
+        </div>
+      </div>
+      <div class="modal-row modal-row-2">
+        <div>
+          <label class="modal-label">是否新品</label>
+          <select id="peIsNew" class="modal-input">
+            <option value="false">否</option>
+            <option value="true">是</option>
+          </select>
+        </div>
+        <div>
+          <label class="modal-label">状态</label>
+          <select id="peStatus" class="modal-input">
+            <option value="现货">现货</option>
+            <option value="在途">在途</option>
+            <option value="预订">预订</option>
+            <option value="停产">停产</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-row modal-row-2">
+        <div>
+          <label class="modal-label">是否可定制</label>
+          <select id="peCustomizable" class="modal-input">
+            <option value="false">否</option>
+            <option value="true">是</option>
+          </select>
+        </div>
+        <div>
+          <label class="modal-label">条码</label>
+          <input type="text" id="peBarcode" class="modal-input" placeholder="商品条码（可选）">
+        </div>
+      </div>
+      <div class="modal-row">
+        <label class="modal-label">产品描述</label>
+        <textarea id="peDescription" class="modal-textarea" rows="3" placeholder="产品的详细描述、设计亮点、使用场景等"></textarea>
+      </div>
+      <div class="modal-row">
+        <label class="modal-label">主图 URL</label>
+        <input type="text" id="peImageUrl" class="modal-input" placeholder="images/top100_910/xxx.webp">
+      </div>
+      <div class="modal-row">
+        <label class="modal-label">主图（上传本地图片，自动转 base64）</label>
+        <input type="file" id="peImageFile" accept="image/*" onchange="onProductImagePick(event)">
+        <div id="peImagePreview" class="modal-img-preview"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-danger" onclick="deleteProduct()">删除</button>
+        <button class="modal-btn modal-btn-secondary" onclick="closeProductEdit()">取消</button>
+        <button class="modal-btn modal-btn-primary" onclick="saveProductEdit()">保存</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- 底部导航 -->
@@ -381,13 +591,13 @@
     <span class="nav-icon">📦</span>
     <span class="nav-label">产品库</span>
   </button>
-  <button class="nav-item" onclick="goInventory()">
-    <span class="nav-icon">📊</span>
-    <span class="nav-label">库存</span>
-  </button>
   <button class="nav-item" onclick="goHot()">
     <span class="nav-icon">🔥</span>
     <span class="nav-label">热力榜</span>
+  </button>
+  <button class="nav-item" onclick="goEvents()">
+    <span class="nav-icon">📰</span>
+    <span class="nav-label">文创事件</span>
   </button>
 </nav>
 
@@ -417,6 +627,89 @@
 
 <!-- 返回顶部 -->
 <button class="back-to-top" onclick="scrollToTop()">↑</button>
+
+<!-- AI 客服 -->
+<button class="ai-fab" id="aiFab" onclick="toggleAIChat()" aria-label="AI 客服">🤖</button>
+<div class="ai-chat-panel" id="aiChatPanel" style="display:none">
+  <div class="ai-chat-header">
+    <div class="ai-chat-title">
+      <span class="ai-chat-avatar">🤖</span>
+      <div>
+        <div class="ai-chat-name">文创智能助手</div>
+        <div class="ai-chat-status"><span class="ai-chat-dot"></span>在线 · 基于网站数据</div>
+      </div>
+    </div>
+    <div class="ai-chat-actions">
+      <button class="ai-chat-icon-btn" onclick="openAISettings()" title="设置">⚙️</button>
+      <button class="ai-chat-icon-btn" onclick="clearAIChat()" title="清空">🗑</button>
+      <button class="ai-chat-icon-btn" onclick="toggleAIChat()" title="关闭">✕</button>
+    </div>
+  </div>
+  <div class="ai-chat-body" id="aiChatBody"></div>
+  <div class="ai-quick-questions" id="aiQuickQuestions">
+    <button class="ai-quick-btn" onclick="askQuick('推荐一些爆款')">🔥 爆款</button>
+    <button class="ai-quick-btn" onclick="askQuick('有哪些新品')">✨ 新品</button>
+    <button class="ai-quick-btn" onclick="askQuick('推荐一个杯子')">🥤 杯子</button>
+    <button class="ai-quick-btn" onclick="askQuick('有哪些套装')">🎁 套装</button>
+    <button class="ai-quick-btn" onclick="askQuick('便宜的笔记本')">📓 便宜笔记本</button>
+    <button class="ai-quick-btn" onclick="askQuick('找74码7441310560')">🔍 74码搜索</button>
+  </div>
+  <div class="ai-chat-input">
+    <input type="text" id="aiInput" placeholder="问我产品、价格、库存..." onkeydown="if(event.key==='Enter')sendAI()">
+    <button onclick="sendAI()">发送</button>
+  </div>
+</div>
+
+<!-- AI 设置 Modal -->
+<div id="aiSettingsModal" class="modal-overlay" style="display:none">
+  <div class="modal-box">
+    <div class="modal-title">⚙️ AI 助手设置</div>
+    <div class="modal-hint">可选：填入 API key 后启用大模型增强模式（默认使用本地规则匹配，0 成本）</div>
+    <div class="modal-row">
+      <label class="modal-label">服务商</label>
+      <select id="aiProvider" class="modal-input">
+        <option value="local">本地规则（默认）</option>
+        <option value="deepseek">DeepSeek</option>
+        <option value="openai">OpenAI 兼容</option>
+      </select>
+    </div>
+    <div class="modal-row">
+      <label class="modal-label">API Key</label>
+      <input type="password" id="aiApiKey" class="modal-input" placeholder="填入 API Key（本地保存）">
+    </div>
+    <div class="modal-row">
+      <label class="modal-label">API Base URL</label>
+      <input type="text" id="aiBaseUrl" class="modal-input" placeholder="默认：https://api.deepseek.com">
+    </div>
+    <div class="modal-row">
+      <label class="modal-label">模型名</label>
+      <input type="text" id="aiModel" class="modal-input" placeholder="默认：deepseek-chat">
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn modal-btn-secondary" onclick="closeAISettings()">取消</button>
+      <button class="modal-btn modal-btn-primary" onclick="saveAISettings()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 顶部提醒编辑 Modal -->
+<div id="noticeFormModal" class="modal-overlay" style="display:none">
+  <div class="modal-box">
+    <div class="modal-title" id="noticeFormTitle">📢 新增提醒</div>
+    <div class="modal-row">
+      <label class="modal-label">提醒内容</label>
+      <textarea id="noticeTextInput" class="modal-textarea" rows="3" placeholder="例如：国庆主题文创备货提醒，建议各省提前两周（9月16日前）锁定库存。"></textarea>
+    </div>
+    <div class="modal-row">
+      <label class="modal-label">链接（可选，留空则纯文字）</label>
+      <input type="text" id="noticeLinkInput" class="modal-input" placeholder="https://...">
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn modal-btn-secondary" onclick="closeNoticeForm()">取消</button>
+      <button class="modal-btn modal-btn-primary" onclick="saveNotice()">保存</button>
+    </div>
+  </div>
+</div>
 
 <script src="js/app.js?v=2"></script>
 </body>

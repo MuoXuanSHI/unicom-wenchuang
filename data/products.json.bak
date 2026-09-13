@@ -14043,36 +14043,6 @@
     }
   },
   {
-    "product_code_74": "7480906884",
-    "product_code_69": "6976300050523",
-    "name": "文创结结如意文创U盘",
-    "purchase_price": 29.85,
-    "settlement_price": 32,
-    "retail_price": 38,
-    "category": "办公场景",
-    "sub_category": "",
-    "spec": "",
-    "material": "",
-    "description": "",
-    "is_customizable": false,
-    "moq": "",
-    "lead_time": "",
-    "is_new": false,
-    "images": [
-      "107_1.webp",
-      "107_2.webp",
-      "107_3.webp"
-    ],
-    "inventory": {
-      "beijing": 4,
-      "kunshan": 0,
-      "dongguan": 0,
-      "chengdu": 0,
-      "xiaoku": 15,
-      "total": 19
-    }
-  },
-  {
     "product_code_74": "7441306559",
     "product_code_69": "6942347991525",
     "name": "抬头见喜流沙杯垫-蓝色",
@@ -14438,34 +14408,6 @@
       "chengdu": 0,
       "xiaoku": 0,
       "total": 0
-    }
-  },
-  {
-    "product_code_74": "7480907042",
-    "product_code_69": "6976300050752",
-    "name": "文创结结如意文创U盘（128G）",
-    "purchase_price": 57.5,
-    "settlement_price": 65,
-    "retail_price": 79,
-    "category": "校园文创",
-    "sub_category": "",
-    "spec": "",
-    "material": "",
-    "description": "",
-    "is_customizable": false,
-    "moq": "",
-    "lead_time": "",
-    "is_new": false,
-    "images": [
-      "16_3.webp"
-    ],
-    "inventory": {
-      "beijing": 0,
-      "kunshan": 0,
-      "dongguan": 0,
-      "chengdu": 0,
-      "xiaoku": 11,
-      "total": 11
     }
   },
   {
