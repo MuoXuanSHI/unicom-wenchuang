@@ -1482,14 +1482,20 @@ function editEvent(id) {
   document.getElementById('eventFormModal').style.display = 'flex';
 }
 
-function deleteEvent(id) {
-  if (!confirm('确认删除这条事件？')) return;
+async function deleteEvent(id) {
+  if (!confirm('确认删除这条事件？此操作会同步到 GitHub。')) return;
   eventsData = eventsData.filter(function(x){return x.id!==id});
   // 同步 localStorage
   var arr = loadLocalEvents().filter(function(x){return x.id!==id});
   localStorage.setItem('unicom-wenchuang-pending-events', JSON.stringify(arr));
   renderAdmin();
-  alert('已删除');
+  alert('正在同步删除到 GitHub...');
+  var r = await commitToGitHub('data/events.json', eventsData, 'admin: 删除事件 ' + id);
+  if (r.ok) {
+    alert('✅ 已删除并同步到 GitHub');
+  } else {
+    alert('⚠️ 同步 GitHub 失败：' + r.error);
+  }
 }
 
 function openProductEdit(code) {
