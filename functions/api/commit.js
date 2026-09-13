@@ -1,5 +1,5 @@
 // Cloudflare Pages Function: 接收后台修改，提交到 GitHub
-// POST /api/commit  body: { file: "data/products.json", content: [...], message: "update products" }
+// POST /api/commit  body: { file: "data/products.json", content: "JSON string", message: "update", password?: "..." }
 //
 // 环境变量（在 Cloudflare Pages 控制台配置）：
 //   GITHUB_TOKEN  - Personal Access Token，Contents: Read and write
@@ -30,7 +30,7 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: false, error: 'missing field: file/content/message' }, 400);
   }
 
-  // 二次校验：管理员密码
+  // 二次校验：管理员密码（如果配置了的话）
   const expectedPwd = env.ADMIN_PWD;
   if (expectedPwd && password !== expectedPwd) {
     return json({ ok: false, error: 'password mismatch' }, 403);
@@ -41,7 +41,7 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: false, error: 'file must match data/*.json' }, 400);
   }
 
-  // content 已经是字符串
+  // content 应该是浏览器已经 JSON.stringify 好的字符串
   const contentStr = typeof content === 'string' ? content : JSON.stringify(content, null, 2);
 
   // 1) 读取当前文件的 sha
@@ -66,7 +66,15 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: false, error: `read file failed: ${getRes.status} ${errText}` }, 500);
   }
 
-  // 2) 提交
+  // 2) base64 编码（大字符串分段处理，避免 Worker CPU 超时）
+  let base64 = '';
+  try {
+    base64 = utf8ToBase64(contentStr);
+  } catch (e) {
+    return json({ ok: false, error: 'base64 encode failed: ' + e.message }, 500);
+  }
+
+  // 3) 提交
   const putRes = await fetch(
     `https://api.github.com/repos/${repo}/contents/${encodeURIComponent(file)}`,
     {
@@ -80,7 +88,7 @@ export async function onRequestPost({ request, env }) {
       },
       body: JSON.stringify({
         message: message,
-        content: btoa(unescape(encodeURIComponent(contentStr))),
+        content: base64,
         branch: branch,
         sha: sha
       })
@@ -106,4 +114,18 @@ function json(obj, status) {
     status: status || 200,
     headers: { 'Content-Type': 'application/json; charset=utf-8' }
   });
+}
+
+// 兼容的 UTF-8 → base64，对大字符串也稳定
+function utf8ToBase64(str) {
+  // 在 Workers 环境中使用 TextEncoder + 手动 base64
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  const len = bytes.length;
+  const chunkSize = 0x8000; // 32KB chunks
+  for (let i = 0; i < len; i += chunkSize) {
+    const chunk = bytes.subarray(i, i + chunkSize);
+    binary += String.fromCharCode.apply(null, chunk);
+  }
+  return btoa(binary);
 }

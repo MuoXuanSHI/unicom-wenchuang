@@ -18,6 +18,9 @@ let currentHotTab = 'top100';
 async function commitToGitHub(file, dataObj, message) {
   try {
     var contentStr = typeof dataObj === 'string' ? dataObj : JSON.stringify(dataObj, null, 2);
+    // 用 AbortController 设置 30 秒超时
+    var controller = new AbortController();
+    var timeoutId = setTimeout(function(){ controller.abort(); }, 30000);
     var res = await fetch('/api/commit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -26,14 +29,21 @@ async function commitToGitHub(file, dataObj, message) {
         content: contentStr,
         message: message,
         password: ADMIN_PWD
-      })
+      }),
+      signal: controller.signal
     });
-    var r = await res.json();
+    clearTimeout(timeoutId);
+    var text = await res.text();
+    var r;
+    try { r = JSON.parse(text); } catch(e) { r = { error: text }; }
     if (!res.ok || !r.ok) {
-      return { ok: false, error: (r && r.error) || ('HTTP ' + res.status) };
+      return { ok: false, error: (r && r.error) || ('HTTP ' + res.status + ' ' + text.slice(0,200)) };
     }
     return { ok: true, commit: r.commit };
   } catch (e) {
+    if (e && e.name === 'AbortError') {
+      return { ok: false, error: '请求超时（30秒），请稍后重试。' };
+    }
     return { ok: false, error: e && e.message ? e.message : String(e) };
   }
 }
@@ -98,14 +108,10 @@ async function loadAuxData() {
     top100Data = Array.isArray(r1) ? r1 : [];
     newData = Array.isArray(r2) ? r2 : [];
     suitsData = r3 && typeof r3 === 'object' ? r3 : {};
-    var baseEvents = Array.isArray(r4) ? r4 : [];
-    var pending = loadLocalEvents();
-    var merged = baseEvents.slice();
-    pending.forEach(function(p){
-      if (!merged.find(function(x){return x.id===p.id})) merged.push(p);
-    });
-    merged.sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); });
-    eventsData = merged;
+    // 现在事件直接同步到 GitHub data/events.json，不再合并本地 localStorage pending events，
+    // 避免刷新后旧本地缓存把已删除/已编辑的内容又显示回来。
+    eventsData = Array.isArray(r4) ? r4 : [];
+    eventsData.sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); });
     // refresh home page new section now that newData is loaded
     if (allProducts && allProducts.length) renderNewProducts();
     renderSuits();
@@ -1295,6 +1301,8 @@ async function saveEvent() {
     alert('正在同步到 GitHub...');
     var r = await commitToGitHub('data/events.json', eventsData, 'admin: ' + (window._editingEventId ? '更新' : '新增') + '事件 ' + title);
     if (r.ok) {
+      // 同步成功后，清空本地 pending events 缓存，避免刷新后旧数据覆盖
+      try { localStorage.removeItem('unicom-wenchuang-pending-events'); } catch(e) {}
       alert('✅ 事件已保存并同步到 GitHub，约 1-2 分钟后线上生效。');
     } else {
       alert('⚠️ 事件已暂存到本地，但同步 GitHub 失败：' + r.error);
@@ -1485,15 +1493,17 @@ function editEvent(id) {
 async function deleteEvent(id) {
   if (!confirm('确认删除这条事件？此操作会同步到 GitHub。')) return;
   eventsData = eventsData.filter(function(x){return x.id!==id});
-  // 同步 localStorage
-  var arr = loadLocalEvents().filter(function(x){return x.id!==id});
-  localStorage.setItem('unicom-wenchuang-pending-events', JSON.stringify(arr));
   renderAdmin();
   alert('正在同步删除到 GitHub...');
   var r = await commitToGitHub('data/events.json', eventsData, 'admin: 删除事件 ' + id);
   if (r.ok) {
+    // 同步成功后，清空本地 pending events 缓存
+    try { localStorage.removeItem('unicom-wenchuang-pending-events'); } catch(e) {}
     alert('✅ 已删除并同步到 GitHub');
   } else {
+    // 失败时仍然更新 localStorage，保持本地状态一致
+    var arr = loadLocalEvents().filter(function(x){return x.id!==id});
+    localStorage.setItem('unicom-wenchuang-pending-events', JSON.stringify(arr));
     alert('⚠️ 同步 GitHub 失败：' + r.error);
   }
 }
@@ -1575,13 +1585,27 @@ async function saveProductEdit() {
   }
   saveLocalProductEdit(p);
 
-  // 同步到 GitHub
-  var pendingText = '正在同步到 GitHub...';
+  // 同步到 GitHub：先拉取最新基准，避免覆盖其他会话的修改
   closeProductEdit();
   renderAdmin();
-  alert(pendingText);
-  var r = await commitToGitHub('data/products.json', allProducts, 'admin: 更新产品 ' + (p.product_code_74 || p.name || ''));
+  alert('正在同步到 GitHub...');
+  var fresh = await fetchFreshProducts();
+  var base = fresh || allProducts;
+  var target = base.slice();
+  var key = p.product_code_74 || ('name:' + p.name);
+  var tIdx = target.findIndex(function(x){
+    return (x.product_code_74 || ('name:' + x.name)) === key;
+  });
+  if (tIdx >= 0) target[tIdx] = p; else target.unshift(p);
+  var r = await commitToGitHub('data/products.json', target, 'admin: 更新产品 ' + (p.product_code_74 || p.name || ''));
   if (r.ok) {
+    allProducts = target;
+    // 同步成功后，清除这个产品的本地编辑缓存
+    try {
+      var edits = JSON.parse(localStorage.getItem('unicom-wenchuang-product-edits') || '{}');
+      delete edits[key];
+      localStorage.setItem('unicom-wenchuang-product-edits', JSON.stringify(edits));
+    } catch(e) {}
     alert('✅ 已保存并同步到 GitHub，约 1-2 分钟后线上生效。');
   } else {
     alert('⚠️ 已保存到本地，但同步 GitHub 失败：' + r.error + '\n（修改仍暂存在浏览器，可点击「导出变更」手动处理）');
@@ -1592,24 +1616,39 @@ async function deleteProduct() {
   var p = window._editingProduct;
   if (!p) return;
   if (!confirm('确认删除产品「' + (p.name||'') + '」？此操作会同步删除线上数据。')) return;
-  // 从 allProducts 移除
-  var idx = allProducts.findIndex(function(x){
-    return (x.product_code_74||'') === (p.product_code_74||'') && (x.name||'') === (p.name||'');
-  });
-  if (idx >= 0) allProducts.splice(idx, 1);
-  // 暂存删除标记
-  try {
-    var arr = JSON.parse(localStorage.getItem('unicom-wenchuang-product-deletes') || '[]');
-    arr.push({product_code_74: p.product_code_74, name: p.name});
-    localStorage.setItem('unicom-wenchuang-product-deletes', JSON.stringify(arr));
-  } catch(e) {}
   closeProductEdit();
   renderAdmin();
   alert('正在同步删除到 GitHub...');
-  var r = await commitToGitHub('data/products.json', allProducts, 'admin: 删除产品 ' + (p.product_code_74 || p.name || ''));
+  var fresh = await fetchFreshProducts();
+  var base = fresh || allProducts;
+  var key = p.product_code_74 || ('name:' + p.name);
+  var target = base.filter(function(x){
+    return (x.product_code_74 || ('name:' + x.name)) !== key;
+  });
+  var r = await commitToGitHub('data/products.json', target, 'admin: 删除产品 ' + (p.product_code_74 || p.name || ''));
   if (r.ok) {
+    allProducts = target;
+    // 同步成功后，清除这个产品的本地编辑/删除缓存
+    try {
+      var edits = JSON.parse(localStorage.getItem('unicom-wenchuang-product-edits') || '{}');
+      delete edits[key];
+      localStorage.setItem('unicom-wenchuang-product-edits', JSON.stringify(edits));
+      var dels = JSON.parse(localStorage.getItem('unicom-wenchuang-product-deletes') || '[]');
+      dels = dels.filter(function(d){ return (d.product_code_74 || ('name:' + d.name)) !== key; });
+      localStorage.setItem('unicom-wenchuang-product-deletes', JSON.stringify(dels));
+    } catch(e) {}
     alert('✅ 已删除并同步到 GitHub，约 1-2 分钟后线上生效。');
   } else {
+    // 失败时仍然更新本地 allProducts 和 localStorage
+    var idx = allProducts.findIndex(function(x){
+      return (x.product_code_74||'') === (p.product_code_74||'') && (x.name||'') === (p.name||'');
+    });
+    if (idx >= 0) allProducts.splice(idx, 1);
+    try {
+      var arr = JSON.parse(localStorage.getItem('unicom-wenchuang-product-deletes') || '[]');
+      arr.push({product_code_74: p.product_code_74, name: p.name});
+      localStorage.setItem('unicom-wenchuang-product-deletes', JSON.stringify(arr));
+    } catch(e) {}
     alert('⚠️ 已暂存本地删除，但同步 GitHub 失败：' + r.error + '\n（请重新打开后台重试，或点击「导出变更」手动处理）');
   }
 }
