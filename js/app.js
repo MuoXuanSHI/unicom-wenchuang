@@ -18,6 +18,8 @@ let currentHotTab = 'top100';
 async function commitToGitHub(file, dataObj, message) {
   try {
     var contentStr = typeof dataObj === 'string' ? dataObj : JSON.stringify(dataObj, null, 2);
+    // 在浏览器端完成 base64 编码，减少 Cloudflare Worker CPU 消耗
+    var contentBase64 = utf8ToBase64Browser(contentStr);
     // 用 AbortController 设置 30 秒超时
     var controller = new AbortController();
     var timeoutId = setTimeout(function(){ controller.abort(); }, 30000);
@@ -26,7 +28,8 @@ async function commitToGitHub(file, dataObj, message) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         file: file,
-        content: contentStr,
+        content: contentBase64,
+        contentEncoding: 'base64',
         message: message,
         password: ADMIN_PWD
       }),
@@ -46,6 +49,17 @@ async function commitToGitHub(file, dataObj, message) {
     }
     return { ok: false, error: e && e.message ? e.message : String(e) };
   }
+}
+
+// 浏览器端 UTF-8 字符串转 base64（大文件分块，避免栈溢出）
+function utf8ToBase64Browser(str) {
+  var utf8 = unescape(encodeURIComponent(str));
+  var binary = '';
+  var chunkSize = 0x8000;
+  for (var i = 0; i < utf8.length; i += chunkSize) {
+    binary += String.fromCharCode.apply(null, Array.prototype.slice.call(utf8, i, i + chunkSize));
+  }
+  return btoa(binary);
 }
 
 // 拉取最新的 JSON 数据（绕过本地缓存），用于编辑/删除前重新同步基准

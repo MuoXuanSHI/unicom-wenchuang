@@ -1,5 +1,5 @@
 // Cloudflare Pages Function: 接收后台修改，提交到 GitHub
-// POST /api/commit  body: { file: "data/products.json", content: "JSON string", message: "update", password?: "..." }
+// POST /api/commit  body: { file: "data/products.json", content: "JSON string or base64", contentEncoding?: "base64", message: "update", password?: "..." }
 //
 // 环境变量（在 Cloudflare Pages 控制台配置）：
 //   GITHUB_TOKEN  - Personal Access Token，Contents: Read and write
@@ -41,8 +41,9 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: false, error: 'file must match data/*.json' }, 400);
   }
 
-  // content 应该是浏览器已经 JSON.stringify 好的字符串
-  const contentStr = typeof content === 'string' ? content : JSON.stringify(content, null, 2);
+  // content 默认是浏览器已经 JSON.stringify 好的字符串；如果 contentEncoding==='base64'，则是已经编码好的 base64
+  const isBase64 = body.contentEncoding === 'base64';
+  const contentStr = (typeof content === 'string' && !isBase64) ? content : JSON.stringify(content, null, 2);
 
   // 1) 读取当前文件的 sha
   const getRes = await fetch(
@@ -66,12 +67,16 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: false, error: `read file failed: ${getRes.status} ${errText}` }, 500);
   }
 
-  // 2) base64 编码（大字符串分段处理，避免 Worker CPU 超时）
+  // 2) base64 编码：如果浏览器已经传了 base64，直接复用，避免 Worker CPU 超时
   let base64 = '';
-  try {
-    base64 = utf8ToBase64(contentStr);
-  } catch (e) {
-    return json({ ok: false, error: 'base64 encode failed: ' + e.message }, 500);
+  if (isBase64 && typeof content === 'string') {
+    base64 = content;
+  } else {
+    try {
+      base64 = utf8ToBase64(contentStr);
+    } catch (e) {
+      return json({ ok: false, error: 'base64 encode failed: ' + e.message }, 500);
+    }
   }
 
   // 3) 提交
