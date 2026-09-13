@@ -1,0 +1,23 @@
+{
+  "name": "unicom-wenchuang",
+  "version": "1.0.0",
+  "description": "联通文创小管家",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MuoXuanSHI/unicom-wenchuang.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MuoXuanSHI/unicom-wenchuang/issues"
+  },
+  "homepage": "https://github.com/MuoXuanSHI/unicom-wenchuang#readme",
+  "devDependencies": {
+    "wrangler": "^4.131.1"
+  }
+}
