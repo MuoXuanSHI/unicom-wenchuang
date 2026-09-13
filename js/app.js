@@ -51,13 +51,14 @@ async function commitToGitHub(file, dataObj, message) {
   }
 }
 
-// 浏览器端 UTF-8 字符串转 base64（大文件分块，避免栈溢出）
+// 浏览器端 UTF-8 字符串转 base64（用 TextEncoder，避免 unescape 已废弃的坑）
 function utf8ToBase64Browser(str) {
-  var utf8 = unescape(encodeURIComponent(str));
+  var bytes = new TextEncoder().encode(str);
   var binary = '';
   var chunkSize = 0x8000;
-  for (var i = 0; i < utf8.length; i += chunkSize) {
-    binary += String.fromCharCode.apply(null, Array.prototype.slice.call(utf8, i, i + chunkSize));
+  for (var i = 0; i < bytes.length; i += chunkSize) {
+    var chunk = bytes.subarray(i, i + chunkSize);
+    binary += String.fromCharCode.apply(null, Array.prototype.slice.call(chunk));
   }
   return btoa(binary);
 }
