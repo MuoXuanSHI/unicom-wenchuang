@@ -20,11 +20,13 @@
 <!-- 顶部导航 -->
 <header class="top-nav">
   <div class="nav-brand" onclick="goHome()">
-    <span class="nav-title">文创小管家</span>
+    <span class="nav-title">联通文创</span>
+    <span class="nav-title-sep"></span>
+    <span class="nav-title-sub">小管家</span>
   </div>
   <div class="nav-search">
+    <span class="search-icon">🔍</span>
     <input type="text" id="globalSearch" placeholder="搜索编码、名称、条码..." oninput="handleSearch(this.value)">
-    <button class="search-btn" onclick="doSearch()">🔍</button>
   </div>
 </header>
 
@@ -54,11 +56,6 @@
       <div class="home-tab home-tab-more" data-value="all" onclick="goCategory('')">≡ 分类</div>
     </nav>
 
-    <!-- 圆形分类宫格 -->
-    <section class="section round-section">
-      <div class="round-grid" id="roundGrid"></div>
-    </section>
-
     <!-- 大 Banner 轮播（套装大图） -->
     <section class="section banner-section">
       <div class="banner-viewport">
@@ -66,6 +63,27 @@
       </div>
       <div class="banner-dots" id="bannerDots"></div>
     </section>
+
+    <!-- 圆形分类宫格 -->
+    <section class="section round-section">
+      <div class="round-grid" id="roundGrid"></div>
+    </section>
+
+    <!-- 主题活动大卡片 -->
+    <section class="section bigcard-section">
+      <div class="big-card" onclick="goEvents()">
+        <img class="big-card-bg" src="../images/generated/scene_910.webp" alt="910 合作伙伴大会" loading="lazy">
+        <div class="big-card-mask"></div>
+        <div class="big-card-text">
+          <div class="big-card-eyebrow">910 合作伙伴大会</div>
+          <div class="big-card-title">品牌家族文创 · AI 文创展</div>
+          <div class="big-card-sub">本届大会主题展品全收录</div>
+          <div class="big-card-cta">查看详情 ›</div>
+        </div>
+      </div>
+    </section>
+
+
 
     <!-- 双列主题大卡 -->
     <section class="section duo-section">
@@ -89,6 +107,18 @@
       </div>
     </section>
 
+    <!-- 热卖推荐（近四周销量 TOP） -->
+    <section class="section" id="hot-recommend-section">
+      <div class="section-header">
+        <span class="section-badge hot">HOT</span>
+        <h2>热卖推荐</h2>
+        <span class="section-eyebrow">BEST SELLERS</span>
+      </div>
+      <div class="scroll-wrapper">
+        <div id="hotRecommendList" class="np-masonry"></div>
+      </div>
+    </section>
+
     <!-- 新品专区 -->
     <section class="section" id="new-products-section">
       <div class="section-header">
@@ -101,17 +131,7 @@
       </div>
     </section>
 
-    <!-- 套装专区 -->
-    <section class="section" id="suits-section">
-      <div class="section-header">
-        <span class="section-badge suit">SUIT</span>
-        <h2>成套送出更体面</h2>
-        <span class="section-eyebrow">GIFT SETS</span>
-      </div>
-      <div class="suits-scroll-wrapper">
-        <div class="suits-scroll" id="suitsGrid"></div>
-      </div>
-    </section>
+
 
 
 
@@ -163,6 +183,17 @@
       </div>
     </section>
 
+    <!-- 套装专区 -->
+    <section class="section" id="suits-section">
+      <div class="section-header">
+        <span class="section-badge suit">SUIT</span>
+        <h2>成套送出更体面</h2>
+        <span class="section-eyebrow">GIFT SETS</span>
+      </div>
+      <div class="suits-scroll-wrapper">
+        <div class="suits-scroll" id="suitsGrid"></div>
+      </div>
+    </section>
 
     <!-- 快捷功能 -->
     <section class="section">

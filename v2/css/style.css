@@ -2217,3 +2217,210 @@ img { max-width: 100%; display: block; }
 /* ---------- 调整新版块间距 ---------- */
 .section { margin-bottom: 8px; }
 .round-section, .banner-section, .duo-section { background: transparent; }
+
+
+/* ============================================================
+   v2 · NIOLife 视频复刻 · 第二波
+   ============================================================ */
+
+/* ---------- 顶栏：品牌字标 + 胶囊搜索 ---------- */
+.top-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.nav-title {
+  font-size: 19px;
+  font-weight: 800;
+  color: #111;
+  letter-spacing: -0.3px;
+  position: relative;
+  padding-bottom: 3px;
+}
+.nav-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3px;
+  background: #E60012;
+  border-radius: 2px;
+}
+.nav-title-sep {
+  width: 1px;
+  height: 16px;
+  background: #ddd;
+  align-self: center;
+}
+.nav-title-sub {
+  font-size: 14px;
+  color: #777;
+  font-weight: 500;
+}
+.nav-search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #f4f4f4;
+  border-radius: 999px;
+  padding: 8px 14px;
+  gap: 8px;
+}
+.nav-search .search-icon {
+  font-size: 14px;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+.nav-search input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  color: #333;
+  min-width: 0;
+}
+.nav-search input::placeholder { color: #aaa; }
+.nav-search .search-btn { display: none; }
+
+/* ---------- 主题活动大卡片 ---------- */
+.bigcard-section { padding: 4px 16px 0; }
+.big-card {
+  position: relative;
+  height: 170px;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.big-card:active { transform: scale(0.985); }
+.big-card-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.big-card-mask {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0) 100%);
+}
+.big-card-text {
+  position: absolute;
+  left: 18px;
+  top: 18px;
+  right: 18px;
+  color: #fff;
+  text-shadow: 0 1px 5px rgba(0,0,0,0.35);
+}
+.big-card-eyebrow {
+  font-size: 10px;
+  letter-spacing: 2px;
+  opacity: 0.9;
+  font-weight: 600;
+}
+.big-card-title {
+  font-size: 19px;
+  font-weight: 800;
+  margin-top: 6px;
+  line-height: 1.35;
+}
+.big-card-sub {
+  font-size: 12px;
+  opacity: 0.92;
+  margin-top: 5px;
+}
+.big-card-cta {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(255,255,255,0.22);
+  backdrop-filter: blur(6px);
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+/* ---------- 热销榜标签（NIOLife「TOP N」） ---------- */
+.np-rank {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.62);
+  color: #fff;
+  backdrop-filter: blur(4px);
+}
+.np-rank-top3 {
+  background: linear-gradient(135deg, #E60012 0%, #FF6B3D 100%);
+  box-shadow: 0 2px 6px rgba(230,0,18,0.35);
+}
+
+/* ---------- 热卖专区标题徽标 ---------- */
+.section-badge.hot {
+  background: linear-gradient(135deg, #E60012 0%, #FF6B3D 100%);
+  color: #fff;
+}
+
+/* ---------- 详情页深色叠层（NIOLife 式） ---------- */
+.detail-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 18px 16px 14px;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.72) 100%);
+  color: #fff;
+}
+.detail-overlay .dov-series {
+  font-size: 11px;
+  letter-spacing: 1px;
+  opacity: 0.92;
+  font-weight: 600;
+}
+.detail-overlay .dov-title {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.35;
+  margin-top: 5px;
+  text-shadow: 0 1px 5px rgba(0,0,0,0.4);
+}
+.detail-overlay .dov-price {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 8px;
+}
+.detail-overlay .dov-price-now {
+  font-size: 19px;
+  font-weight: 800;
+}
+.detail-overlay .dov-price-was {
+  font-size: 12px;
+  opacity: 0.7;
+  text-decoration: line-through;
+}
+.detail-overlay .dov-code {
+  margin-top: 6px;
+  font-size: 10px;
+  opacity: 0.75;
+  letter-spacing: 0.5px;
+  font-family: 'SF Mono', 'Roboto Mono', Menlo, Consolas, monospace;
+}

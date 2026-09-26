@@ -132,6 +132,7 @@ async function loadAuxData() {
       renderBannerCarousel();
       renderDuoCards();
     }
+    renderHotRecommend();
     renderSuits();
   } catch (e) {
     console.error('加载热力榜数据失败:', e);
@@ -340,14 +341,12 @@ function startBannerAutoPlay() {
   }, 4000);
 }
 
-/* ---- ④ 双列主题大卡 ---- */
+/* ---- ④ 双列主题大卡（AI 生成场景图，补足白底产品图没有场景感的短板） ---- */
 function renderDuoCards() {
-  var cat1 = allProducts.find(function(x) { return x.category === '办公场景' && x.images && x.images.length; });
-  var cat2 = allProducts.find(function(x) { return x.category === '营销场景' && x.images && x.images.length; });
   var el1 = document.getElementById('duoCard1');
   var el2 = document.getElementById('duoCard2');
-  if (el1 && cat1) el1.style.backgroundImage = 'url(' + imgUrl(cat1.images[0]) + ')';
-  if (el2 && cat2) el2.style.backgroundImage = 'url(' + imgUrl(cat2.images[0]) + ')';
+  if (el1) el1.style.backgroundImage = 'url(../images/generated/scene_office.webp)';
+  if (el2) el2.style.backgroundImage = 'url(../images/generated/scene_gift.webp)';
 }
 
 function renderSuits() {
@@ -797,6 +796,51 @@ function renderNewProducts() {
   initTouchFeedback(container.querySelectorAll('.np-card'));
 }
 
+/* ============================================================
+   热卖推荐瀑布流（NIOLife「热销榜 TOP N」标签）
+   数据源：top100_hot.json（近四周销量排序，带 rank 字段）
+   ============================================================ */
+function getRankBadge(rank) {
+  if (!rank) return '';
+  if (rank <= 3) return '<span class="np-rank np-rank-top3">热销榜 TOP ' + rank + '</span>';
+  if (rank <= 10) return '<span class="np-rank">热销榜 TOP ' + rank + '</span>';
+  return '';
+}
+
+function renderHotRecommend() {
+  var container = document.getElementById('hotRecommendList');
+  if (!container) return;
+  if (!top100Data || !top100Data.length) { container.innerHTML = ''; return; }
+  var list = top100Data.slice(0, 16);
+  container.innerHTML = list.map(function(p) {
+    var full = allProducts.find(function(x){ return x.product_code_74 === p.product_code_74; }) || p;
+    var info = parseProductName(full);
+    var imgs = full.images && full.images.length ? full.images : [];
+    var imgHtml = imgs.length
+      ? '<div class="skeleton"></div><img class="lazy-img" data-src="' + imgUrl(imgs[0]) + '" alt="' + (full.name||'') + '" loading="lazy" decoding="async">'
+      : '<div class="no-img-placeholder">图片暂无</div>';
+    var onClick = p.product_code_74 ? ' onclick="renderProductDetail(\'' + p.product_code_74 + '\')"' : '';
+    return '<div class="np-card"' + onClick + '>' +
+      '<div class="np-img-wrap">' +
+        imgHtml +
+        getRankBadge(p.rank) +
+      '</div>' +
+      '<div class="np-body">' +
+        (info.series ? '<div class="np-series">' + info.series + '</div>' : '') +
+        '<div class="np-title">' + info.title + '</div>' +
+        (info.tagline ? '<div class="np-tagline">' + info.tagline + '</div>' : '') +
+        '<div class="np-price">' +
+          (p.settlement_price ? '<span class="np-price-now">¥' + p.settlement_price + '</span>' : '<span class="np-price-now">面议</span>') +
+          (p.retail_price && p.retail_price > (p.settlement_price || 0) ? '<span class="np-price-was">¥' + p.retail_price + '</span>' : '') +
+        '</div>' +
+        '<div class="np-code">' + (p.product_code_74 || '待定') + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  initLazyImages(container);
+  initTouchFeedback(container.querySelectorAll('.np-card'));
+}
+
 /* Transform-based 新品滑动 */
 
 /* Transform-based 新品滑动 */
@@ -1120,24 +1164,20 @@ function renderProductDetail(code) {
       '<div class="detail-carousel-dots"></div>' +
       '<div class="detail-back" onclick="goBack()">←</div>' +
       (imgCount > 1 ? '<div class="carousel-arrow carousel-prev" onclick="window.prevSlide()">‹</div><div class="carousel-arrow carousel-next" onclick="window.nextSlide()">›</div>' : '') +
+      /* NIOLife 式深色叠层：系列 + 标题 + 双价 + 编号 */
+      '<div class="detail-overlay">' +
+        (info.series ? '<div class="dov-series">' + info.series + '</div>' : '') +
+        '<div class="dov-title">' + info.title + '</div>' +
+        '<div class="dov-price">' +
+          (p.settlement_price ? '<span class="dov-price-now">¥' + p.settlement_price + '</span>' : '<span class="dov-price-now">面议</span>') +
+          (p.retail_price && p.retail_price > (p.settlement_price || 0) ? '<span class="dov-price-was">¥' + p.retail_price + '</span>' : '') +
+        '</div>' +
+        '<div class="dov-code">编号 ' + (p.product_code_74 || '-') + '</div>' +
+      '</div>' +
     '</div>' +
     '<div class="detail-body">' +
-      /* NIOLife 风格标题三层 */
-      '<div class="detail-head">' +
-        (info.series ? '<div class="detail-series">' + info.series + '</div>' : '') +
-        '<div class="detail-name">' + info.title + '</div>' +
-        (info.tagline ? '<div class="detail-tagline">' + info.tagline + '</div>' : '') +
-      '</div>' +
       '<div class="detail-tags">' + tags.join('') + '</div>' +
-      '<div class="detail-price-row">' +
-        '<div class="detail-price-item"><div class="detail-price-label">结算价</div><div class="detail-price-value">' + (p.settlement_price ? '¥'+p.settlement_price : '面议') + '</div></div>' +
-        '<div class="detail-price-item"><div class="detail-price-label">零售价</div><div class="detail-price-value purchase">' + (p.retail_price ? '¥'+p.retail_price : '面议') + '</div></div>' +
-      '</div>' +
-      /* 产品编号条（保留 74 码，做成徽标样式） */
-      '<div class="detail-code-bar">' +
-        '<span class="detail-code-label">产品编号</span>' +
-        '<span class="detail-code-value">' + (p.product_code_74 || '-') + '</span>' +
-      '</div>' +
+      (info.tagline ? '<div class="detail-tagline detail-tagline-body">' + info.tagline + '</div>' : '') +
       '<div class="detail-info">' +
         '<h3>编辑手记</h3>' +
         '<div class="detail-desc">' + (p.description || '这款商品来自联通文创精选，具体细节与使用场景欢迎联系对接人了解。') + '</div>' +
