@@ -128,7 +128,12 @@ async function loadAuxData() {
     eventsData = Array.isArray(r4) ? r4 : [];
     eventsData.sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); });
     // refresh home page new section now that newData is loaded
-    if (allProducts && allProducts.length) renderNewProducts();
+    if (allProducts && allProducts.length) {
+      renderNewProducts();
+      renderRoundGrid();
+      renderBannerCarousel();
+      renderDuoCards();
+    }
     renderSuits();
   } catch (e) {
     console.error('加载热力榜数据失败:', e);
@@ -221,6 +226,130 @@ function updateNav(activeType) {
     const items = document.querySelectorAll('.bottom-nav .nav-item');
     if (items[idx]) items[idx].classList.add('active');
   }
+}
+
+/* ============================================================
+   NIOLife 截图风格 · 首页组件
+   ------------------------------------------------------------
+   参考 NIO App「惊喜」真实截图：
+     ① Tab 分类导航（推荐/服饰/家居…）
+     ② 圆形分类宫格（圆形产品图 + 短名称）
+     ③ 大 Banner 轮播（全宽场景图 + 叠字）
+     ④ 双列主题大卡（半宽图 + 叠字）
+   ============================================================ */
+
+/* 分类清单：真实值 + 生活化显示名 + 宫格短名 */
+var CATEGORY_LIST = [
+  { value: '办公场景',   label: '办公桌上的小确幸', short: '办公' },
+  { value: '营销场景',   label: '送人有面子的好物', short: '生活' },
+  { value: '商务场景',   label: '联通人的伴手礼',   short: '商务' },
+  { value: '服装体系',   label: '穿在身上的联通',   short: '服饰' },
+  { value: 'eSIM文创',   label: '一方物联',         short: '数码' },
+  { value: 'AI文创',     label: 'AI 生活家',        short: 'AI' },
+  { value: '校园文创',   label: '校园记忆',         short: '校园' },
+  { value: '荣誉体系',   label: '荣誉体系',         short: '荣誉' },
+  { value: '养生主题',   label: '一刻静心',         short: '养生' },
+  { value: '世界杯周边', label: '世界杯周边',       short: '世界杯' },
+  { value: '合作IP',     label: '合作 IP',          short: '合作IP' },
+  { value: '定制场景',   label: '可定制',           short: '定制' },
+  { value: '',           label: '全部好物',         short: '全部' }
+];
+
+/* ---- ① Tab 分类导航 ---- */
+function switchHomeTab(value) {
+  document.querySelectorAll('.home-tab').forEach(function(t) {
+    t.classList.toggle('active', t.getAttribute('data-value') === value);
+  });
+  if (value === 'recommend') {
+    goHome();
+  } else {
+    goCategory(value);
+  }
+}
+
+/* ---- ② 圆形分类宫格 ---- */
+function findCategoryImage(catValue) {
+  var p = allProducts.find(function(x) {
+    return x.category === catValue && x.images && x.images.length;
+  });
+  if (!p && catValue === '') {
+    p = allProducts.find(function(x) { return x.images && x.images.length; });
+  }
+  return p ? p.images[0] : null;
+}
+
+function renderRoundGrid() {
+  var container = document.getElementById('roundGrid');
+  if (!container) return;
+  container.innerHTML = CATEGORY_LIST.map(function(c) {
+    var img = findCategoryImage(c.value);
+    return '<div class="round-item" onclick="goCategory(\'' + c.value + '\')">' +
+      '<div class="round-icon">' +
+        (img ? '<img src="' + imgUrl(img) + '" loading="lazy" alt="' + c.short + '">' : '<span class="round-fallback">📦</span>') +
+      '</div>' +
+      '<div class="round-label">' + c.short + '</div>' +
+    '</div>';
+  }).join('');
+  initTouchFeedback(container.querySelectorAll('.round-item'));
+}
+
+/* ---- ③ 大 Banner 轮播（用套装大图） ---- */
+var BANNERS = [
+  { img: 'images/top100_910/suit_business_office_box.webp',   title: '码上礼盒 · 联通仪式感', sub: '商务办公礼盒 · 8 件套',  suit: '商务办公礼盒' },
+  { img: 'images/top100_910/suit_business_travel_box.webp',   title: '说走就走的旅行',        sub: '商务旅行套装 · 7 件套',  suit: '商务旅行套装' },
+  { img: 'images/top100_910/suit_new_employee_box.webp',      title: '欢迎新同事',            sub: '新员工入职套装 · 10 件套', suit: '新员工入职套装' }
+];
+var bannerIdx = 0;
+var bannerTimer = null;
+
+function renderBannerCarousel() {
+  var track = document.getElementById('bannerCarousel');
+  var dots = document.getElementById('bannerDots');
+  if (!track) return;
+  track.innerHTML = BANNERS.map(function(b) {
+    return '<div class="banner-slide" onclick="showSuit(\'' + b.suit + '\')">' +
+      '<img src="' + imgUrl(b.img) + '" alt="' + b.title + '">' +
+      '<div class="banner-mask"></div>' +
+      '<div class="banner-text">' +
+        '<div class="banner-title">' + b.title + '</div>' +
+        '<div class="banner-sub">' + b.sub + '</div>' +
+        '<div class="banner-cta">查看详情 ›</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  if (dots) {
+    dots.innerHTML = BANNERS.map(function(_, i) {
+      return '<div class="banner-dot' + (i === 0 ? ' active' : '') + '" onclick="showBanner(' + i + ')"></div>';
+    }).join('');
+  }
+  showBanner(0);
+  startBannerAutoPlay();
+}
+
+function showBanner(i) {
+  bannerIdx = i;
+  var track = document.getElementById('bannerCarousel');
+  if (track) track.style.transform = 'translateX(-' + (i * 100) + '%)';
+  document.querySelectorAll('.banner-dot').forEach(function(d, j) {
+    d.classList.toggle('active', j === i);
+  });
+}
+
+function startBannerAutoPlay() {
+  if (bannerTimer) clearInterval(bannerTimer);
+  bannerTimer = setInterval(function() {
+    showBanner((bannerIdx + 1) % BANNERS.length);
+  }, 4000);
+}
+
+/* ---- ④ 双列主题大卡 ---- */
+function renderDuoCards() {
+  var cat1 = allProducts.find(function(x) { return x.category === '办公场景' && x.images && x.images.length; });
+  var cat2 = allProducts.find(function(x) { return x.category === '营销场景' && x.images && x.images.length; });
+  var el1 = document.getElementById('duoCard1');
+  var el2 = document.getElementById('duoCard2');
+  if (el1 && cat1) el1.style.backgroundImage = 'url(' + imgUrl(cat1.images[0]) + ')';
+  if (el2 && cat2) el2.style.backgroundImage = 'url(' + imgUrl(cat2.images[0]) + ')';
 }
 
 function renderSuits() {

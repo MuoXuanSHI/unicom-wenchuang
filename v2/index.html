@@ -41,6 +41,54 @@
       <a class="hm-switch" href="../">← 返回经典版</a>
     </div>
 
+    <!-- Tab 分类导航（NIOLife 式） -->
+    <nav class="home-tabs" id="homeTabs">
+      <div class="home-tab active" data-value="recommend" onclick="switchHomeTab('recommend')">推荐</div>
+      <div class="home-tab" data-value="办公场景" onclick="switchHomeTab('办公场景')">办公</div>
+      <div class="home-tab" data-value="营销场景" onclick="switchHomeTab('营销场景')">生活</div>
+      <div class="home-tab" data-value="服装体系" onclick="switchHomeTab('服装体系')">服饰</div>
+      <div class="home-tab" data-value="商务场景" onclick="switchHomeTab('商务场景')">商务</div>
+      <div class="home-tab" data-value="eSIM文创" onclick="switchHomeTab('eSIM文创')">数码</div>
+      <div class="home-tab" data-value="荣誉体系" onclick="switchHomeTab('荣誉体系')">荣誉</div>
+      <div class="home-tab" data-value="AI文创" onclick="switchHomeTab('AI文创')">AI</div>
+      <div class="home-tab home-tab-more" data-value="all" onclick="goCategory('')">≡ 分类</div>
+    </nav>
+
+    <!-- 圆形分类宫格 -->
+    <section class="section round-section">
+      <div class="round-grid" id="roundGrid"></div>
+    </section>
+
+    <!-- 大 Banner 轮播（套装大图） -->
+    <section class="section banner-section">
+      <div class="banner-viewport">
+        <div class="banner-track" id="bannerCarousel"></div>
+      </div>
+      <div class="banner-dots" id="bannerDots"></div>
+    </section>
+
+    <!-- 双列主题大卡 -->
+    <section class="section duo-section">
+      <div class="duo-cards">
+        <div class="duo-card" onclick="goCategory('办公场景')">
+          <div class="duo-card-bg" id="duoCard1"></div>
+          <div class="duo-card-mask"></div>
+          <div class="duo-card-text">
+            <div class="duo-title">办公仪式感</div>
+            <div class="duo-sub">把桌面收拾成喜欢的样子</div>
+          </div>
+        </div>
+        <div class="duo-card" onclick="goCategory('营销场景')">
+          <div class="duo-card-bg" id="duoCard2"></div>
+          <div class="duo-card-mask"></div>
+          <div class="duo-card-text">
+            <div class="duo-title">送人有面子的好物</div>
+            <div class="duo-sub">100 元以内的心意之选</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- 新品专区 -->
     <section class="section" id="new-products-section">
       <div class="section-header">
@@ -65,87 +113,9 @@
       </div>
     </section>
 
-    <!-- 快捷功能 -->
-    <section class="section">
-      <div class="section-header">
-        <h2>快捷功能</h2>
-      </div>
-      <div class="quick-actions">
-        <div class="quick-btn" onclick="goInventory()">
-          <span class="quick-icon">📊</span>
-          <span>库存查询</span>
-        </div>
-        <div class="quick-btn" onclick="goCustom()">
-          <span class="quick-icon">✏️</span>
-          <span>定制服务</span>
-        </div>
-        <div class="quick-btn" onclick="goContact()">
-          <span class="quick-icon">📞</span>
-          <span>对接人</span>
-        </div>
-      </div>
-    </section>
 
-    <!-- 分类入口 -->
-    <section class="section">
-      <div class="section-header">
-        <h2>产品分类</h2>
-      </div>
-      <div class="category-grid">
-        <div class="category-card" onclick="goCategory('养生主题')">
-          <div class="category-icon">🌿</div>
-          <div class="category-name">一刻静心</div>
-        </div>
-        <div class="category-card" onclick="goCategory('校园文创')">
-          <div class="category-icon">🎓</div>
-          <div class="category-name">校园记忆</div>
-        </div>
-        <div class="category-card" onclick="goCategory('世界杯周边')">
-          <div class="category-icon">⚽</div>
-          <div class="category-name">世界杯周边</div>
-        </div>
-        <div class="category-card" onclick="goCategory('荣誉体系')">
-          <div class="category-icon">🏆</div>
-          <div class="category-name">荣誉体系</div>
-        </div>
-        <div class="category-card" onclick="goCategory('服装体系')">
-          <div class="category-icon">👔</div>
-          <div class="category-name">穿在身上的联通</div>
-        </div>
-        <div class="category-card" onclick="goCategory('eSIM文创')">
-          <div class="category-icon">📶</div>
-          <div class="category-name">一方物联</div>
-        </div>
-        <div class="category-card" onclick="goCategory('商务场景')">
-          <div class="category-icon">💼</div>
-          <div class="category-name">联通人的伴手礼</div>
-        </div>
-        <div class="category-card" onclick="goCategory('办公场景')">
-          <div class="category-icon">📎</div>
-          <div class="category-name">办公桌上的小确幸</div>
-        </div>
-        <div class="category-card" onclick="goCategory('营销场景')">
-          <div class="category-icon">🎁</div>
-          <div class="category-name">送人有面子的好物</div>
-        </div>
-        <div class="category-card" onclick="goCategory('AI文创')">
-          <div class="category-icon">🤖</div>
-          <div class="category-name">AI 生活家</div>
-        </div>
-        <div class="category-card" onclick="goCategory('合作IP')">
-          <div class="category-icon">🤝</div>
-          <div class="category-name">合作 IP</div>
-        </div>
-        <div class="category-card" onclick="goCategory('定制场景')">
-          <div class="category-icon">✏️</div>
-          <div class="category-name">可定制</div>
-        </div>
-        <div class="category-card" onclick="goCategory('')">
-          <div class="category-icon">📦</div>
-          <div class="category-name">全部好物</div>
-        </div>
-      </div>
-    </section>
+
+
 
     <!-- 品牌矩阵（NIOLife 式子品牌页） -->
     <section class="section" id="brands-section">
@@ -189,6 +159,28 @@
           <div class="bc-name">AI 生活家</div>
           <div class="bc-desc">WorkBuddy / UniClaw 智能周边</div>
           <div class="bc-count">2 款</div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 快捷功能 -->
+    <section class="section">
+      <div class="section-header">
+        <h2>快捷功能</h2>
+      </div>
+      <div class="quick-actions">
+        <div class="quick-btn" onclick="goInventory()">
+          <span class="quick-icon">📊</span>
+          <span>库存查询</span>
+        </div>
+        <div class="quick-btn" onclick="goCustom()">
+          <span class="quick-icon">✏️</span>
+          <span>定制服务</span>
+        </div>
+        <div class="quick-btn" onclick="goContact()">
+          <span class="quick-icon">📞</span>
+          <span>对接人</span>
         </div>
       </div>
     </section>
