@@ -99,13 +99,11 @@ async function loadData() {
     const res = await fetch('../data/products.json?_=' + Date.now());
     if (!res.ok) throw new Error('HTTP ' + res.status);
     allProducts = await res.json();
-    // wait for newData to be ready before rendering new section
-    if (newData && newData.length) {
-      renderNewProducts();
-    } else {
-      // fallback: render with is_new right away, then refresh after aux loads
-      renderNewProducts();
-    }
+    // 产品数据就绪后立即渲染首页各组件（NIOLife 截图组件不依赖 newData/suitsData）
+    renderNewProducts();
+    renderRoundGrid();
+    renderBannerCarousel();
+    renderDuoCards();
   } catch (e) {
     console.error('加载数据失败:', e);
     document.getElementById('newProductsList').innerHTML = '<p style="padding:20px;text-align:center;color:#999;">加载失败，请刷新重试</p>';
