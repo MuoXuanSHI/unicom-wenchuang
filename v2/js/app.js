@@ -156,8 +156,10 @@ function goCategory(category) {
   updateNav('list');
   const sel = document.getElementById('filterCategory');
   if (sel) sel.value = category;
+  subCatKeyword = '';
   applyFilter();
   renderCatHero(category);
+  renderSubCategories(category);
   const titleEl = document.querySelector('.page-back-title');
   var cat = CATEGORY_LIST.find(function(c){ return c.value === category; });
   if (titleEl) titleEl.textContent = cat ? cat.label : (category || '全部好物');
@@ -193,6 +195,46 @@ function goBrand(kw) {
   renderBrandHero(kw);
   const titleEl = document.querySelector('.page-back-title');
   if (titleEl) titleEl.textContent = kw;
+}
+
+/* 分类页子分类宫格（NIOLife 式：圆形图标 2 行排列） */
+var subCatKeyword = '';
+function renderSubCategories(category) {
+  var bar = document.getElementById('subCatBar');
+  var scroll = document.getElementById('subCatScroll');
+  if (!bar || !scroll) return;
+  subCatKeyword = '';
+  var subs = SUB_CATEGORY_MAP[category];
+  if (!subs || !subs.length) { bar.style.display = 'none'; return; }
+  /* 统计每个子分类的产品数 + 取代表图，只显示有产品的 */
+  var items = subs.map(function(s) {
+    var matched = allProducts.filter(function(p) {
+      return p.category === category && s.kws.some(function(k) { return (p.name||'').indexOf(k) >= 0; });
+    });
+    var withImg = matched.find(function(p){ return p.images && p.images.length; });
+    return { name: s.name, cnt: matched.length, img: withImg ? withImg.images[0] : null };
+  }).filter(function(x) { return x.cnt > 0; });
+  if (!items.length) { bar.style.display = 'none'; return; }
+  /* "全部"项也用圆形图标（分类代表图） */
+  var allImg = findCategoryImage(category);
+  var html = subCatItemHtml('全部', allImg, '', true);
+  html += items.map(function(it) { return subCatItemHtml(it.name, it.img, it.name, false); }).join('');
+  scroll.innerHTML = html;
+  bar.style.display = 'block';
+}
+function subCatItemHtml(name, img, value, active) {
+  return '<div class="sub-cat-item' + (active ? ' active' : '') + '" onclick="filterSubCat(this, \'' + value + '\')">' +
+    '<div class="sub-cat-icon">' +
+      (img ? '<img src="' + imgUrl(img) + '" loading="lazy" alt="' + name + '">' : '<span class="sub-cat-fallback">📦</span>') +
+    '</div>' +
+    '<div class="sub-cat-label">' + name + '</div>' +
+  '</div>';
+}
+function filterSubCat(el, subName) {
+  document.querySelectorAll('.sub-cat-item').forEach(function(x){ x.classList.remove('active'); });
+  el.classList.add('active');
+  subCatKeyword = subName;
+  applyFilter();
 }
 
 /* 品牌页头图（NIOLife 子品牌页风格） */
@@ -271,6 +313,70 @@ function updateNav(activeType) {
      ③ 大 Banner 轮播（全宽场景图 + 叠字）
      ④ 双列主题大卡（半宽图 + 叠字）
    ============================================================ */
+
+/* 子分类映射：每个大分类拆成生活化子分类（NIOLife 分类页圆形宫格） */
+var SUB_CATEGORY_MAP = {
+  '办公场景': [
+    { name: '书写文具', kws: ['签字笔', '中性笔', '马克笔', '笔套装'] },
+    { name: '笔记本册', kws: ['笔记本', '记事本', '便签', '画册'] },
+    { name: '桌面好物', kws: ['鼠标垫', '杯垫', '凤尾夹', '台历', '日历'] },
+    { name: '徽章配饰', kws: ['徽章', '胸针', '钥匙扣', '挂件'] },
+    { name: '杯壶茶具', kws: ['杯', '壶', '泡茶'] }
+  ],
+  '营销场景': [
+    { name: '帆布袋包', kws: ['帆布袋', '帆布包', '手提袋', '无纺布袋', '包'] },
+    { name: '冰箱贴', kws: ['冰箱贴', '磁力贴'] },
+    { name: '杯壶饮水', kws: ['杯', '壶'] },
+    { name: '挂件配饰', kws: ['挂件', '钥匙扣', '徽章', '胸针'] },
+    { name: '明信片贺卡', kws: ['明信片', '贺卡', '卡片'] },
+    { name: '红包春联', kws: ['红包', '春联', '福字'] }
+  ],
+  '商务场景': [
+    { name: '商务礼赠', kws: ['礼盒', '套装', '伴手礼'] },
+    { name: '书写工具', kws: ['笔', '签字笔', '中性笔'] },
+    { name: '笔记本册', kws: ['笔记本', '记事本'] },
+    { name: '杯壶', kws: ['杯', '壶'] }
+  ],
+  '服装体系': [
+    { name: 'T恤', kws: ['T恤'] },
+    { name: 'POLO 衫', kws: ['POLO', 'polo'] },
+    { name: '卫衣外套', kws: ['卫衣', '外套', '夹克', '冲锋衣', '棉服'] },
+    { name: '裤装', kws: ['裤'] },
+    { name: '帽子配饰', kws: ['帽', '围巾', '袜', '丝巾'] }
+  ],
+  'eSIM文创': [
+    { name: 'eSIM 周边', kws: ['eSIM', 'sim'] },
+    { name: '数码配件', kws: ['充电', '数据线', '支架', '壳'] }
+  ],
+  'AI文创': [
+    { name: '智能终端', kws: ['WorkBuddy', 'UniClaw', '智能终端', 'AI'] },
+    { name: '配套周边', kws: ['壳', '膜', '支架', '充电'] }
+  ],
+  '校园文创': [
+    { name: '校园纪念', kws: ['校园', '纪念', '毕业'] },
+    { name: '学习文具', kws: ['笔', '笔记本', '书签'] }
+  ],
+  '荣誉体系': [
+    { name: '奖杯', kws: ['奖杯'] },
+    { name: '奖牌奖章', kws: ['奖牌', '奖章', '勋章'] },
+    { name: '证书聘书', kws: ['证书', '聘书'] },
+    { name: '牌匾标牌', kws: ['牌匾', '标牌'] }
+  ],
+  '养生主题': [
+    { name: '香囊香卡', kws: ['香囊', '香卡', '香薰'] },
+    { name: '茶饮杯具', kws: ['茶', '杯'] }
+  ],
+  '世界杯周边': [
+    { name: '世界杯主题', kws: ['世界杯', 'FIFA', '足球'] }
+  ],
+  '合作IP': [
+    { name: 'IP 联名', kws: ['联名', 'IP'] },
+    { name: '玩偶潮玩', kws: ['玩偶', '潮玩', '手办', '盲盒'] }
+  ],
+  '定制场景': [
+    { name: '可定制好物', kws: ['定制'] }
+  ]
+};
 
 /* 分类清单：真实值 + 生活化显示名 + 宫格短名 */
 var CATEGORY_LIST = [
@@ -951,6 +1057,16 @@ function applyFilter() {
   /* 品牌矩阵筛选（选了具体分类时不叠加，避免互相冲突） */
   if (brandKeyword && !cat) {
     filtered = filtered.filter(function(p) { return (p.name || '').indexOf(brandKeyword) >= 0; });
+  }
+  /* 子分类筛选（NIOLife 分类页圆形宫格） */
+  if (subCatKeyword && cat) {
+    var subs = SUB_CATEGORY_MAP[cat] || [];
+    var sub = subs.find(function(s){ return s.name === subCatKeyword; });
+    if (sub) {
+      filtered = filtered.filter(function(p) {
+        return sub.kws.some(function(k) { return (p.name || '').indexOf(k) >= 0; });
+      });
+    }
   }
 
   if (price) {
