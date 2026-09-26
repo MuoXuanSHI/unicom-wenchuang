@@ -2424,3 +2424,153 @@ img { max-width: 100%; display: block; }
   letter-spacing: 0.5px;
   font-family: 'SF Mono', 'Roboto Mono', Menlo, Consolas, monospace;
 }
+
+
+/* ============================================================
+   v2 · 热卖推荐 3 列小卡片（用户反馈：图片太大）
+   ============================================================ */
+#hotRecommendList.np-masonry {
+  column-count: 3;
+  column-gap: 8px;
+  padding: 0 12px;
+}
+#hotRecommendList .np-card {
+  margin-bottom: 8px;
+  border-radius: 9px;
+}
+#hotRecommendList .np-body {
+  padding: 8px 8px 9px;
+}
+#hotRecommendList .np-series { font-size: 9px; margin-bottom: 1px; }
+#hotRecommendList .np-title {
+  font-size: 12px;
+  line-height: 1.35;
+  margin-bottom: 2px;
+}
+#hotRecommendList .np-tagline {
+  font-size: 10px;
+  margin-bottom: 5px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+#hotRecommendList .np-price-now { font-size: 13px; }
+#hotRecommendList .np-price-was { font-size: 10px; }
+#hotRecommendList .np-code { font-size: 9px; margin-top: 5px; }
+#hotRecommendList .np-rank { font-size: 9px; padding: 2px 5px; }
+@media (min-width: 768px) {
+  #hotRecommendList.np-masonry { column-count: 4; }
+}
+@media (max-width: 360px) {
+  #hotRecommendList.np-masonry { column-count: 2; }
+}
+
+
+/* ============================================================
+   v2 · 分类页顶部大图头（NIOLife 系列页风格）
+   ============================================================ */
+.cat-hero {
+  position: relative;
+  height: 150px;
+  overflow: hidden;
+  margin: 0 0 2px;
+}
+.cat-hero-bg {
+  position: absolute;
+  inset: -30px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(18px) brightness(0.62) saturate(1.15);
+  transform: scale(1.15);
+}
+.cat-hero-mask {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.45) 100%);
+}
+.cat-hero-text {
+  position: absolute;
+  left: 20px;
+  bottom: 18px;
+  right: 20px;
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.4);
+}
+.cat-hero-eyebrow {
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  opacity: 0.9;
+  font-weight: 600;
+}
+.cat-hero-title {
+  font-size: 22px;
+  font-weight: 800;
+  margin-top: 5px;
+  letter-spacing: -0.3px;
+}
+.cat-hero-sub {
+  font-size: 12px;
+  opacity: 0.88;
+  margin-top: 5px;
+}
+
+
+/* ============================================================
+   v2 · 详情页相关推荐（NIOLife 同系列好物）
+   ============================================================ */
+.detail-related {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #f2f2f2;
+}
+.detail-related h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+}
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.related-card {
+  background: #fff;
+  border-radius: 9px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.related-card:active { transform: scale(0.97); }
+.related-img {
+  width: 100%;
+  aspect-ratio: 1;
+  background: #fafafa;
+  overflow: hidden;
+}
+.related-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.related-body { padding: 7px 8px 9px; }
+.related-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.related-price {
+  font-size: 12px;
+  font-weight: 700;
+  color: #E60012;
+  margin-top: 3px;
+}
+@media (max-width: 360px) {
+  .related-grid { grid-template-columns: repeat(2, 1fr); }
+}

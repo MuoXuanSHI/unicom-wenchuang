@@ -157,8 +157,28 @@ function goCategory(category) {
   const sel = document.getElementById('filterCategory');
   if (sel) sel.value = category;
   applyFilter();
+  renderCatHero(category);
   const titleEl = document.querySelector('.page-back-title');
-  if (titleEl) titleEl.textContent = category || '全部好物';
+  var cat = CATEGORY_LIST.find(function(c){ return c.value === category; });
+  if (titleEl) titleEl.textContent = cat ? cat.label : (category || '全部好物');
+}
+
+/* 分类页顶部大图头（NIOLife 系列页：产品图模糊放大做背景） */
+function renderCatHero(category) {
+  var hero = document.getElementById('catHero');
+  if (!hero) return;
+  if (!category) { hero.style.display = 'none'; return; }
+  var cat = CATEGORY_LIST.find(function(c){ return c.value === category; });
+  if (!cat) { hero.style.display = 'none'; return; }
+  var p = allProducts.find(function(x){ return x.category === category && x.images && x.images.length; });
+  if (!p) { hero.style.display = 'none'; return; }
+  var bg = document.getElementById('catHeroBg');
+  bg.style.backgroundImage = 'url(' + imgUrl(p.images[0]) + ')';
+  document.getElementById('catHeroEyebrow').textContent = 'UNICOM WENCHUANG';
+  document.getElementById('catHeroTitle').textContent = cat.label;
+  var cnt = allProducts.filter(function(x){ return x.category === category; }).length;
+  document.getElementById('catHeroSub').textContent = cnt + ' 款精选好物';
+  hero.style.display = 'block';
 }
 
 /* 从首页品牌矩阵进入，按 IP 关键词筛产品 */
@@ -170,8 +190,23 @@ function goBrand(kw) {
   const sel = document.getElementById('filterCategory');
   if (sel) sel.value = '';
   applyFilter();
+  renderBrandHero(kw);
   const titleEl = document.querySelector('.page-back-title');
   if (titleEl) titleEl.textContent = kw;
+}
+
+/* 品牌页头图（NIOLife 子品牌页风格） */
+function renderBrandHero(kw) {
+  var hero = document.getElementById('catHero');
+  if (!hero) return;
+  var p = allProducts.find(function(x){ return (x.name||'').indexOf(kw) >= 0 && x.images && x.images.length; });
+  if (!p) { hero.style.display = 'none'; return; }
+  document.getElementById('catHeroBg').style.backgroundImage = 'url(' + imgUrl(p.images[0]) + ')';
+  document.getElementById('catHeroEyebrow').textContent = 'UNICOM WENCHUANG · IP';
+  document.getElementById('catHeroTitle').textContent = kw;
+  var cnt = allProducts.filter(function(x){ return (x.name||'').indexOf(kw) >= 0; }).length;
+  document.getElementById('catHeroSub').textContent = cnt + ' 款产品';
+  hero.style.display = 'block';
 }
 
 function goInventory() {
@@ -1158,6 +1193,29 @@ function renderProductDetail(code) {
     .sort(function(a, b) { return (inv[b] || 0) - (inv[a] || 0); })
     .map(function(k) { return '<tr><th>' + whMap[k] + '</th><td>' + inv[k] + '</td></tr>'; }).join('');
 
+  /* 同系列好物（NIOLife 详情页相关推荐） */
+  var related = allProducts.filter(function(x){
+    return x.category === p.category && x.product_code_74 !== p.product_code_74 && x.images && x.images.length;
+  }).slice(0, 4);
+  var relatedHtml = '';
+  if (related.length) {
+    relatedHtml = '<div class="detail-related">' +
+      '<h3>同系列好物</h3>' +
+      '<div class="related-grid">' +
+      related.map(function(r) {
+        var ri = parseProductName(r);
+        return '<div class="related-card" onclick="renderProductDetail(\'' + r.product_code_74 + '\')">' +
+          '<div class="related-img"><img src="' + imgUrl(r.images[0]) + '" loading="lazy" alt="' + (r.name||'') + '"></div>' +
+          '<div class="related-body">' +
+            '<div class="related-title">' + ri.title + '</div>' +
+            '<div class="related-price">' + (r.settlement_price ? '¥' + r.settlement_price : '面议') + '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('') +
+      '</div>' +
+    '</div>';
+  }
+
   document.getElementById('detailContainer').innerHTML =
     '<div class="detail-carousel">' +
       '<div class="detail-carousel-track">' + (imgs || '<div style="padding:40px;text-align:center;color:#999;">暂无图片</div>') + '</div>' +
@@ -1192,6 +1250,7 @@ function renderProductDetail(code) {
         '<h3 style="margin-top:20px">分仓库存</h3>' +
         '<table class="inventory-table"><tbody>' + invRows + '</tbody></table>' +
       '</div>' +
+      relatedHtml +
     '</div>' +
     '<div class="detail-actions">' +
       '<div class="detail-action-btn btn-secondary" onclick="goBack()">返回</div>' +
