@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<meta name="theme-color" content="#E60012">
+<title>文创小管家 · 精品馆</title>
+<link rel="icon" href="../images/logo.png">
+<link rel="stylesheet" href="./css/style.css?v=3">
+</head>
+<body>
+
+<!-- 顶部轮播提醒 -->
+<div class="top-notice" id="topNotice" style="display:none">
+  <div class="top-notice-icon">📢</div>
+  <div class="top-notice-track" id="topNoticeTrack"></div>
+  <button class="top-notice-close" onclick="closeTopNotice()" title="关闭">✕</button>
+</div>
+
+<!-- 顶部导航 -->
+<header class="top-nav">
+  <div class="nav-brand" onclick="goHome()">
+    <span class="nav-title">文创小管家</span>
+  </div>
+  <div class="nav-search">
+    <input type="text" id="globalSearch" placeholder="搜索编码、名称、条码..." oninput="handleSearch(this.value)">
+    <button class="search-btn" onclick="doSearch()">🔍</button>
+  </div>
+</header>
+
+<!-- 页面容器 -->
+<div id="app">
+
+  <!-- 首页 -->
+  <div id="page-home" class="page active">
+    <div class="hero-magazine">
+      <div class="hm-eyebrow">UNICOM WENCHUANG</div>
+      <div class="hm-title">把联通的好设计，<br>带进日子里。</div>
+      <div class="hm-sub">14 大品类 · 923 款精选 · 实时库存<br>给同事、给客户、也给自己的一份体面</div>
+      <div class="hm-line"></div>
+      <a class="hm-switch" href="../">← 返回经典版</a>
+    </div>
+
+    <!-- 新品专区 -->
+    <section class="section" id="new-products-section">
+      <div class="section-header">
+        <span class="section-badge new">NEW</span>
+        <h2>新到的好东西</h2>
+        <span class="section-eyebrow">JUST ARRIVED</span>
+      </div>
+      <div class="scroll-wrapper">
+        <div id="newProductsList" class="np-masonry"></div>
+      </div>
+    </section>
+
+    <!-- 套装专区 -->
+    <section class="section" id="suits-section">
+      <div class="section-header">
+        <span class="section-badge suit">SUIT</span>
+        <h2>成套送出更体面</h2>
+        <span class="section-eyebrow">GIFT SETS</span>
+      </div>
+      <div class="suits-scroll-wrapper">
+        <div class="suits-scroll" id="suitsGrid"></div>
+      </div>
+    </section>
+
+    <!-- 快捷功能 -->
+    <section class="section">
+      <div class="section-header">
+        <h2>快捷功能</h2>
+      </div>
+      <div class="quick-actions">
+        <div class="quick-btn" onclick="goInventory()">
+          <span class="quick-icon">📊</span>
+          <span>库存查询</span>
+        </div>
+        <div class="quick-btn" onclick="goCustom()">
+          <span class="quick-icon">✏️</span>
+          <span>定制服务</span>
+        </div>
+        <div class="quick-btn" onclick="goContact()">
+          <span class="quick-icon">📞</span>
+          <span>对接人</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 分类入口 -->
+    <section class="section">
+      <div class="section-header">
+        <h2>产品分类</h2>
+      </div>
+      <div class="category-grid">
+        <div class="category-card" onclick="goCategory('养生主题')">
+          <div class="category-icon">🌿</div>
+          <div class="category-name">一刻静心</div>
+        </div>
+        <div class="category-card" onclick="goCategory('校园文创')">
+          <div class="category-icon">🎓</div>
+          <div class="category-name">校园记忆</div>
+        </div>
+        <div class="category-card" onclick="goCategory('世界杯周边')">
+          <div class="category-icon">⚽</div>
+          <div class="category-name">世界杯周边</div>
+        </div>
+        <div class="category-card" onclick="goCategory('荣誉体系')">
+          <div class="category-icon">🏆</div>
+          <div class="category-name">荣誉体系</div>
+        </div>
+        <div class="category-card" onclick="goCategory('服装体系')">
+          <div class="category-icon">👔</div>
+          <div class="category-name">穿在身上的联通</div>
+        </div>
+        <div class="category-card" onclick="goCategory('eSIM文创')">
+          <div class="category-icon">📶</div>
+          <div class="category-name">一方物联</div>
+        </div>
+        <div class="category-card" onclick="goCategory('商务场景')">
+          <div class="category-icon">💼</div>
+          <div class="category-name">联通人的伴手礼</div>
+        </div>
+        <div class="category-card" onclick="goCategory('办公场景')">
+          <div class="category-icon">📎</div>
+          <div class="category-name">办公桌上的小确幸</div>
+        </div>
+        <div class="category-card" onclick="goCategory('营销场景')">
+          <div class="category-icon">🎁</div>
+          <div class="category-name">送人有面子的好物</div>
+        </div>
+        <div class="category-card" onclick="goCategory('AI文创')">
+          <div class="category-icon">🤖</div>
+          <div class="category-name">AI 生活家</div>
+        </div>
+        <div class="category-card" onclick="goCategory('合作IP')">
+          <div class="category-icon">🤝</div>
+          <div class="category-name">合作 IP</div>
+        </div>
+        <div class="category-card" onclick="goCategory('定制场景')">
+          <div class="category-icon">✏️</div>
+          <div class="category-name">可定制</div>
+        </div>
+        <div class="category-card" onclick="goCategory('')">
+          <div class="category-icon">📦</div>
+          <div class="category-name">全部好物</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 品牌矩阵（NIOLife 式子品牌页） -->
+    <section class="section" id="brands-section">
+      <div class="section-header">
+        <h2>认识一下它们</h2>
+        <span class="section-eyebrow">OUR FAMILY</span>
+      </div>
+      <div class="brand-grid">
+        <div class="brand-card" onclick="goBrand('品牌家族')">
+          <div class="bc-mark">🏛</div>
+          <div class="bc-name">联通品牌家族</div>
+          <div class="bc-desc">把联通的标识，做成日常可用的小物</div>
+          <div class="bc-count">5 款</div>
+        </div>
+        <div class="brand-card" onclick="goBrand('马墩墩')">
+          <div class="bc-mark">🐴</div>
+          <div class="bc-name">马墩墩</div>
+          <div class="bc-desc">从新春到日常的人气 IP 全家桶</div>
+          <div class="bc-count">49 款</div>
+        </div>
+        <div class="brand-card" onclick="goBrand('通通')">
+          <div class="bc-mark">🧸</div>
+          <div class="bc-name">通通吉祥物</div>
+          <div class="bc-desc">联通吉祥物的日常化表达</div>
+          <div class="bc-count">142 款</div>
+        </div>
+        <div class="brand-card" onclick="goBrand('安踏')">
+          <div class="bc-mark">👟</div>
+          <div class="bc-name">安踏联名</div>
+          <div class="bc-desc">运动品牌的联通定制系列</div>
+          <div class="bc-count">6 款</div>
+        </div>
+        <div class="brand-card" onclick="goBrand('eSIM')">
+          <div class="bc-mark">📡</div>
+          <div class="bc-name">eSIM 文创</div>
+          <div class="bc-desc">技术也被做成了可以送人的样子</div>
+          <div class="bc-count">4 款</div>
+        </div>
+        <div class="brand-card" onclick="goBrand('WorkBuddy')">
+          <div class="bc-mark">🤖</div>
+          <div class="bc-name">AI 生活家</div>
+          <div class="bc-desc">WorkBuddy / UniClaw 智能周边</div>
+          <div class="bc-count">2 款</div>
+        </div>
+      </div>
+    </section>
+
+    </div>
+
+  <!-- 产品列表页 -->
+  <div id="page-list" class="page">
+    <div class="page-back-header">
+      <div class="page-back-btn" onclick="goHome()">←</div>
+      <span class="page-back-title">产品列表</span>
+    </div>
+    <div class="list-header">
+      <div class="list-filter-bar">
+        <select id="filterCategory" onchange="applyFilter()">
+          <option value="">全部分类</option>
+          <option value="养生主题">一刻静心</option>
+          <option value="校园文创">校园记忆</option>
+          <option value="世界杯周边">世界杯周边</option>
+          <option value="荣誉体系">荣誉体系</option>
+          <option value="服装体系">穿在身上的联通</option>
+          <option value="eSIM文创">一方物联</option>
+          <option value="商务场景">联通人的伴手礼</option>
+          <option value="办公场景">办公桌上的小确幸</option>
+          <option value="营销场景">送人有面子的好物</option>
+          <option value="AI文创">AI 生活家</option>
+          <option value="定制场景">可定制</option>
+          <option value="合作IP">合作 IP</option>
+        </select>
+        <select id="filterPrice" onchange="applyFilter()">
+          <option value="">全部价格</option>
+          <option value="0-50">0-50元</option>
+          <option value="50-100">50-100元</option>
+          <option value="100-200">100-200元</option>
+          <option value="200-500">200-500元</option>
+          <option value="500+">500元以上</option>
+        </select>
+        <select id="filterStock" onchange="applyFilter()">
+          <option value="">全部库存</option>
+          <option value="in">有库存</option>
+          <option value="low">库存紧张</option>
+          <option value="out">无库存</option>
+        </select>
+        <select id="sortBy" onchange="applyFilter()">
+          <option value="code">按编码</option>
+          <option value="price-asc">价格升序</option>
+          <option value="price-desc">价格降序</option>
+          <option value="stock">库存最多</option>
+        </select>
+      </div>
+      <div class="list-count" id="listCount">加载中...</div>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+  </div>
+
+  <!-- 产品详情页 -->
+  <div id="page-detail" class="page">
+    <div class="page-back-header">
+      <div class="page-back-btn" onclick="goBack()">←</div>
+      <span class="page-back-title">产品详情</span>
+    </div>
+    <div class="detail-container" id="detailContainer">
+      <div class="detail-loading">加载中...</div>
+    </div>
+  </div>
+
+  <!-- 库存查询页 -->
+  <div id="page-inventory" class="page">
+    <div class="page-back-header">
+      <div class="page-back-btn" onclick="goHome()">←</div>
+      <span class="page-back-title">库存分布查询</span>
+    </div>
+    <div class="inventory-header">
+      <h2>库存分布查询</h2>
+      <div class="warehouse-tabs">
+        <button class="warehouse-tab active" onclick="switchWarehouse('all')">全部</button>
+        <button class="warehouse-tab" onclick="switchWarehouse('beijing')">北京总仓</button>
+        <button class="warehouse-tab" onclick="switchWarehouse('kunshan')">昆山总仓</button>
+        <button class="warehouse-tab" onclick="switchWarehouse('dongguan')">东莞总仓</button>
+        <button class="warehouse-tab" onclick="switchWarehouse('chengdu')">成都总仓</button>
+        <button class="warehouse-tab" onclick="switchWarehouse('xiaoku')">西单仓库</button>
+      </div>
+      <div class="price-filter">
+        <div class="price-filter-label">结算价筛选</div>
+        <div class="price-filter-row">
+          <input type="number" id="priceMin" placeholder="最低价格" min="0" step="1">
+          <span class="price-sep">—</span>
+          <input type="number" id="priceMax" placeholder="最高价格" min="0" step="1">
+          <button class="price-search-btn" onclick="applyPriceFilter()">搜索</button>
+        </div>
+        <div class="price-quick-tags">
+          <span class="price-tag" onclick="setPriceRange(0,50)">0-50元</span>
+          <span class="price-tag" onclick="setPriceRange(50,100)">50-100元</span>
+          <span class="price-tag" onclick="setPriceRange(100,200)">100-200元</span>
+          <span class="price-tag" onclick="setPriceRange(200,500)">200-500元</span>
+          <span class="price-tag" onclick="setPriceRange(500,99999)">500元以上</span>
+          <span class="price-tag price-tag-clear" onclick="clearPriceFilter()">清除筛选</span>
+        </div>
+      </div>
+    </div>
+    <div class="inventory-list" id="inventoryList"></div>
+  </div>
+
+  <!-- 定制服务页 -->
+  <div id="page-custom" class="page">
+    <div class="page-back-header">
+      <div class="page-back-btn" onclick="goHome()">←</div>
+      <span class="page-back-title">定制服务</span>
+    </div>
+    <div class="custom-page">
+      <h2>定制服务</h2>
+      
+      <div style="background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+        <h4 style="color:#E60012;margin-top:0;margin-bottom:12px;font-size:15px;">一、产品定制流程</h4>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+          <span style="background:#f5f5f5;padding:6px 10px;border-radius:6px;font-size:12px;">选品</span>
+          <span style="color:#999;font-size:12px;">→</span>
+          <span style="background:#f5f5f5;padding:6px 10px;border-radius:6px;font-size:12px;">需求确认<br><small style="color:#999">数量及价格</small></span>
+          <span style="color:#999;font-size:12px;">→</span>
+          <span style="background:#E60012;color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;">设计<br><small>7天</small></span>
+          <span style="color:#999;font-size:12px;">→</span>
+          <span style="background:#f5f5f5;padding:6px 10px;border-radius:6px;font-size:12px;">设计确认<br><small>1-3天</small></span>
+          <span style="color:#999;font-size:12px;">→</span>
+          <span style="background:#E60012;color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;">打样<br><small>7-30天</small></span>
+          <span style="color:#999;font-size:12px;">→</span>
+          <span style="background:#f5f5f5;padding:6px 10px;border-radius:6px;font-size:12px;">打样确认<br><small>1-3天</small></span>
+          <span style="color:#999;font-size:12px;">→</span>
+          <span style="background:#E60012;color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;">大货生产<br><small>15-35天</small></span>
+          <span style="color:#999;font-size:12px;">→</span>
+          <span style="background:#f5f5f5;padding:6px 10px;border-radius:6px;font-size:12px;">到货</span>
+        </div>
+        
+        <h4 style="color:#E60012;margin-top:16px;margin-bottom:12px;font-size:15px;">时间汇总</h4>
+        <table class="inventory-table" style="font-size:12px;margin-bottom:12px;">
+          <tr style="background:#E60012;color:#fff;"><th>链路类型</th><th>适用产品</th><th>各环节时间</th><th>总计</th></tr>
+          <tr><td><b>快速链路</b></td><td>帆布袋、杯子等简单产品</td><td>设计7天 + 确认1天 + 打样7天 + 确认1天 + 大货15天</td><td><b style="color:#E60012">约31天（约1个月）</b></td></tr>
+          <tr><td><b>标准链路</b></td><td>常规定制产品</td><td>设计7天 + 确认2天 + 打样15天 + 确认2天 + 大货25天</td><td><b style="color:#E60012">约51天（约7-8周）</b></td></tr>
+          <tr><td><b>复杂链路</b></td><td>玩具、玩偶、徽章类</td><td>设计7天 + 确认3天 + 打样30天 + 确认3天 + 大货35天</td><td><b style="color:#E60012">约78天（约2.5个月）</b></td></tr>
+        </table>
+        <p style="font-size:11px;color:#999;margin:0;">*注：以上生产周期不含物流运输时间（物流一般2-5天）。工期差异主要在"打样"和"大货生产"环节，设计环节固定7天。</p>
+      </div>
+      
+      <div style="background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+        <h4 style="color:#E60012;margin-top:0;margin-bottom:12px;font-size:15px;">二、产品采购链路</h4>
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;font-size:13px;">
+          <span style="background:#f5f5f5;padding:8px 12px;border-radius:8px;">需求方（客户）</span>
+          <span style="color:#999;">→</span>
+          <span style="background:#E60012;color:#fff;padding:8px 12px;border-radius:8px;">联通公司<br><small style="opacity:0.9">智慧供应链/电商APP/微零售</small></span>
+          <span style="color:#999;">→</span>
+          <span style="background:#f5f5f5;padding:8px 12px;border-radius:8px;">联通华盛公司<br><small>（工厂）</small></span>
+        </div>
+      </div>
+      
+      <div style="background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+        <h4 style="color:#E60012;margin-top:0;margin-bottom:12px;font-size:15px;">三、物流链路</h4>
+        <div style="font-size:13px;color:#333;">
+          <p style="margin:4px 0;"><span style="display:inline-block;width:20px;text-align:center;color:#E60012;font-weight:bold;">①</span> 直发到需求方（客户）处</p>
+          <p style="margin:4px 0;"><span style="display:inline-block;width:20px;text-align:center;color:#E60012;font-weight:bold;">②</span> 直发到联通公司处</p>
+        </div>
+      </div>
+      
+      <table class="inventory-table" style="font-size:12px;margin-bottom:16px;">
+        <tr><th>产品类别</th><th>起订量</th><th>工期</th><th>联系人</th></tr>
+        <tr><td>荣誉产品（奖杯/奖牌/证书/牌匾/奖章）</td><td>1件起</td><td>7-10天</td><td>梁明宇</td></tr>
+        <tr><td>服装产品（T恤/POLO/外套/冲锋衣等）</td><td>1件起</td><td>15天</td><td>宋天姿</td></tr>
+        <tr><td>办公用品（笔记本/笔/胶带/鼠标垫等）</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
+        <tr><td>生活用品（保温杯/杯具/雨伞/香囊等）</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
+        <tr><td>包袋类（帆布袋/无纺布袋/背包/胸包等）</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
+        <tr><td>数码配件（充电宝/充电头/数据线/支架等）</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
+        <tr><td>徽章类</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
+        <tr><td>冰箱贴/贴纸/胶带类</td><td>500-1000件</td><td>视产品而定</td><td>石书宇</td></tr>
+        <tr><td>高端商务系列</td><td>500件起</td><td>视产品而定</td><td>石书宇</td></tr>
+        <tr><td>摆件类/盲盒类/手办类</td><td>1000件以上（分摊开模费）</td><td>视产品而定</td><td>石书宇</td></tr>
+        <tr><td>毛绒玩具类</td><td>1000件以上（分摊开模费）</td><td>视产品而定</td><td>石书宇</td></tr>
+      </table>
+      
+      <div style="margin-bottom:16px;font-size:13px;color:#333;">
+        <p><b>可定制内容：</b>LOGO更换、图案定制、包装定制、外观纹路/花纹定制等</p>
+        <p><b>设计费：</b>已包含在定制报价中，不另收</p>
+        <p><b>客户提供素材：</b>AI格式LOGO源文件（或其他高清格式）</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 对接人页 -->
+  <div id="page-contact" class="page">
+    <div class="page-back-header">
+      <div class="page-back-btn" onclick="goHome()">←</div>
+      <span class="page-back-title">各省对接人</span>
+    </div>
+    <div class="contact-page">
+      <h2>各省对接人</h2>
+      <div class="contact-notice">客户咨询退换货、售后、采购等问题时的对接人</div>
+      <div class="contact-list" id="contactList"></div>
+    </div>
+  </div>
+
+  <!-- 套装详情页 -->
+  <div id="page-suit" class="page">
+    <div class="page-back-header">
+      <div class="page-back-btn" onclick="goBack()">←</div>
+      <span class="page-back-title">套装详情</span>
+    </div>
+    <div class="suit-detail" id="suitDetailContainer">
+      <div class="suit-loading">加载中...</div>
+    </div>
+  </div>
+
+  <!-- 热力榜 -->
+  <div id="page-hot" class="page">
+    <div class="page-back-header">
+      <div class="page-back-btn" onclick="goHome()">←</div>
+      <span class="page-back-title">热力榜</span>
+    </div>
+    <div class="hot-header">
+      <div class="hot-eyebrow">本月热销 · 月度新品</div>
+      <div class="hot-title">文创热力榜</div>
+      <div class="hot-sub">实时滚动 · 近四周销量排序</div>
+    </div>
+    <div class="hot-tabs">
+      <div class="hot-tab active" data-tab="top100" onclick="switchHotTab('top100')">
+        <span class="hot-tab-icon">🔥</span>
+        <span>销量 TOP</span>
+        <span class="hot-tab-count" id="hotTabTopCount"></span>
+      </div>
+      <div class="hot-tab" data-tab="new" onclick="switchHotTab('new')">
+        <span class="hot-tab-icon">✨</span>
+        <span>本月新品</span>
+        <span class="hot-tab-count" id="hotTabNewCount"></span>
+      </div>
+    </div>
+    <div id="hotTop100List" class="hot-list"></div>
+    <div id="hotNewList" class="hot-list" style="display:none"></div>
+  </div>
+
+  <!-- 文创事件 -->
+  <div id="page-events" class="page">
+    <div class="page-back-header">
+      <div class="page-back-btn" onclick="goHome()">←</div>
+      <span class="page-back-title">文创事件</span>
+      <button class="page-back-action" onclick="openAdminLogin()">🔐 管理</button>
+    </div>
+    <div class="events-header">
+      <div class="events-eyebrow">联通文创 · 实时播报</div>
+      <div class="events-title">文创事件</div>
+      <div class="events-sub">近期动态 · 合作故事 · 行业资讯</div>
+    </div>
+    <div class="events-list" id="eventsList"></div>
+    <div class="events-submit-entry" id="eventsSubmitEntry">
+      <button class="events-submit-btn" onclick="openEventSubmit()">📮 提交一条事件</button>
+      <p class="events-submit-tip">联通文创同事均可提交，含图片和文字，管理员审核后发布</p>
+    </div>
+  </div>
+
+  <!-- 文创事件详情 -->
+  <div id="page-event-detail" class="page">
+    <div class="page-back-header">
+      <div class="page-back-btn" onclick="goEvents()">←</div>
+      <span class="page-back-title">事件详情</span>
+    </div>
+    <div class="event-detail" id="eventDetailContainer">
+      <div class="event-loading">加载中...</div>
+    </div>
+  </div>
+
+  <!-- 管理员页 -->
+  <div id="page-admin" class="page">
+    <div class="page-back-header">
+      <div class="page-back-btn" onclick="goEvents()">←</div>
+      <span class="page-back-title">管理员控制台</span>
+      <button class="page-back-action" onclick="adminLogout()">退出</button>
+    </div>
+    <div class="admin-container" id="adminContainer"></div>
+  </div>
+
+  <!-- 管理员登录 Modal -->
+  <div id="adminLoginModal" class="modal-overlay" style="display:none">
+    <div class="modal-box">
+      <div class="modal-title">🔐 管理员登录</div>
+      <div class="modal-hint">管理员可编辑产品信息与文创事件</div>
+      <input type="password" id="adminPwdInput" class="modal-input" placeholder="管理员密码">
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-secondary" onclick="closeAdminLogin()">取消</button>
+        <button class="modal-btn modal-btn-primary" onclick="adminLogin()">登录</button>
+      </div>
+      <div id="adminLoginError" class="modal-error"></div>
+    </div>
+  </div>
+
+  <!-- 事件提交/编辑 Modal -->
+  <div id="eventFormModal" class="modal-overlay" style="display:none">
+    <div class="modal-box modal-box-wide">
+      <div class="modal-title" id="eventFormTitle">📮 提交事件</div>
+      <input type="text" id="eventTitleInput" class="modal-input" placeholder="事件标题">
+      <input type="text" id="eventSubtitleInput" class="modal-input" placeholder="副标题（可选）">
+      <textarea id="eventBodyInput" class="modal-textarea" placeholder="事件正文（支持换行）" rows="6"></textarea>
+      <div class="modal-image-upload">
+        <label class="modal-upload-label">
+          <input type="file" id="eventImgInput" accept="image/*" multiple onchange="onEventImagePick(event)">
+          <span id="eventImgPickText">📷 点击上传图片（最多 3 张，可选）</span>
+        </label>
+        <div id="eventImgPreview" class="modal-img-preview"></div>
+      </div>
+      <select id="eventCategoryInput" class="modal-input">
+        <option value="动态">动态</option>
+        <option value="合作故事">合作故事</option>
+        <option value="行业资讯">行业资讯</option>
+        <option value="活动回顾">活动回顾</option>
+        <option value="新品发布">新品发布</option>
+      </select>
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-secondary" onclick="closeEventForm()">取消</button>
+        <button class="modal-btn modal-btn-primary" onclick="saveEvent()">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 产品编辑 Modal -->
+  <div id="productEditModal" class="modal-overlay" style="display:none">
+    <div class="modal-box modal-box-wide">
+      <div class="modal-title" id="productEditTitle">编辑产品</div>
+      <div class="modal-row modal-row-2">
+        <div>
+          <label class="modal-label">74 码</label>
+          <input type="text" id="peCode" class="modal-input" placeholder="74413xxxxxx">
+        </div>
+        <div>
+          <label class="modal-label">69 码</label>
+          <input type="text" id="peCode69" class="modal-input" placeholder="69xxxxxx">
+        </div>
+      </div>
+      <div class="modal-row">
+        <label class="modal-label">名称</label>
+        <input type="text" id="peName" class="modal-input" placeholder="产品名称">
+      </div>
+      <div class="modal-row modal-row-2">
+        <div>
+          <label class="modal-label">采购价</label>
+          <input type="number" id="pePurchase" class="modal-input" placeholder="0">
+        </div>
+        <div>
+          <label class="modal-label">结算价</label>
+          <input type="number" id="peSettle" class="modal-input" placeholder="0">
+        </div>
+      </div>
+      <div class="modal-row modal-row-2">
+        <div>
+          <label class="modal-label">零售价</label>
+          <input type="number" id="peRetail" class="modal-input" placeholder="0">
+        </div>
+        <div>
+          <label class="modal-label">起订量</label>
+          <input type="number" id="peMoq" class="modal-input" placeholder="1">
+        </div>
+      </div>
+      <div class="modal-row modal-row-2">
+        <div>
+          <label class="modal-label">分类</label>
+          <input type="text" id="peCategory" class="modal-input" placeholder="办公场景/养生主题">
+        </div>
+        <div>
+          <label class="modal-label">子分类</label>
+          <input type="text" id="peSubCategory" class="modal-input" placeholder="子分类（可选）">
+        </div>
+      </div>
+      <div class="modal-row modal-row-2">
+        <div>
+          <label class="modal-label">规格 / 尺寸</label>
+          <input type="text" id="peSpec" class="modal-input" placeholder="如：500ml / 165/88A">
+        </div>
+        <div>
+          <label class="modal-label">材质</label>
+          <input type="text" id="peMaterial" class="modal-input" placeholder="如：304 不锈钢 / 纯棉">
+        </div>
+      </div>
+      <div class="modal-row modal-row-2">
+        <div>
+          <label class="modal-label">交期</label>
+          <input type="text" id="peLeadTime" class="modal-input" placeholder="如：15 天">
+        </div>
+        <div>
+          <label class="modal-label">计划到货时间</label>
+          <input type="date" id="peArrivalDate" class="modal-input" placeholder="yyyy-mm-dd">
+        </div>
+      </div>
+      <div class="modal-row modal-row-2">
+        <div>
+          <label class="modal-label">是否新品</label>
+          <select id="peIsNew" class="modal-input">
+            <option value="false">否</option>
+            <option value="true">是</option>
+          </select>
+        </div>
+        <div>
+          <label class="modal-label">状态</label>
+          <select id="peStatus" class="modal-input">
+            <option value="现货">现货</option>
+            <option value="在途">在途</option>
+            <option value="预订">预订</option>
+            <option value="停产">停产</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-row modal-row-2">
+        <div>
+          <label class="modal-label">是否可定制</label>
+          <select id="peCustomizable" class="modal-input">
+            <option value="false">否</option>
+            <option value="true">是</option>
+          </select>
+        </div>
+        <div>
+          <label class="modal-label">条码</label>
+          <input type="text" id="peBarcode" class="modal-input" placeholder="商品条码（可选）">
+        </div>
+      </div>
+      <div class="modal-row">
+        <label class="modal-label">产品描述</label>
+        <textarea id="peDescription" class="modal-textarea" rows="3" placeholder="产品的详细描述、设计亮点、使用场景等"></textarea>
+      </div>
+      <div class="modal-row">
+        <label class="modal-label">主图 URL</label>
+        <input type="text" id="peImageUrl" class="modal-input" placeholder="images/top100_910/xxx.webp">
+      </div>
+      <div class="modal-row">
+        <label class="modal-label">主图（上传本地图片，自动转 base64）</label>
+        <input type="file" id="peImageFile" accept="image/*" onchange="onProductImagePick(event)">
+        <div id="peImagePreview" class="modal-img-preview"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-danger" onclick="deleteProduct()">删除</button>
+        <button class="modal-btn modal-btn-secondary" onclick="closeProductEdit()">取消</button>
+        <button class="modal-btn modal-btn-primary" onclick="saveProductEdit()">保存</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 底部导航 -->
+<nav class="bottom-nav">
+  <button class="nav-item active" onclick="goHome()">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-label">首页</span>
+  </button>
+  <button class="nav-item" onclick="goCategory('')">
+    <span class="nav-icon">📦</span>
+    <span class="nav-label">产品库</span>
+  </button>
+  <button class="nav-item" onclick="goHot()">
+    <span class="nav-icon">🔥</span>
+    <span class="nav-label">热力榜</span>
+  </button>
+  <button class="nav-item" onclick="goEvents()">
+    <span class="nav-icon">📰</span>
+    <span class="nav-label">文创事件</span>
+  </button>
+</nav>
+
+<!-- AI助手已隐藏，后续需要时再开启
+<div id="aiChat" class="ai-chat">
+  <div class="ai-chat-header">
+    <span>🤖 文创智能助手</span>
+    <button onclick="toggleAI()">✕</button>
+  </div>
+  <div class="ai-chat-body" id="aiChatBody">
+    <div class="ai-msg ai-welcome">
+      <p>你好！我是文创智能助手，可以帮你：</p>
+      <ul>
+        <li>查询产品信息和库存</li>
+        <li>了解定制服务流程</li>
+        <li>解答采购、售后问题</li>
+      </ul>
+      <p>请问有什么可以帮你的？</p>
+    </div>
+  </div>
+  <div class="ai-chat-input">
+    <input type="text" id="aiInput" placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')sendAI()">
+    <button onclick="sendAI()">发送</button>
+  </div>
+</div>
+-->
+
+<!-- 返回顶部 -->
+<button class="back-to-top" onclick="scrollToTop()">↑</button>
+
+<!-- AI 客服 -->
+<button class="ai-fab" id="aiFab" onclick="toggleAIChat()" aria-label="AI 客服">🤖</button>
+<div class="ai-chat-panel" id="aiChatPanel" style="display:none">
+  <div class="ai-chat-header">
+    <div class="ai-chat-title">
+      <span class="ai-chat-avatar">🤖</span>
+      <div>
+        <div class="ai-chat-name">文创智能助手</div>
+        <div class="ai-chat-status"><span class="ai-chat-dot"></span>在线 · 基于网站数据</div>
+      </div>
+    </div>
+    <div class="ai-chat-actions">
+      <button class="ai-chat-icon-btn" onclick="openAISettings()" title="设置">⚙️</button>
+      <button class="ai-chat-icon-btn" onclick="clearAIChat()" title="清空">🗑</button>
+      <button class="ai-chat-icon-btn" onclick="toggleAIChat()" title="关闭">✕</button>
+    </div>
+  </div>
+  <div class="ai-chat-body" id="aiChatBody"></div>
+  <div class="ai-quick-questions" id="aiQuickQuestions">
+    <button class="ai-quick-btn" onclick="askQuick('推荐一些爆款')">🔥 爆款</button>
+    <button class="ai-quick-btn" onclick="askQuick('有哪些新品')">✨ 新品</button>
+    <button class="ai-quick-btn" onclick="askQuick('推荐一个杯子')">🥤 杯子</button>
+    <button class="ai-quick-btn" onclick="askQuick('有哪些套装')">🎁 套装</button>
+    <button class="ai-quick-btn" onclick="askQuick('便宜的笔记本')">📓 便宜笔记本</button>
+    <button class="ai-quick-btn" onclick="askQuick('找74码7441310560')">🔍 74码搜索</button>
+  </div>
+  <div class="ai-chat-input">
+    <input type="text" id="aiInput" placeholder="问我产品、价格、库存..." onkeydown="if(event.key==='Enter')sendAI()">
+    <button onclick="sendAI()">发送</button>
+  </div>
+</div>
+
+<!-- AI 设置 Modal -->
+<div id="aiSettingsModal" class="modal-overlay" style="display:none">
+  <div class="modal-box">
+    <div class="modal-title">⚙️ AI 助手设置</div>
+    <div class="modal-hint">可选：填入 API key 后启用大模型增强模式（默认使用本地规则匹配，0 成本）</div>
+    <div class="modal-row">
+      <label class="modal-label">服务商</label>
+      <select id="aiProvider" class="modal-input">
+        <option value="local">本地规则（默认）</option>
+        <option value="deepseek">DeepSeek</option>
+        <option value="openai">OpenAI 兼容</option>
+      </select>
+    </div>
+    <div class="modal-row">
+      <label class="modal-label">API Key</label>
+      <input type="password" id="aiApiKey" class="modal-input" placeholder="填入 API Key（本地保存）">
+    </div>
+    <div class="modal-row">
+      <label class="modal-label">API Base URL</label>
+      <input type="text" id="aiBaseUrl" class="modal-input" placeholder="默认：https://api.deepseek.com">
+    </div>
+    <div class="modal-row">
+      <label class="modal-label">模型名</label>
+      <input type="text" id="aiModel" class="modal-input" placeholder="默认：deepseek-chat">
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn modal-btn-secondary" onclick="closeAISettings()">取消</button>
+      <button class="modal-btn modal-btn-primary" onclick="saveAISettings()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 顶部提醒编辑 Modal -->
+<div id="noticeFormModal" class="modal-overlay" style="display:none">
+  <div class="modal-box">
+    <div class="modal-title" id="noticeFormTitle">📢 新增提醒</div>
+    <div class="modal-row">
+      <label class="modal-label">提醒内容</label>
+      <textarea id="noticeTextInput" class="modal-textarea" rows="3" placeholder="例如：国庆主题文创备货提醒，建议各省提前两周（9月16日前）锁定库存。"></textarea>
+    </div>
+    <div class="modal-row">
+      <label class="modal-label">链接（可选，留空则纯文字）</label>
+      <input type="text" id="noticeLinkInput" class="modal-input" placeholder="https://...">
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn modal-btn-secondary" onclick="closeNoticeForm()">取消</button>
+      <button class="modal-btn modal-btn-primary" onclick="saveNotice()">保存</button>
+    </div>
+  </div>
+</div>
+
+<script src="./js/app.js?v=3"></script>
+</body>
+</html>
