@@ -217,21 +217,34 @@ function renderSubCategories(category) {
   subCatKeyword = '';
   var subs = SUB_CATEGORY_MAP[category];
   if (!subs || !subs.length) { bar.style.display = 'none'; return; }
-  /* 统计每个子分类的产品数 + 取代表图，只显示有产品的 */
+  /* 统计每个子分类的产品数 + 取代表图，按"产品多的优先展示"排序 */
   var items = subs.map(function(s) {
     var matched = allProducts.filter(function(p) {
       return p.category === category && s.kws.some(function(k) { return (p.name||'').indexOf(k) >= 0; });
     });
     var withImg = matched.find(function(p){ return p.images && p.images.length; });
     return { name: s.name, cnt: matched.length, img: withImg ? withImg.images[0] : null };
-  }).filter(function(x) { return x.cnt > 0; });
+  })
+  .filter(function(x) { return x.cnt > 0; })
+  .sort(function(a, b) { return b.cnt - a.cnt; });  /* 产品多的排前面 */
   if (!items.length) { bar.style.display = 'none'; return; }
-  /* "全部"项也用圆形图标（分类代表图） */
+  /* 动态列数：1+有货子分类数（含"全部"），1-3 个时居中，4+ 时铺满 5 列 */
+  var totalCount = items.length + 1;  /* +1 for 全部 */
+  var cols = Math.min(Math.max(totalCount, 4), 5);
+  scroll.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
+  /* "全部"项显示分类代表图 */
   var allImg = findCategoryImage(category);
   var html = subCatItemHtml('全部', allImg, '', true);
-  html += items.map(function(it) { return subCatItemHtml(it.name, it.img, it.name, false); }).join('');
+  html += items.map(function(it) {
+    return subCatItemHtml(it.name + '\n' + it.cnt + '款', it.img, it.name, false);
+  }).join('');
   scroll.innerHTML = html;
   bar.style.display = 'block';
+}
+
+/* 计算分类下产品总数 */
+function totalCountofCategory(category) {
+  return allProducts.filter(function(p){ return p.category === category; }).length;
 }
 function subCatItemHtml(name, img, value, active) {
   return '<div class="sub-cat-item' + (active ? ' active' : '') + '" onclick="filterSubCat(this, \'' + value + '\')">' +
