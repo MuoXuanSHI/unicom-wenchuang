@@ -232,9 +232,80 @@ function subCatItemHtml(name, img, value, active) {
 }
 function filterSubCat(el, subName) {
   document.querySelectorAll('.sub-cat-item').forEach(function(x){ x.classList.remove('active'); });
-  el.classList.add('active');
+  if (el) el.classList.add('active');
   subCatKeyword = subName;
   applyFilter();
+}
+
+/* ---- 分类页分段：新品推荐 + 热卖推荐(NIOLife 视频结构) ---- */
+function renderListSections(category) {
+  /* 新品分段 */
+  var newCardWrap = document.getElementById('listNewGrid');
+  var newSection = document.getElementById('listNewSection');
+  if (newCardWrap && newSection) {
+    var newList = allProducts.filter(function(p) {
+      return p.category === category && p.is_new && p.images && p.images.length > 0;
+    }).slice(0, 6);
+    if (newList.length > 0) {
+      newCardWrap.innerHTML = newList.map(function(p) {
+        var info = parseProductInfo(p);
+        var img = p.images && p.images[0] ? imgUrl(p.images[0]) : '';
+        var imgHtml = img
+          ? '<img src="' + img + '" alt="' + info.title + '" loading="lazy">'
+          : '<div class="no-img-placeholder">暂无图片</div>';
+        return '<div class="np-card" onclick="renderProductDetail(\'' + p.product_code_74 + '\')">' +
+          '<div class="np-img-wrap">' + imgHtml + '<span class="np-badge np-badge-new">NEW</span></div>' +
+          '<div class="np-body">' +
+            '<div class="np-series">' + info.series + '</div>' +
+            '<div class="np-title">' + info.title + '</div>' +
+            (info.tagline ? '<div class="np-tagline">' + info.tagline + '</div>' : '') +
+            '<div class="np-price">' +
+              '<span class="np-price-now">¥' + (p.settlement_price || 0) + '</span>' +
+              (p.retail_price ? '<span class="np-price-was">¥' + p.retail_price + '</span>' : '') +
+            '</div>' +
+            '<div class="np-code">' + p.product_code_74 + '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+      newSection.style.display = 'block';
+    } else {
+      newSection.style.display = 'none';
+    }
+  }
+
+  /* 热卖分段 */
+  var hotCardWrap = document.getElementById('listHotGrid');
+  var hotSection = document.getElementById('listHotSection');
+  if (hotCardWrap && hotSection && typeof top100Data !== 'undefined' && top100Data.length > 0) {
+    var hotList = top100Data.filter(function(p) {
+      return p.category === category && p.images && p.images.length > 0;
+    }).slice(0, 4);
+    if (hotList.length > 0) {
+      hotCardWrap.innerHTML = hotList.map(function(p, i) {
+        var info = parseProductInfo(p);
+        var img = p.images && p.images[0] ? imgUrl(p.images[0]) : '';
+        var imgHtml = img
+          ? '<img src="' + img + '" alt="' + info.title + '" loading="lazy">'
+          : '<div class="no-img-placeholder">暂无图片</div>';
+        var rankClass = i < 3 ? ' np-rank-top3' : '';
+        return '<div class="np-card" onclick="renderProductDetail(\'' + p.product_code_74 + '\')">' +
+          '<div class="np-img-wrap">' + imgHtml + '<span class="np-rank' + rankClass + '">热销榜 TOP ' + (i+1) + '</span></div>' +
+          '<div class="np-body">' +
+            '<div class="np-series">' + info.series + '</div>' +
+            '<div class="np-title">' + info.title + '</div>' +
+            '<div class="np-price">' +
+              '<span class="np-price-now">¥' + (p.settlement_price || 0) + '</span>' +
+              (p.retail_price ? '<span class="np-price-was">¥' + p.retail_price + '</span>' : '') +
+            '</div>' +
+            '<div class="np-code">' + p.product_code_74 + '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+      hotSection.style.display = 'block';
+    } else {
+      hotSection.style.display = 'none';
+    }
+  }
 }
 
 /* 品牌页头图（NIOLife 子品牌页风格） */
@@ -1120,6 +1191,17 @@ function applyFilter() {
 
   /* 初始加载第一页 */
   loadMoreProducts();
+
+  /* 分类页分段:新品推荐 + 热卖推荐(NIOLife 分类页结构) */
+  if (cat && !brandKeyword) {
+    renderListSections(cat);
+  } else {
+    /* 非分类页时隐藏分段 */
+    var ns = document.getElementById('listNewSection');
+    var hs = document.getElementById('listHotSection');
+    if (ns) ns.style.display = 'none';
+    if (hs) hs.style.display = 'none';
+  }
 
   /* 设置无限滚动观察器 */
   if (listObserver) listObserver.disconnect();

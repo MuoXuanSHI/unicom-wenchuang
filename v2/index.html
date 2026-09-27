@@ -238,6 +238,14 @@
     <div class="sub-cat-bar" id="subCatBar" style="display:none">
       <div class="sub-cat-scroll" id="subCatScroll"></div>
     </div>
+    <!-- 新品推荐分段（如果有新品） -->
+    <div id="listNewSection" style="display:none">
+      <div class="list-section-divider">
+        <div class="lsd-title">新品推荐</div>
+        <div class="lsd-link">新鲜到达</div>
+      </div>
+      <div id="listNewGrid" class="np-masonry list-grid-2col"></div>
+    </div>
     <div class="list-header">
       <div class="list-filter-bar">
         <select id="filterCategory" onchange="applyFilter()">
@@ -277,6 +285,14 @@
         </select>
       </div>
       <div class="list-count" id="listCount">加载中...</div>
+    </div>
+    <!-- 热卖推荐分段 -->
+    <div id="listHotSection" style="display:none">
+      <div class="list-section-divider">
+        <div class="lsd-title">热卖推荐</div>
+        <div class="lsd-link">大家都在买</div>
+      </div>
+      <div id="listHotGrid" class="np-masonry list-grid-2col"></div>
     </div>
     <div class="product-grid" id="productGrid"></div>
   </div>

@@ -2656,3 +2656,134 @@ img { max-width: 100%; display: block; }
   color: #E60012;
   font-weight: 700;
 }
+
+
+/* ============================================================
+   v2 · 细节对齐（严格按 NIOLife 视频截图）
+   ============================================================ */
+
+/* ---------- ④-a 子分类宫格:选中态改为细下划线原点(不绕圈) ---------- */
+.sub-cat-icon {
+  border: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.sub-cat-item.active .sub-cat-icon {
+  border: none;
+}
+.sub-cat-item.active .sub-cat-label {
+  color: #E60012;
+  font-weight: 700;
+  position: relative;
+  padding-bottom: 4px;
+}
+.sub-cat-item.active .sub-cat-label::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 2px;
+  border-radius: 1px;
+  background: #E60012;
+}
+
+/* ---------- ④-b 新品专区:也改 3 列,与热卖推荐统一 ---------- */
+#newProductsList.np-masonry {
+  column-count: 3;
+  column-gap: 8px;
+  padding: 0 12px;
+}
+#newProductsList .np-card {
+  margin-bottom: 8px;
+  border-radius: 9px;
+}
+#newProductsList .np-body { padding: 8px 8px 9px; }
+#newProductsList .np-series { font-size: 9px; margin-bottom: 1px; }
+#newProductsList .np-title { font-size: 12px; line-height: 1.35; margin-bottom: 2px; }
+#newProductsList .np-tagline {
+  font-size: 10px;
+  margin-bottom: 5px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+#newProductsList .np-price-now { font-size: 13px; }
+#newProductsList .np-price-was { font-size: 10px; }
+#newProductsList .np-code { font-size: 9px; margin-top: 5px; }
+@media (min-width: 768px) {
+  #newProductsList.np-masonry { column-count: 4; }
+}
+@media (max-width: 360px) {
+  #newProductsList.np-masonry { column-count: 2; }
+}
+
+/* ---------- ④-c 分类页分段标题(NIOLife 视频里同款左对齐带右侧小链接) ---------- */
+.list-section-divider {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 18px 16px 12px;
+  background: #fff;
+}
+.list-section-divider .lsd-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #111;
+  letter-spacing: -0.2px;
+}
+.list-section-divider .lsd-link {
+  font-size: 11px;
+  color: #999;
+  letter-spacing: 0.3px;
+}
+
+/* ---------- ④-d 卡片标签:NIOLife 式左上小胶囊(清仓/折扣/TOP/新品) ---------- */
+.np-badge-clearance {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: #E60012;
+  color: #fff;
+  z-index: 2;
+}
+.np-badge-soft {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  backdrop-filter: blur(4px);
+  z-index: 2;
+}
+
+/* ---------- ④-e 分类页图片统一 4:5 比例(NIOLife 视频同款长图) ---------- */
+#productGrid .product-img-wrap {
+  aspect-ratio: 4 / 5;
+}
+#productGrid .product-img-wrap img {
+  object-fit: cover;
+}
+
+
+/* ---- 分类页分段:两列瀑布流(NIOLife 视频结构) ---- */
+.list-grid-2col {
+  column-count: 2;
+  column-gap: 8px;
+  padding: 0 14px;
+}
+.list-grid-2col .np-card {
+  margin-bottom: 8px;
+  break-inside: avoid;
+}
