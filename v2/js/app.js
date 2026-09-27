@@ -276,10 +276,31 @@ function filterSubCat(el, subName) {
   if (el) el.classList.add('active');
   subCatKeyword = subName;
   applyFilter();
+  /* 点了具体子分类：隐藏"新品推荐/热卖推荐"分段，直接看过滤后的列表；并滚动到列表 */
+  var ns = document.getElementById('listNewSection');
+  var hs = document.getElementById('listHotSection');
+  var showSections = !subName;  /* 全部=显示推荐位；子分类=隐藏 */
+  if (ns) ns.style.display = showSections ? ns.dataset.keep || 'block' : 'none';
+  if (hs) hs.style.display = showSections ? hs.dataset.keep || 'block' : 'none';
+  if (subName) {
+    var grid = document.getElementById('productGrid');
+    if (grid) {
+      var y = grid.getBoundingClientRect().top + window.pageYOffset - 130;
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+    }
+  }
 }
 
 /* ---- 分类页分段：新品推荐 + 热卖推荐(NIOLife 视频结构) ---- */
 function renderListSections(category) {
+  /* 已选中子分类时不显示推荐分段（让用户直接看过滤后的列表） */
+  var ns = document.getElementById('listNewSection');
+  var hs = document.getElementById('listHotSection');
+  if (subCatKeyword) {
+    if (ns) ns.style.display = 'none';
+    if (hs) hs.style.display = 'none';
+    return;
+  }
   /* 新品分段 */
   var newCardWrap = document.getElementById('listNewGrid');
   var newSection = document.getElementById('listNewSection');
