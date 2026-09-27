@@ -104,9 +104,20 @@ async function loadData() {
     renderRoundGrid();
     renderBannerCarousel();
     renderDuoCards();
+    /* 支持 URL 参数直接进分类页：?cat=办公场景 */
+    handleUrlParams();
   } catch (e) {
     console.error('加载数据失败:', e);
     document.getElementById('newProductsList').innerHTML = '<p style="padding:20px;text-align:center;color:#999;">加载失败，请刷新重试</p>';
+  }
+}
+
+/* 处理 URL 参数进入分类页 */
+function handleUrlParams() {
+  var params = new URLSearchParams(window.location.search);
+  var cat = params.get('cat');
+  if (cat) {
+    setTimeout(function(){ goCategory(cat); }, 100);
   }
 }
 
@@ -248,7 +259,7 @@ function renderListSections(category) {
     }).slice(0, 6);
     if (newList.length > 0) {
       newCardWrap.innerHTML = newList.map(function(p) {
-        var info = parseProductInfo(p);
+        var info = parseProductName(p);
         var img = p.images && p.images[0] ? imgUrl(p.images[0]) : '';
         var imgHtml = img
           ? '<img src="' + img + '" alt="' + info.title + '" loading="lazy">'
@@ -282,7 +293,7 @@ function renderListSections(category) {
     }).slice(0, 4);
     if (hotList.length > 0) {
       hotCardWrap.innerHTML = hotList.map(function(p, i) {
-        var info = parseProductInfo(p);
+        var info = parseProductName(p);
         var img = p.images && p.images[0] ? imgUrl(p.images[0]) : '';
         var imgHtml = img
           ? '<img src="' + img + '" alt="' + info.title + '" loading="lazy">'
