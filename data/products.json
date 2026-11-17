@@ -49,12 +49,12 @@
       "179_3.webp"
     ],
     "inventory": {
-      "beijing": 4,
+      "beijing": 0,
       "kunshan": 1,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 2,
-      "total": 7
+      "total": 3
     }
   },
   {
@@ -77,12 +77,12 @@
       "images/top100_910/product_top033.webp"
     ],
     "inventory": {
-      "beijing": 750,
+      "beijing": 1243,
       "kunshan": 12,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 762
+      "total": 1255
     }
   },
   {
@@ -105,12 +105,12 @@
       "images/top100_910/product_top097.webp"
     ],
     "inventory": {
-      "beijing": 414,
+      "beijing": 597,
       "kunshan": 1,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 415
+      "total": 598
     }
   },
   {
@@ -133,12 +133,12 @@
       "images/top100_910/product_top052.webp"
     ],
     "inventory": {
-      "beijing": 578,
+      "beijing": 642,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 7,
-      "total": 585
+      "total": 649
     }
   },
   {
@@ -192,11 +192,11 @@
     ],
     "inventory": {
       "beijing": 0,
-      "kunshan": 146,
+      "kunshan": 85,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 3,
-      "total": 149
+      "total": 88
     }
   },
   {
@@ -249,12 +249,12 @@
       "180_3.webp"
     ],
     "inventory": {
-      "beijing": 736,
+      "beijing": 666,
       "kunshan": 2,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 3,
-      "total": 741
+      "total": 671
     }
   },
   {
@@ -1434,12 +1434,12 @@
       "82_3.webp"
     ],
     "inventory": {
-      "beijing": 122,
+      "beijing": 121,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 4,
-      "total": 126
+      "total": 125
     }
   },
   {
@@ -1520,12 +1520,12 @@
       "191_3.webp"
     ],
     "inventory": {
-      "beijing": 275,
+      "beijing": 266,
       "kunshan": 243,
       "dongguan": 400,
       "chengdu": 0,
       "xiaoku": 2,
-      "total": 920
+      "total": 911
     }
   },
   {
@@ -1782,12 +1782,12 @@
       "182_3.webp"
     ],
     "inventory": {
-      "beijing": 876,
+      "beijing": 875,
       "kunshan": 74,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 950
+      "total": 949
     }
   },
   {
@@ -1873,11 +1873,11 @@
     ],
     "inventory": {
       "beijing": 219,
-      "kunshan": 189,
+      "kunshan": 109,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 3,
-      "total": 411
+      "total": 331
     }
   },
   {
@@ -1958,11 +1958,11 @@
     ],
     "inventory": {
       "beijing": 320,
-      "kunshan": 157,
+      "kunshan": 107,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 25,
-      "total": 502
+      "total": 452
     }
   },
   {
@@ -2077,12 +2077,12 @@
       "183_5.webp"
     ],
     "inventory": {
-      "beijing": 1590,
+      "beijing": 1560,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 1590
+      "total": 1560
     }
   },
   {
@@ -2209,12 +2209,12 @@
       "images/top100_910/product_top051.webp"
     ],
     "inventory": {
-      "beijing": 1447,
+      "beijing": 1446,
       "kunshan": 7531,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 8978
+      "total": 8977
     }
   },
   {
@@ -2237,12 +2237,12 @@
       "images/top100_910/product_top041.webp"
     ],
     "inventory": {
-      "beijing": 0,
+      "beijing": 47,
       "kunshan": 1,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 1
+      "total": 48
     }
   },
   {
@@ -2456,12 +2456,12 @@
       "images/top100_910/product_top088.webp"
     ],
     "inventory": {
-      "beijing": 328,
+      "beijing": 323,
       "kunshan": 257,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 2,
-      "total": 587
+      "total": 582
     }
   },
   {
@@ -2487,11 +2487,11 @@
     ],
     "inventory": {
       "beijing": 0,
-      "kunshan": 1711,
+      "kunshan": 1710,
       "dongguan": 1205,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 2916
+      "total": 2915
     }
   },
   {
@@ -2937,12 +2937,12 @@
       "images/top100_910/product_top074.webp"
     ],
     "inventory": {
-      "beijing": 495,
+      "beijing": 1410,
       "kunshan": 950,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 1445
+      "total": 2360
     }
   },
   {
@@ -4682,12 +4682,12 @@
       "166_4.webp"
     ],
     "inventory": {
-      "beijing": 144,
+      "beijing": 0,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 16,
-      "total": 160
+      "total": 16
     }
   },
   {
@@ -4799,12 +4799,12 @@
       "122_2.webp"
     ],
     "inventory": {
-      "beijing": 528,
+      "beijing": 498,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 60,
-      "total": 588
+      "total": 558
     }
   },
   {
@@ -4831,12 +4831,12 @@
       "125_5.webp"
     ],
     "inventory": {
-      "beijing": 130,
+      "beijing": 105,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 529,
-      "total": 659
+      "total": 634
     }
   },
   {
@@ -4971,12 +4971,12 @@
       "125_5.webp"
     ],
     "inventory": {
-      "beijing": 407,
+      "beijing": 382,
       "kunshan": 332,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 380,
-      "total": 1119
+      "total": 1094
     }
   },
   {
@@ -5061,11 +5061,11 @@
     ],
     "inventory": {
       "beijing": 0,
-      "kunshan": 229,
+      "kunshan": 185,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 229
+      "total": 185
     }
   },
   {
@@ -5215,12 +5215,12 @@
       "192_3.webp"
     ],
     "inventory": {
-      "beijing": 3,
-      "kunshan": 178,
+      "beijing": 2,
+      "kunshan": 174,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 181
+      "total": 176
     }
   },
   {
@@ -8381,11 +8381,11 @@
     ],
     "inventory": {
       "beijing": 407,
-      "kunshan": 137,
+      "kunshan": 133,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 2,
-      "total": 546
+      "total": 542
     }
   },
   {
@@ -8582,12 +8582,12 @@
       "images/top100_910/product_top113.webp"
     ],
     "inventory": {
-      "beijing": 242,
-      "kunshan": 2180,
+      "beijing": 237,
+      "kunshan": 2140,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 5,
-      "total": 2427
+      "total": 2382
     }
   },
   {
@@ -11161,12 +11161,12 @@
       "153_3.webp"
     ],
     "inventory": {
-      "beijing": 399,
+      "beijing": 398,
       "kunshan": 407,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 2,
-      "total": 808
+      "total": 807
     }
   },
   {
@@ -11417,12 +11417,12 @@
       "images/top100_910/product_top011.webp"
     ],
     "inventory": {
-      "beijing": 46,
+      "beijing": 4,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 29,
-      "total": 75
+      "total": 33
     }
   },
   {
@@ -11473,12 +11473,12 @@
       "7441304985.webp"
     ],
     "inventory": {
-      "beijing": 0,
+      "beijing": 12,
       "kunshan": 45,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 45
+      "total": 57
     }
   },
   {
@@ -11974,12 +11974,12 @@
       "120_2.webp"
     ],
     "inventory": {
-      "beijing": 259,
+      "beijing": 249,
       "kunshan": 8,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 13,
-      "total": 280
+      "total": 270
     }
   },
   {
@@ -12167,12 +12167,12 @@
       "images/top100_910/product_top090.webp"
     ],
     "inventory": {
-      "beijing": 603,
+      "beijing": 588,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 10,
-      "total": 613
+      "total": 598
     }
   },
   {
@@ -12409,12 +12409,12 @@
       "images/top100_910/product_top075.webp"
     ],
     "inventory": {
-      "beijing": 1064,
+      "beijing": 1034,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 20,
-      "total": 1084
+      "total": 1054
     }
   },
   {
@@ -12523,12 +12523,12 @@
       "images/top100_910/product_top017.webp"
     ],
     "inventory": {
-      "beijing": 1809,
+      "beijing": 1799,
       "kunshan": 4,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 1813
+      "total": 1803
     }
   },
   {
@@ -12637,12 +12637,12 @@
       "images/top100_910/product_top084.webp"
     ],
     "inventory": {
-      "beijing": 1326,
+      "beijing": 1276,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 1326
+      "total": 1276
     }
   },
   {
@@ -12666,12 +12666,12 @@
       "111_2.webp"
     ],
     "inventory": {
-      "beijing": 1551,
+      "beijing": 1538,
       "kunshan": 184,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 1735
+      "total": 1722
     }
   },
   {
@@ -12725,12 +12725,12 @@
       "110_4.webp"
     ],
     "inventory": {
-      "beijing": 878,
+      "beijing": 876,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 878
+      "total": 876
     }
   },
   {
@@ -12754,12 +12754,12 @@
       "115_2.webp"
     ],
     "inventory": {
-      "beijing": 3735,
+      "beijing": 3729,
       "kunshan": 376,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 4111
+      "total": 4105
     }
   },
   {
@@ -12782,12 +12782,12 @@
       "images/top100_910/product_top083.webp"
     ],
     "inventory": {
-      "beijing": 1302,
+      "beijing": 1297,
       "kunshan": 673,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 1975
+      "total": 1970
     }
   },
   {
@@ -12812,12 +12812,12 @@
       "104_3.webp"
     ],
     "inventory": {
-      "beijing": 1866,
+      "beijing": 1846,
       "kunshan": 1375,
       "dongguan": 25,
       "chengdu": 0,
       "xiaoku": 4,
-      "total": 3270
+      "total": 3250
     }
   },
   {
@@ -13389,12 +13389,12 @@
       "62_3.webp"
     ],
     "inventory": {
-      "beijing": 24,
+      "beijing": 23,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 24
+      "total": 23
     }
   },
   {
@@ -13419,12 +13419,12 @@
       "62_3.webp"
     ],
     "inventory": {
-      "beijing": 24,
+      "beijing": 22,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 24
+      "total": 22
     }
   },
   {
@@ -13449,12 +13449,12 @@
       "62_3.webp"
     ],
     "inventory": {
-      "beijing": 14,
+      "beijing": 11,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 14
+      "total": 11
     }
   },
   {
@@ -13505,12 +13505,12 @@
       "images/top100_910/product_top026.webp"
     ],
     "inventory": {
-      "beijing": 365,
+      "beijing": 364,
       "kunshan": 2,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 367
+      "total": 366
     }
   },
   {
@@ -13535,12 +13535,12 @@
       "197_3.webp"
     ],
     "inventory": {
-      "beijing": 404,
+      "beijing": 403,
       "kunshan": 3,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 407
+      "total": 406
     }
   },
   {
@@ -13599,12 +13599,12 @@
       "198_5.webp"
     ],
     "inventory": {
-      "beijing": 108,
+      "beijing": 107,
       "kunshan": 19,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 127
+      "total": 126
     }
   },
   {
@@ -13627,12 +13627,12 @@
       "images/top100_910/product_top043.webp"
     ],
     "inventory": {
-      "beijing": 200,
+      "beijing": 195,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 1,
-      "total": 201
+      "total": 196
     }
   },
   {
@@ -13655,12 +13655,12 @@
       "images/top100_910/product_top044.webp"
     ],
     "inventory": {
-      "beijing": 100,
+      "beijing": 85,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 100
+      "total": 85
     }
   },
   {
@@ -13739,11 +13739,11 @@
       "images/top100_910/product_top062.webp"
     ],
     "inventory": {
-      "beijing": 163,
+      "beijing": 160,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
-      "xiaoku": 0,
+      "xiaoku": 3,
       "total": 163
     }
   },
@@ -13821,12 +13821,12 @@
       "images/top100_910/product_top025.webp"
     ],
     "inventory": {
-      "beijing": 136,
+      "beijing": 117,
       "kunshan": 636,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 24,
-      "total": 796
+      "total": 777
     }
   },
   {
@@ -13849,12 +13849,12 @@
       "images/top100_910/product_top023.webp"
     ],
     "inventory": {
-      "beijing": 320,
+      "beijing": 302,
       "kunshan": 221,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 19,
-      "total": 560
+      "total": 542
     }
   },
   {
@@ -13877,12 +13877,12 @@
       "images/top100_910/product_top059.webp"
     ],
     "inventory": {
-      "beijing": 115,
+      "beijing": 95,
       "kunshan": 239,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 354
+      "total": 334
     }
   },
   {
@@ -13905,12 +13905,12 @@
       "images/top100_910/product_top007.webp"
     ],
     "inventory": {
-      "beijing": 1359,
-      "kunshan": 325,
+      "beijing": 609,
+      "kunshan": 165,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 1684
+      "total": 774
     }
   },
   {
@@ -13933,12 +13933,12 @@
       "images/top100_910/product_top078.webp"
     ],
     "inventory": {
-      "beijing": 420,
+      "beijing": 400,
       "kunshan": 5,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 425
+      "total": 405
     }
   },
   {
@@ -14268,12 +14268,12 @@
       "images/top100_910/product_top070.webp"
     ],
     "inventory": {
-      "beijing": 14,
+      "beijing": 13,
       "kunshan": 391,
       "dongguan": 53,
       "chengdu": 0,
       "xiaoku": 3,
-      "total": 461
+      "total": 460
     }
   },
   {
@@ -14352,12 +14352,12 @@
       "images/top100_910/product_top077.webp"
     ],
     "inventory": {
-      "beijing": 543,
-      "kunshan": 104,
+      "beijing": 541,
+      "kunshan": 99,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 4,
-      "total": 651
+      "total": 644
     }
   },
   {
@@ -14437,12 +14437,12 @@
       "images/top100_910/product_top029.webp"
     ],
     "inventory": {
-      "beijing": 767,
-      "kunshan": 661,
+      "beijing": 760,
+      "kunshan": 656,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 3,
-      "total": 1431
+      "total": 1419
     }
   },
   {
@@ -14466,11 +14466,11 @@
     ],
     "inventory": {
       "beijing": 414,
-      "kunshan": 453,
+      "kunshan": 448,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 3,
-      "total": 870
+      "total": 865
     }
   },
   {
@@ -14643,12 +14643,12 @@
       "images/top100_910/product_top060.webp"
     ],
     "inventory": {
-      "beijing": 252,
+      "beijing": 242,
       "kunshan": 935,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 3,
-      "total": 1190
+      "total": 1180
     }
   },
   {
@@ -14762,12 +14762,12 @@
       "168_3.webp"
     ],
     "inventory": {
-      "beijing": 84,
+      "beijing": 64,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 16,
-      "total": 100
+      "total": 80
     }
   },
   {
@@ -14876,12 +14876,12 @@
       "images/top100_910/product_top061.webp"
     ],
     "inventory": {
-      "beijing": 409,
+      "beijing": 303,
       "kunshan": 1,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 410
+      "total": 304
     }
   },
   {
@@ -14904,12 +14904,12 @@
       "images/top100_910/product_top049.webp"
     ],
     "inventory": {
-      "beijing": 492,
+      "beijing": 489,
       "kunshan": 69,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 561
+      "total": 558
     }
   },
   {
@@ -14932,12 +14932,12 @@
       "images/top100_910/product_top016.webp"
     ],
     "inventory": {
-      "beijing": 723,
+      "beijing": 612,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 8,
-      "total": 731
+      "total": 620
     }
   },
   {
@@ -14986,12 +14986,12 @@
       "images/top100_910/product_top005.webp"
     ],
     "inventory": {
-      "beijing": 900,
-      "kunshan": 909,
+      "beijing": 896,
+      "kunshan": 895,
       "dongguan": 659,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 2468
+      "total": 2450
     }
   },
   {
@@ -15404,10 +15404,10 @@
     "inventory": {
       "beijing": 60,
       "kunshan": 0,
-      "dongguan": 480,
+      "dongguan": 475,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 540
+      "total": 535
     }
   },
   {
@@ -15435,10 +15435,10 @@
     "inventory": {
       "beijing": 59,
       "kunshan": 0,
-      "dongguan": 464,
+      "dongguan": 459,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 523
+      "total": 518
     }
   },
   {
@@ -15465,8 +15465,8 @@
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
-      "xiaoku": 68,
-      "total": 68
+      "xiaoku": 33,
+      "total": 33
     }
   },
   {
@@ -15493,10 +15493,10 @@
     "inventory": {
       "beijing": 0,
       "kunshan": 0,
-      "dongguan": 446,
+      "dongguan": 434,
       "chengdu": 17,
       "xiaoku": 5,
-      "total": 468
+      "total": 456
     }
   },
   {
@@ -15730,12 +15730,12 @@
       "images/top100_910/product_top087.webp"
     ],
     "inventory": {
-      "beijing": 32,
+      "beijing": 17,
       "kunshan": 0,
-      "dongguan": 179,
+      "dongguan": 168,
       "chengdu": 0,
       "xiaoku": 1,
-      "total": 212
+      "total": 186
     }
   },
   {
@@ -15847,11 +15847,11 @@
     ],
     "inventory": {
       "beijing": 0,
-      "kunshan": 1,
+      "kunshan": 15001,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 22,
-      "total": 23
+      "total": 15023
     }
   },
   {
@@ -16137,12 +16137,12 @@
       "7441308657.webp"
     ],
     "inventory": {
-      "beijing": 6866,
+      "beijing": 6860,
       "kunshan": 2208,
       "dongguan": 567,
       "chengdu": 0,
       "xiaoku": 14,
-      "total": 9655
+      "total": 9649
     }
   },
   {
@@ -16647,12 +16647,12 @@
       "7441308690.webp"
     ],
     "inventory": {
-      "beijing": 51,
+      "beijing": 151,
       "kunshan": 93,
       "dongguan": 69,
       "chengdu": 0,
       "xiaoku": 8,
-      "total": 221
+      "total": 321
     }
   },
   {
@@ -16675,12 +16675,12 @@
       "7441308691.webp"
     ],
     "inventory": {
-      "beijing": 0,
+      "beijing": 84,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 19,
-      "total": 19
+      "total": 103
     }
   },
   {
@@ -16703,12 +16703,12 @@
       "7441308692.webp"
     ],
     "inventory": {
-      "beijing": 0,
+      "beijing": 100,
       "kunshan": 65,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 3,
-      "total": 68
+      "total": 168
     }
   },
   {
@@ -16927,12 +16927,12 @@
       "image11.webp"
     ],
     "inventory": {
-      "beijing": 375,
+      "beijing": 477,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 4,
-      "total": 379
+      "total": 481
     }
   },
   {
@@ -16955,12 +16955,12 @@
       "7441308701.webp"
     ],
     "inventory": {
-      "beijing": 172,
+      "beijing": 284,
       "kunshan": 275,
       "dongguan": 276,
       "chengdu": 0,
       "xiaoku": 12,
-      "total": 735
+      "total": 847
     }
   },
   {
@@ -17514,12 +17514,12 @@
     "is_new": false,
     "images": [],
     "inventory": {
-      "beijing": 8,
+      "beijing": 103,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 8
+      "total": 103
     }
   },
   {
@@ -17684,12 +17684,12 @@
       "188_1.webp"
     ],
     "inventory": {
-      "beijing": 1,
+      "beijing": 70,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 1
+      "total": 70
     }
   },
   {
@@ -17714,12 +17714,12 @@
       "135_3.webp"
     ],
     "inventory": {
-      "beijing": 727,
+      "beijing": 855,
       "kunshan": 682,
       "dongguan": 40,
       "chengdu": 0,
       "xiaoku": 2,
-      "total": 1451
+      "total": 1579
     }
   },
   {
@@ -17854,12 +17854,12 @@
       "images/top100_910/product_top018.webp"
     ],
     "inventory": {
-      "beijing": 1,
+      "beijing": 10,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 1,
-      "total": 2
+      "total": 11
     }
   },
   {
@@ -17962,12 +17962,12 @@
       "7441308804.webp"
     ],
     "inventory": {
-      "beijing": 64,
+      "beijing": 117,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 64
+      "total": 117
     }
   },
   {
@@ -18018,12 +18018,12 @@
       "images/top100_910/product_top040.webp"
     ],
     "inventory": {
-      "beijing": 833,
+      "beijing": 976,
       "kunshan": 37,
       "dongguan": 46,
       "chengdu": 0,
       "xiaoku": 1,
-      "total": 917
+      "total": 1060
     }
   },
   {
@@ -18046,12 +18046,12 @@
       "7441308880.webp"
     ],
     "inventory": {
-      "beijing": 3,
+      "beijing": 2,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 3
+      "total": 2
     }
   },
   {
@@ -18074,12 +18074,12 @@
       "7441308879.webp"
     ],
     "inventory": {
-      "beijing": 699,
+      "beijing": 698,
       "kunshan": 17,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 716
+      "total": 715
     }
   },
   {
@@ -18669,12 +18669,12 @@
       "61_2.webp"
     ],
     "inventory": {
-      "beijing": 7,
+      "beijing": 0,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 7
+      "total": 0
     }
   },
   {
@@ -18698,12 +18698,12 @@
       "61_2.webp"
     ],
     "inventory": {
-      "beijing": 10,
+      "beijing": 0,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 10
+      "total": 0
     }
   },
   {
@@ -18785,12 +18785,12 @@
       "61_2.webp"
     ],
     "inventory": {
-      "beijing": 13,
+      "beijing": 0,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 13
+      "total": 0
     }
   },
   {
@@ -18872,12 +18872,12 @@
       "61_2.webp"
     ],
     "inventory": {
-      "beijing": 4,
+      "beijing": 3,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 4
+      "total": 3
     }
   },
   {
@@ -18901,12 +18901,12 @@
       "61_2.webp"
     ],
     "inventory": {
-      "beijing": 13,
+      "beijing": 1,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 13
+      "total": 1
     }
   },
   {
@@ -18930,12 +18930,12 @@
       "61_2.webp"
     ],
     "inventory": {
-      "beijing": 12,
+      "beijing": 2,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 12
+      "total": 2
     }
   },
   {
@@ -18959,12 +18959,12 @@
       "61_2.webp"
     ],
     "inventory": {
-      "beijing": 7,
+      "beijing": 0,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 7
+      "total": 0
     }
   },
   {
@@ -18988,12 +18988,12 @@
       "61_2.webp"
     ],
     "inventory": {
-      "beijing": 3,
+      "beijing": 0,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 3
+      "total": 0
     }
   },
   {
@@ -19017,12 +19017,12 @@
       "61_2.webp"
     ],
     "inventory": {
-      "beijing": 1,
+      "beijing": 0,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 1
+      "total": 0
     }
   },
   {
@@ -19991,12 +19991,12 @@
       "7441308991.webp"
     ],
     "inventory": {
-      "beijing": 930,
+      "beijing": 928,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 930
+      "total": 928
     }
   },
   {
@@ -20095,12 +20095,12 @@
     "is_new": false,
     "images": [],
     "inventory": {
-      "beijing": 9,
+      "beijing": 8,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 9
+      "total": 8
     }
   },
   {
@@ -20121,12 +20121,12 @@
     "is_new": false,
     "images": [],
     "inventory": {
-      "beijing": 15,
+      "beijing": 14,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 15
+      "total": 14
     }
   },
   {
@@ -20765,11 +20765,11 @@
     "images": [],
     "inventory": {
       "beijing": 0,
-      "kunshan": 1308,
+      "kunshan": 1302,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 1308
+      "total": 1302
     }
   },
   {
@@ -21015,12 +21015,12 @@
       "7441309170.webp"
     ],
     "inventory": {
-      "beijing": 1428,
+      "beijing": 1406,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 1428
+      "total": 1406
     }
   },
   {
@@ -21125,12 +21125,12 @@
       "images/top100_910/product_top064.webp"
     ],
     "inventory": {
-      "beijing": 1005,
+      "beijing": 966,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 1005
+      "total": 966
     }
   },
   {
@@ -22362,12 +22362,12 @@
       "169_1.webp"
     ],
     "inventory": {
-      "beijing": 449,
+      "beijing": 429,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 2,
-      "total": 451
+      "total": 431
     }
   },
   {
@@ -23919,10 +23919,10 @@
     "inventory": {
       "beijing": 0,
       "kunshan": 0,
-      "dongguan": 671,
+      "dongguan": 621,
       "chengdu": 995,
       "xiaoku": 0,
-      "total": 1666
+      "total": 1616
     }
   },
   {
@@ -24307,12 +24307,12 @@
       "images/top100_910/product_top013.webp"
     ],
     "inventory": {
-      "beijing": 33,
+      "beijing": 32,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 33
+      "total": 32
     }
   },
   {
@@ -24477,12 +24477,12 @@
       "images/top100_910/product_top065.webp"
     ],
     "inventory": {
-      "beijing": 586,
+      "beijing": 585,
       "kunshan": 550,
       "dongguan": 1510,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 2646
+      "total": 2645
     }
   },
   {
@@ -24507,10 +24507,10 @@
     "inventory": {
       "beijing": 0,
       "kunshan": 0,
-      "dongguan": 668,
+      "dongguan": 664,
       "chengdu": 0,
       "xiaoku": 3,
-      "total": 671
+      "total": 667
     }
   },
   {
@@ -24740,12 +24740,12 @@
       "images/top100_910/product_top054.webp"
     ],
     "inventory": {
-      "beijing": 1295,
+      "beijing": 1289,
       "kunshan": 351,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 1646
+      "total": 1640
     }
   },
   {
@@ -24912,12 +24912,12 @@
       "images/top100_910/product_top034.webp"
     ],
     "inventory": {
-      "beijing": 231,
-      "kunshan": 102,
+      "beijing": 210,
+      "kunshan": 1,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 3,
-      "total": 336
+      "total": 214
     }
   },
   {
@@ -25028,12 +25028,12 @@
       "images/ppt_910/p910_p013_e693869e48.png"
     ],
     "inventory": {
-      "beijing": 1463,
+      "beijing": 1462,
       "kunshan": 480,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 1943
+      "total": 1942
     }
   },
   {
@@ -25082,10 +25082,10 @@
     "inventory": {
       "beijing": 174,
       "kunshan": 0,
-      "dongguan": 1097,
+      "dongguan": 1088,
       "chengdu": 0,
       "xiaoku": 2,
-      "total": 1273
+      "total": 1264
     }
   },
   {
@@ -25220,12 +25220,12 @@
       "images/top100_910/product_top107.webp"
     ],
     "inventory": {
-      "beijing": 683,
+      "beijing": 679,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 23,
-      "total": 706
+      "total": 702
     }
   },
   {
@@ -25304,12 +25304,12 @@
       "images/top100_910/product_top111.webp"
     ],
     "inventory": {
-      "beijing": 113,
+      "beijing": 98,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 80,
-      "total": 193
+      "total": 178
     }
   },
   {
@@ -25332,12 +25332,12 @@
       "images/top100_910/product_top112.webp"
     ],
     "inventory": {
-      "beijing": 404,
+      "beijing": 402,
       "kunshan": 0,
       "dongguan": 0,
       "chengdu": 0,
-      "xiaoku": 50,
-      "total": 454
+      "xiaoku": 20,
+      "total": 422
     }
   },
   {
@@ -25552,12 +25552,12 @@
       "images/top100_910/product_bingba_green.webp"
     ],
     "inventory": {
-      "beijing": 835,
+      "beijing": 834,
       "kunshan": 489,
       "dongguan": 0,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 1324
+      "total": 1323
     }
   },
   {
@@ -25814,10 +25814,10 @@
     "inventory": {
       "beijing": 0,
       "kunshan": 0,
-      "dongguan": 50,
+      "dongguan": 48,
       "chengdu": 0,
       "xiaoku": 0,
-      "total": 50
+      "total": 48
     }
   },
   {
